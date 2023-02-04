@@ -1,6 +1,8 @@
 package com.breaktime.common.extentions
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -34,3 +36,5 @@ fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
 
 @Composable
 fun Number.pxToDp() = with(LocalDensity.current) { this@pxToDp.toFloat().toDp() }
+
+fun Modifier.visible(isVisible: Boolean) = alpha(if (isVisible) 1f else 0f)
