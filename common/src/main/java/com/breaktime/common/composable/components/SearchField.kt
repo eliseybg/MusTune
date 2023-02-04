@@ -69,7 +69,7 @@ fun SearchField(
 
 @Preview
 @Composable
-fun SearchFieldPreview() {
+internal fun SearchFieldPreview() {
     var searchText by remember { mutableStateOf("") }
     SearchField(
         searchText = searchText,
