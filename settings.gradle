@@ -16,3 +16,4 @@ rootProject.name = "MusTune"
 include ':app'
 include ':login'
 include ':common'
+include ':explore'
