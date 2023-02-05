@@ -93,6 +93,6 @@ fun ExploreScreen() {
 
 @Preview
 @Composable
-fun ExploreScreenPreview() {
+internal fun ExploreScreenPreview() {
     ExploreScreen()
 }

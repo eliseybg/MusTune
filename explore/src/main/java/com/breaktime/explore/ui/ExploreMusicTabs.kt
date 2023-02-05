@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ExploreMusicTabs(
+internal fun ExploreMusicTabs(
     modifier: Modifier = Modifier,
     tabsNames: List<MusicTab>,
     currentTab: Int,
