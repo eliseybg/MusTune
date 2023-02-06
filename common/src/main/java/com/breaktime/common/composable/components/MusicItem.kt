@@ -30,12 +30,7 @@ fun MusicItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onItemClick() }
-            .padding(
-                start = 32.dp,
-                end = 28.dp,
-                top = 12.dp,
-                bottom = 12.dp
-            ),
+            .padding(vertical = 12.dp, horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(

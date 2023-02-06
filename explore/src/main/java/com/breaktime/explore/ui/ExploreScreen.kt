@@ -79,11 +79,7 @@ fun ExploreScreen() {
                             onMoreClick = {}
                         )
                         if (index < list.lastIndex)
-                            Divider(
-                                color = Color(0xFFD6D6D6),
-                                thickness = 1.dp,
-                                modifier = Modifier.padding(horizontal = 16.dp)
-                            )
+                            Divider(color = Color(0xFFD6D6D6), thickness = 1.dp)
                     }
                 }
             }

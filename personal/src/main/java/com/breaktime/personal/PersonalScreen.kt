@@ -32,7 +32,8 @@ fun PersonalScreen() {
         SearchField(
             modifier = Modifier,
             searchText = searchText,
-            onChangeSearchText = { searchText = it }
+            onChangeSearchText = { searchText = it },
+            clearSearchText = { searchText = "" }
         )
 
         val list = remember { generateSequence { Random.nextInt(1, 256) }.take(30).toList() }
@@ -46,11 +47,7 @@ fun PersonalScreen() {
                     onMoreClick = {}
                 )
                 if (index < list.lastIndex)
-                    Divider(
-                        color = Color(0xFFD6D6D6),
-                        thickness = 1.dp,
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    )
+                    Divider(color = Color(0xFFD6D6D6), thickness = 1.dp)
             }
         }
     }
