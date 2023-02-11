@@ -2,7 +2,6 @@ package com.breaktime.explore.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -24,7 +23,7 @@ internal fun ExploreMusicTabs(
 ) {
     TabRow(
         selectedTabIndex = currentTab,
-        backgroundColor = Color(0xFFF3F3F3),
+        backgroundColor = Color(0xFFEAEAEA),
         modifier = modifier
             .height(40.dp)
             .clip(RoundedCornerShape(5.dp)),
@@ -34,7 +33,6 @@ internal fun ExploreMusicTabs(
             val selected = currentTab == index
             Tab(
                 modifier = Modifier
-                    .padding(4.dp)
                     .height(32.dp)
                     .clip(RoundedCornerShape(5.dp))
                     .background(if (selected) Color(0xFF0F235E) else Color.Transparent),
