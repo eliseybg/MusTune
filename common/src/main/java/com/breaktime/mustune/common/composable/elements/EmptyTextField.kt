@@ -1,4 +1,4 @@
-package com.breaktime.common.composable.elements
+package com.breaktime.mustune.common.composable.elements
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.breaktime.common.extentions.visible
+import com.breaktime.mustune.common.extentions.visible
 
 @Composable
 fun EmptyTextField(

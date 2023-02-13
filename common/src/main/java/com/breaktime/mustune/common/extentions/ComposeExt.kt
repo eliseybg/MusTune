@@ -1,4 +1,4 @@
-package com.breaktime.common.extentions
+package com.breaktime.mustune.common.extentions
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
