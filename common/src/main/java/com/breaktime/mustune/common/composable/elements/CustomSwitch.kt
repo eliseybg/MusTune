@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Switch
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
@@ -18,6 +19,9 @@ import com.breaktime.mustune.common.extentions.dpToPx
 
 @Composable
 fun CustomSwitch(
+    checked: Boolean,
+    onCheckedChange: ((Boolean) -> Unit),
+    modifier: Modifier = Modifier,
     width: Dp = 48.dp,
     height: Dp = 24.dp,
     checkedTrackColor: Color = Color(0xFF0F235E),
@@ -28,34 +32,28 @@ fun CustomSwitch(
     gapBetweenThumbAndTrackEdge: Dp = 2.dp,
     cornerRadius: Dp = 11.dp
 ) {
-    var isSwitchEnabled by remember { mutableStateOf(false) }
-
     val animatePosition = animateFloatAsState(
-        targetValue = if (isSwitchEnabled)
-            (width - gapBetweenThumbAndTrackEdge - thumbRadius).dpToPx()
-        else
-            (gapBetweenThumbAndTrackEdge + thumbRadius).dpToPx()
+        targetValue = if (checked) (width - gapBetweenThumbAndTrackEdge - thumbRadius).dpToPx()
+        else (gapBetweenThumbAndTrackEdge + thumbRadius).dpToPx()
     )
 
     Canvas(
-        modifier = Modifier
+        modifier = modifier
             .size(width = width, height = height)
             .pointerInput(Unit) {
                 detectTapGestures(
-                    onTap = {
-                        isSwitchEnabled = !isSwitchEnabled
-                    }
+                    onTap = { onCheckedChange(!checked) }
                 )
             }
     ) {
         drawRoundRect(
-            color = if (isSwitchEnabled) checkedTrackColor else uncheckedTrackColor,
+            color = if (checked) checkedTrackColor else uncheckedTrackColor,
             cornerRadius = CornerRadius(x = cornerRadius.toPx(), y = cornerRadius.toPx()),
             style = Fill
         )
 
         drawCircle(
-            color = if (isSwitchEnabled) checkedThumbColor else uncheckedThumbColor,
+            color = if (checked) checkedThumbColor else uncheckedThumbColor,
             radius = thumbRadius.toPx(),
             center = Offset(
                 x = animatePosition.value,
@@ -68,5 +66,9 @@ fun CustomSwitch(
 @Preview
 @Composable
 fun CustomSwitchPreview() {
-    CustomSwitch()
+    var isSwitchEnabled by remember { mutableStateOf(false) }
+    CustomSwitch(
+        checked = isSwitchEnabled,
+        onCheckedChange = { isSwitchEnabled = !isSwitchEnabled }
+    )
 }
