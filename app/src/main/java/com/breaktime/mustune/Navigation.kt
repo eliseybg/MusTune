@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.breaktime.mustune.common.find
 import com.breaktime.mustune.di.LocalAppProvider
+import com.breaktime.mustune.music.api.MusicEntry
 import com.breaktime.mustune.settings.api.SettingsEntry
 
 @Composable
@@ -15,20 +16,17 @@ fun Navigation() {
     val navController = rememberNavController()
     val destinations = LocalAppProvider.current.destinations
 
-    val loginScreen = destinations.find<SettingsEntry>()
-//    val musicScreen = destinations.find<MusicEntry>()
-//    val mainScreen = destinations.find<MainEntry>()
+    val musicScreen = destinations.find<MusicEntry>()
     val settingsScreen = destinations.find<SettingsEntry>()
 
     Box(Modifier.fillMaxSize()) {
-        NavHost(navController, startDestination = loginScreen.destination()) {
-
-            with(loginScreen) {
+        NavHost(navController, startDestination = musicScreen.destination()) {
+            with(musicScreen) {
                 composable(navController, destinations)
             }
-//            with(movieDetailsScreen) {
-//                navigation(navController, destinations)
-//            }
+            with(settingsScreen) {
+                composable(navController, destinations)
+            }
         }
     }
 }

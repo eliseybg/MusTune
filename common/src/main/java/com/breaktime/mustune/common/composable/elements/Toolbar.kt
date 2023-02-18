@@ -2,10 +2,7 @@ package com.breaktime.mustune.common.composable.elements
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -30,12 +27,12 @@ fun Toolbar(
     modifier: Modifier = Modifier,
     title: String,
     navigation: @Composable () -> Unit = {},
-    actions: @Composable () -> Unit = {}
+    actions: @Composable () -> Unit = {},
+    bottomContent: @Composable () -> Unit = {},
 ) {
-    Box(
+    Column(
         modifier = modifier
             .fillMaxWidth()
-            .height(50.dp)
             .shadow(
                 color = Color.Black.copy(0.25f),
                 blurRadius = 4.dp,
@@ -43,16 +40,23 @@ fun Toolbar(
                 offsetY = 50.dp
             )
             .background(Color.White)
-            .padding(horizontal = 16.dp)
     ) {
-        Box(modifier = Modifier.align(Alignment.CenterStart)) { navigation() }
-        Text(
-            modifier = Modifier.align(Alignment.Center),
-            text = title,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp
-        )
-        Box(modifier = Modifier.align(Alignment.CenterEnd)) { actions() }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .padding(horizontal = 16.dp)
+        ) {
+            Box(modifier = Modifier.align(Alignment.CenterStart)) { navigation() }
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = title,
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
+            )
+            Box(modifier = Modifier.align(Alignment.CenterEnd)) { actions() }
+        }
+        bottomContent()
     }
 }
 

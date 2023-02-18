@@ -1,24 +1,19 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
 }
 
 android {
-    namespace 'com.breaktime.mustune'
+    namespace 'com.breaktime.mustune.music.impl'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.breaktime.mustune"
         minSdk 24
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary true
-        }
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -40,17 +35,11 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion compose_compiler_version
     }
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
-    }
 }
 
 dependencies {
     implementation project(':common')
-    implementation project(':login:impl')
-    implementation project(':settings:impl')
-    implementation project(':music:impl')
+    api project(':music:api')
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_pager_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }
