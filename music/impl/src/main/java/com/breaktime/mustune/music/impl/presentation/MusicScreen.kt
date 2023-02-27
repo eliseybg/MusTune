@@ -105,7 +105,7 @@ internal fun ExploreMusicTabs(
     currentTab: Int,
     onChangeTab: (Int) -> Unit
 ) {
-    TabRow(
+    ScrollableTabRow(
         selectedTabIndex = currentTab,
         backgroundColor = Color.White,
         modifier = modifier
@@ -113,15 +113,18 @@ internal fun ExploreMusicTabs(
             .clip(RoundedCornerShape(5.dp)),
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
-                Modifier.tabIndicatorOffset(tabPositions[currentTab]),
+                Modifier
+                    .height(20.dp)
+                    .tabIndicatorOffset(tabPositions[currentTab]),
                 color = Color(0xFF0F235E)
             )
         },
+        edgePadding = 0.dp,
+        divider = {}
     ) {
         tabsNames.forEachIndexed { index, tab ->
             val selected = currentTab == index
             Tab(
-                modifier = Modifier.height(22.dp),
                 selected = selected,
                 onClick = { onChangeTab(index) },
                 text = {
