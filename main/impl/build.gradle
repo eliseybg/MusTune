@@ -1,10 +1,11 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
-    namespace 'com.breaktime.mustune.impl'
+    namespace 'com.breaktime.mustune.main.impl'
     compileSdk 33
 
     defaultConfig {
@@ -39,4 +40,7 @@ android {
 dependencies {
     implementation project(':common')
     api project(':main:api')
+    api(project(":music:api"))
+    api(project(":settings:api"))
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }

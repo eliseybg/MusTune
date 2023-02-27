@@ -68,7 +68,7 @@ fun MusicScreen() {
                 .padding(it)
                 .fillMaxSize()
                 .background(Color(0xFFFDFDFD))
-                .padding(start = 16.dp, end = 16.dp, top = 12.dp),
+                .padding(horizontal = 16.dp),
             count = musicTabs.size,
             state = pagerState
         ) {
@@ -78,7 +78,10 @@ fun MusicScreen() {
                     generateSequence { Random.nextInt(1, 256) }.take(30).toList()
                 }
 
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(vertical = 12.dp)
+                ) {
                     itemsIndexed(list) { index, item ->
                         MusicItem(
                             title = "Title $index",
