@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.di.LocalCommonProvider
 import com.breaktime.mustune.common.di.injectedViewModel
+import com.breaktime.mustune.data.api.LocalDataProvider
 import com.breaktime.mustune.music.api.MusicEntry
 import com.breaktime.mustune.music.impl.presentation.MusicScreen
 import com.breaktime.mustune.music.impl.di.DaggerMusicComponent
@@ -19,9 +20,11 @@ class MusicEntryImpl @Inject constructor() : MusicEntry() {
         backStackEntry: NavBackStackEntry
     ) {
         val commonProvider = LocalCommonProvider.current
+        val dataProvider = LocalDataProvider.current
         val viewModel = injectedViewModel {
             DaggerMusicComponent.builder()
                 .commonProvider(commonProvider)
+                .dataProvider(dataProvider)
                 .build()
                 .viewModel
         }

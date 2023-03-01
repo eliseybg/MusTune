@@ -1,7 +1,7 @@
-package com.breaktime.mustune.settings.api.data.repository
+package com.breaktime.mustune.data.impl.repository.settings
 
-import com.breaktime.mustune.settings.api.data.data_source.SettingsDataSource
-import com.breaktime.mustune.settings.api.domain.repository.SettingsRepository
+import com.breaktime.mustune.data.impl.repository.settings.data_source.SettingsDataSource
+import com.breaktime.mustune.data.api.repository.SettingsRepository
 import javax.inject.Inject
 
 class SettingsRepositoryImpl @Inject constructor(
@@ -19,8 +19,8 @@ class SettingsRepositoryImpl @Inject constructor(
 
     override fun isDarkModeEnabled() = local.isDarkModeEnabled()
 
-    override suspend fun setCurrentLanguage(isEnabled: Boolean) {
-        local.setCurrentLanguage(isEnabled)
+    override suspend fun setCurrentLanguage(language: String) {
+        local.setCurrentLanguage(language)
     }
 
     override fun getCurrentLanguage() = local.getCurrentLanguage()

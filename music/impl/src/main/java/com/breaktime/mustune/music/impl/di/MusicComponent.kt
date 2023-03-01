@@ -12,6 +12,6 @@ import dagger.Component
     dependencies = [CommonProvider::class, DataProvider::class],
     modules = [MusicBinderModule::class, MusicProviderModule::class]
 )
-interface MusicComponent : MusicProvider, CommonProvider {
+interface MusicComponent : MusicProvider, CommonProvider, DataProvider {
     val viewModel: MusicViewModel
 }

@@ -1,4 +1,4 @@
-package com.breaktime.mustune.settings.api.domain.repository
+package com.breaktime.mustune.data.api.repository
 
 import kotlinx.coroutines.flow.Flow
 
@@ -9,6 +9,6 @@ interface SettingsRepository {
     suspend fun setDarkModeEnabled(isEnabled: Boolean)
     fun isDarkModeEnabled(): Flow<Boolean>
 
-    suspend fun setCurrentLanguage(isEnabled: Boolean)
-    fun getCurrentLanguage(): Flow<Boolean>
+    suspend fun setCurrentLanguage(language: String)
+    fun getCurrentLanguage(): Flow<String>
 }

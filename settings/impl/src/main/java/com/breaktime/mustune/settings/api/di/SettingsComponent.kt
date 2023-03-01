@@ -9,9 +9,8 @@ import dagger.Component
 
 @FeatureScoped
 @Component(
-    dependencies = [CommonProvider::class, DataProvider::class],
-    modules = [SettingsBinderModule::class, SettingsProviderModule::class]
+    dependencies = [CommonProvider::class, DataProvider::class]
 )
-interface SettingsComponent : SettingsProvider, CommonProvider {
+interface SettingsComponent : SettingsProvider, CommonProvider, DataProvider {
     val viewModel: SettingsViewModel
 }

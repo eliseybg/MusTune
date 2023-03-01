@@ -1,12 +1,13 @@
-package com.breaktime.mustune.settings.api.data.data_source.local
+package com.breaktime.mustune.data.impl.repository.settings.data_source.local
 
 import android.content.SharedPreferences
+import androidx.compose.ui.text.intl.Locale
 import androidx.core.content.edit
 import com.breaktime.mustune.common.Constants.Settings.KEY_CURRENT_LANGUAGE
 import com.breaktime.mustune.common.Constants.Settings.KEY_DARK_MODE_ENABLED
 import com.breaktime.mustune.common.Constants.Settings.KEY_NOTIFICATIONS_ENABLED
 import com.breaktime.mustune.common.extentions.observeKey
-import com.breaktime.mustune.settings.api.data.data_source.SettingsDataSource
+import com.breaktime.mustune.data.impl.repository.settings.data_source.SettingsDataSource
 import javax.inject.Inject
 
 class SettingsLocalDataSource @Inject constructor(
@@ -24,9 +25,9 @@ class SettingsLocalDataSource @Inject constructor(
 
     override fun isDarkModeEnabled() = preferences.observeKey(KEY_DARK_MODE_ENABLED, false)
 
-    override suspend fun setCurrentLanguage(isEnabled: Boolean) = preferences.edit {
-        putBoolean(KEY_CURRENT_LANGUAGE, isEnabled)
+    override suspend fun setCurrentLanguage(language: String) = preferences.edit {
+        putString(KEY_CURRENT_LANGUAGE, language)
     }
 
-    override fun getCurrentLanguage() = preferences.observeKey(KEY_CURRENT_LANGUAGE, false)
+    override fun getCurrentLanguage() = preferences.observeKey(KEY_CURRENT_LANGUAGE, Locale.current.language)
 }
