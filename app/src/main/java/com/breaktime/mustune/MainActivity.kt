@@ -12,6 +12,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.breaktime.mustune.common.di.LocalCommonProvider
+import com.breaktime.mustune.data.api.LocalDataProvider
 import com.breaktime.mustune.di.LocalAppProvider
 import com.breaktime.mustune.ui.theme.MusTuneTheme
 
@@ -23,7 +24,8 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     CompositionLocalProvider(
                         LocalAppProvider provides application.appProvider,
-                        LocalCommonProvider provides application.appProvider
+                        LocalCommonProvider provides application.appProvider,
+                        LocalDataProvider provides application.appProvider
                     ) {
                         Navigation()
                     }
