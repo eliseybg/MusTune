@@ -1,17 +1,17 @@
-package com.breaktime.mustune.settings.api.presentation
+package com.breaktime.mustune.settings.impl.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.breaktime.mustune.common.presentation.BaseViewModel
-import com.breaktime.mustune.settings.api.domain.use_case.*
+import com.breaktime.mustune.settings.impl.domain.use_case.*
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
-    private val getCurrentLanguageUseCase: GetCurrentLanguageUseCase,
-    private val isDarkModeEnabledUseCase: IsDarkModeEnabledUseCase,
-    private val isNotificationsEnabledUseCase: IsNotificationsEnabledUseCase,
+    private val getCurrentLanguageFlowUseCase: GetCurrentLanguageFlowUseCase,
+    private val isDarkModeEnabledUseCase: IsDarkModeEnabledFlowUseCase,
+    private val isNotificationsEnabledUseCase: IsNotificationsEnabledFlowUseCase,
     private val setCurrentLanguageUseCase: SetCurrentLanguageUseCase,
     private val setDarkModeEnabledUseCase: SetDarkModeEnabledUseCase,
     private val setNotificationsEnabledUseCase: SetNotificationsEnabledUseCase
@@ -19,7 +19,9 @@ class SettingsViewModel @Inject constructor(
     override fun createInitialState() = SettingsContract.State()
 
     init {
-        isNotificationsEnabledUseCase().combine(isDarkModeEnabledUseCase()) { isNotificationsEnabled, isDarkModeEnabled ->
+        isNotificationsEnabledUseCase(IsNotificationsEnabledFlowUseCase.Params).combine(
+            isDarkModeEnabledUseCase(IsDarkModeEnabledFlowUseCase.Params)
+        ) { isNotificationsEnabled, isDarkModeEnabled ->
             setState {
                 copy(
                     isNotificationsEnabled = isNotificationsEnabled,
@@ -37,10 +39,12 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun changeNotificationEnabled() = viewModelScope.launch {
-        setNotificationsEnabledUseCase(!uiState.value.isNotificationsEnabled)
+        val params = SetNotificationsEnabledUseCase.Params(!uiState.value.isNotificationsEnabled)
+        setNotificationsEnabledUseCase(params)
     }
 
     private fun changeDarkModeEnabled() = viewModelScope.launch {
-        setDarkModeEnabledUseCase(!uiState.value.isDarkModeEnabled)
+        val params = SetDarkModeEnabledUseCase.Params(!uiState.value.isDarkModeEnabled)
+        setDarkModeEnabledUseCase(params)
     }
 }

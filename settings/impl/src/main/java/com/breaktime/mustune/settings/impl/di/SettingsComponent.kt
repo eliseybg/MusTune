@@ -1,10 +1,10 @@
-package com.breaktime.mustune.settings.api.di
+package com.breaktime.mustune.settings.impl.di
 
 import com.breaktime.mustune.common.di.CommonProvider
 import com.breaktime.mustune.common.di.FeatureScoped
 import com.breaktime.mustune.data.api.DataProvider
 import com.breaktime.mustune.settings.api.SettingsProvider
-import com.breaktime.mustune.settings.api.presentation.SettingsViewModel
+import com.breaktime.mustune.settings.impl.presentation.SettingsViewModel
 import dagger.Component
 
 @FeatureScoped

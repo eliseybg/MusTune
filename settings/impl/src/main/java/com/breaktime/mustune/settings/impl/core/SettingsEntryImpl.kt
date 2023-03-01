@@ -1,4 +1,4 @@
-package com.breaktime.mustune.settings.api.core
+package com.breaktime.mustune.settings.impl.core
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
@@ -8,8 +8,8 @@ import com.breaktime.mustune.common.di.LocalCommonProvider
 import com.breaktime.mustune.common.di.injectedViewModel
 import com.breaktime.mustune.data.api.LocalDataProvider
 import com.breaktime.mustune.settings.api.SettingsEntry
-import com.breaktime.mustune.settings.api.presentation.SettingsScreen
-import com.breaktime.mustune.settings.api.di.DaggerSettingsComponent
+import com.breaktime.mustune.settings.impl.presentation.SettingsScreen
+import com.breaktime.mustune.settings.impl.di.DaggerSettingsComponent
 import javax.inject.Inject
 
 class SettingsEntryImpl @Inject constructor() : SettingsEntry() {

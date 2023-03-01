@@ -1,4 +1,4 @@
-package com.breaktime.mustune.settings.api.presentation
+package com.breaktime.mustune.settings.impl.presentation
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
