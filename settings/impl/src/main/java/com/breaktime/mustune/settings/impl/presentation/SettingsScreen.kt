@@ -16,8 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.breaktime.mustune.common.composable.elements.CustomSwitch
-import com.breaktime.mustune.common.composable.elements.Toolbar
+import com.breaktime.mustune.common.composable.CustomSwitch
+import com.breaktime.mustune.common.composable.Toolbar
 import com.breaktime.mustune.settings.impl.R
 
 @Composable

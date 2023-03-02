@@ -1,4 +1,4 @@
-package com.breaktime.mustune.common.composable.components
+package com.breaktime.mustune.music.impl.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 fun MusicItem(
     modifier: Modifier = Modifier,
     title: String,
-    description: String,
+    author: String,
     onItemClick: () -> Unit,
     onMoreClick: () -> Unit,
 ) {
@@ -46,7 +46,7 @@ fun MusicItem(
                 maxLines = 1
             )
             Text(
-                text = description,
+                text = author,
                 fontSize = 12.sp,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
@@ -65,7 +65,7 @@ fun MusicItem(
 internal fun MusicItemPreview() {
     MusicItem(
         title = "Title",
-        description = "Description",
+        author = "Author",
         onItemClick = {},
         onMoreClick = {}
     )

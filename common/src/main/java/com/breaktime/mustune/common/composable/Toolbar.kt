@@ -1,4 +1,4 @@
-package com.breaktime.mustune.common.composable.elements
+package com.breaktime.mustune.common.composable
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.foundation.background

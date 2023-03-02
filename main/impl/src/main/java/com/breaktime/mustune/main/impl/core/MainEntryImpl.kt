@@ -24,7 +24,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.FeatureEntry
-import com.breaktime.mustune.common.composable.elements.shadow
+import com.breaktime.mustune.common.composable.shadow
 import com.breaktime.mustune.common.find
 import com.breaktime.mustune.main.api.MainEntry
 import com.breaktime.mustune.main.impl.R

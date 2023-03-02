@@ -18,9 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.breaktime.mustune.common.composable.components.MusicItem
-import com.breaktime.mustune.common.composable.components.SearchField
-import com.breaktime.mustune.common.composable.elements.Toolbar
+import com.breaktime.mustune.music.impl.presentation.components.MusicItem
+import com.breaktime.mustune.common.composable.Toolbar
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -29,11 +28,12 @@ import kotlin.random.Random
 
 @Composable
 fun MusicScreen(viewModel: MusicViewModel, navController: NavHostController) {
-    val state = viewModel.uiState.collectAsState()
-
+    val state by viewModel.uiState.collectAsState()
+    val tabs = state.tabs
+    val currentTab = state.currentTab
+    val songs = state.songs
     MusicScreen()
 }
-
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -85,7 +85,7 @@ fun MusicScreen() {
                     itemsIndexed(list) { index, item ->
                         MusicItem(
                             title = "Title $index",
-                            description = "Description",
+                            author = "Description",
                             onItemClick = {},
                             onMoreClick = {}
                         )

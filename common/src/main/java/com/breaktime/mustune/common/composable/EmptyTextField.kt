@@ -1,4 +1,4 @@
-package com.breaktime.mustune.common.composable.elements
+package com.breaktime.mustune.common.composable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
