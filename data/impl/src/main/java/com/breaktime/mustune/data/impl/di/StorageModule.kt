@@ -3,7 +3,6 @@ package com.breaktime.mustune.data.impl.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.breaktime.mustune.common.Constants
-import com.breaktime.mustune.common.di.FeatureScoped
 import dagger.Module
 import dagger.Provides
 

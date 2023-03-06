@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.breaktime.mustune.common.di.LocalCommonProvider
 import com.breaktime.mustune.data.api.LocalDataProvider
 import com.breaktime.mustune.di.LocalAppProvider
+import com.breaktime.mustune.musicmanager.api.LocalMusicManagerProvider
 import com.breaktime.mustune.ui.theme.MusTuneTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,7 +26,8 @@ class MainActivity : ComponentActivity() {
                     CompositionLocalProvider(
                         LocalAppProvider provides application.appProvider,
                         LocalCommonProvider provides application.appProvider,
-                        LocalDataProvider provides application.appProvider
+                        LocalDataProvider provides application.appProvider,
+                        LocalMusicManagerProvider provides application.appProvider
                     ) {
                         Navigation()
                     }

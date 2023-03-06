@@ -18,28 +18,86 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import androidx.paging.compose.itemsIndexed
 import com.breaktime.mustune.music.impl.presentation.components.MusicItem
 import com.breaktime.mustune.common.composable.Toolbar
+import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MusicScreen(viewModel: MusicViewModel, navController: NavHostController) {
     val state by viewModel.uiState.collectAsState()
-    val tabs = state.tabs
-    val currentTab = state.currentTab
-    val songs = state.songs
-    MusicScreen()
+
+    val pagerState = rememberPagerState()
+    val scope = rememberCoroutineScope()
+    Scaffold(
+        topBar = {
+            Toolbar(
+                title = "Music",
+                actions = {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "search icon",
+                    )
+                },
+                bottomContent = {
+                    ExploreMusicTabs(
+                        tabsNames = state.screenTabs,
+                        currentTab = pagerState.currentPage,
+                        onChangeTab = { scope.launch { pagerState.animateScrollToPage(it) } }
+                    )
+                }
+            )
+        }
+    ) {
+        val tabsItems = state.tabsSetup.map { it.songs.collectAsLazyPagingItems() }
+        HorizontalPager(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize()
+                .background(Color(0xFFFDFDFD))
+                .padding(horizontal = 16.dp),
+            count = state.screenTabs.size,
+            state = pagerState
+        ) { currentIndex ->
+            val items = tabsItems[currentIndex]
+            if (currentIndex > state.screenTabs.size) Text(text = "Something went wrong")
+            else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(vertical = 12.dp)
+                ) {
+                    itemsIndexed(items) { index, item ->
+                        item?.let {
+                            MusicItem(
+                                title = item.title,
+                                author = item.author,
+                                onItemClick = {},
+                                onMoreClick = {}
+                            )
+                            if (index < items.itemSnapshotList.lastIndex)
+                                Divider(color = Color(0xFFD6D6D6), thickness = 1.dp)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MusicScreen() {
-    var searchText by remember { mutableStateOf("") }
-    val musicTabs = listOf(MusicTab.Explore, MusicTab.Favorite, MusicTab.Personal, MusicTab.Shared)
+    val musicTabs = listOf(MusicTab.EXPLORE, MusicTab.FAVOURITE, MusicTab.PERSONAL, MusicTab.SHARED)
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
     Scaffold(
@@ -143,7 +201,7 @@ internal fun ExploreMusicTabs(
 @Preview
 @Composable
 fun ExploreMusicTabPreview() {
-    val musicTabs = listOf(MusicTab.Explore, MusicTab.Favorite, MusicTab.Personal, MusicTab.Shared)
+    val musicTabs = listOf(MusicTab.EXPLORE, MusicTab.FAVOURITE, MusicTab.PERSONAL, MusicTab.SHARED)
     var currentTab by remember { mutableStateOf(0) }
 
     ExploreMusicTabs(
@@ -151,13 +209,6 @@ fun ExploreMusicTabPreview() {
         currentTab = currentTab,
         onChangeTab = { currentTab = it }
     )
-}
-
-sealed class MusicTab(val name: String) {
-    object Explore : MusicTab("explore")
-    object Favorite : MusicTab("favorite")
-    object Personal : MusicTab("personal")
-    object Shared : MusicTab("shared")
 }
 
 @Preview
