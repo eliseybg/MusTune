@@ -10,6 +10,7 @@ import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -139,12 +140,22 @@ internal fun ExploreMusicTabs(
                 selected = selected,
                 onClick = { onChangeTab(index) },
                 text = {
-                    Text(
-                        text = tab.name,
-                        color = if (selected) Color(0xFF0F235E) else Color(0xFF7C7C7C),
-                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-                        fontSize = 14.sp
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            modifier = Modifier
+                                .padding(3.dp)
+                                .size(16.dp),
+                            imageVector = tab.icon,
+                            contentDescription = "icon",
+                            tint = if (selected) Color(0xFF0F235E) else Color(0xFF7C7C7C)
+                        )
+                        Text(
+                            text = tab.name,
+                            color = if (selected) Color(0xFF0F235E) else Color(0xFF7C7C7C),
+                            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                            fontSize = 14.sp
+                        )
+                    }
                 }
             )
         }
