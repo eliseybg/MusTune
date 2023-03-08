@@ -14,6 +14,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -28,6 +30,7 @@ fun EmptyTextField(
     onValueChange: (String) -> Unit,
     hint: String = "",
     singleLine: Boolean = false,
+    focusRequester: FocusRequester = FocusRequester(),
     colors: EmptyTextFieldColors = EmptyTextFieldDefaults.emptyTextFieldColors(),
     sizes: EmptyTextFieldSizes = EmptyTextFieldDefaults.emptyTextFieldSizes()
 ) {
@@ -43,6 +46,7 @@ fun EmptyTextField(
         BasicTextField(
             modifier = Modifier
                 .fillMaxWidth()
+                .focusRequester(focusRequester)
                 .padding(sizes.innerTextFieldPadding),
             value = value,
             onValueChange = onValueChange,

@@ -29,6 +29,6 @@ class MusicEntryImpl @Inject constructor() : MusicEntry() {
                 .viewModel
         }
 
-        MusicScreen(viewModel, navController)
+        MusicScreen(viewModel, navController, destinations)
     }
 }

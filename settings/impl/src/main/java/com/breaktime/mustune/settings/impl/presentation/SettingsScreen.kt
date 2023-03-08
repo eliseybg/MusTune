@@ -25,7 +25,15 @@ fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostControlle
     val state = viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
-            Toolbar(title = "Settings")
+            Toolbar(
+                content = {
+                    Text(
+                        text = "Settings",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp
+                    )
+                }
+            )
         }
     ) {
         Column(

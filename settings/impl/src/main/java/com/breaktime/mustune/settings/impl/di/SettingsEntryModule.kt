@@ -15,5 +15,5 @@ interface SettingsEntryModule {
     @Singleton
     @IntoMap
     @FeatureEntryKey(SettingsEntry::class)
-    fun movieSearchEntry(entry: SettingsEntryImpl): FeatureEntry
+    fun settingsSearchEntry(entry: SettingsEntryImpl): FeatureEntry
 }

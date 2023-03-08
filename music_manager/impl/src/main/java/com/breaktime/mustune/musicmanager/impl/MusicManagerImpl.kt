@@ -21,7 +21,7 @@ class MusicManagerImpl @Inject constructor(
         )
     }
 
-    override fun searchSongs(searchText: String, tab: MusicTab): Flow<PagingData<Song>> {
-        return searchSongsFlowUseCase.invoke(SearchSongsFlowUseCase.Params(searchText, tab))
+    override fun searchSongs(searchText: String): Flow<PagingData<Song>> {
+        return searchSongsFlowUseCase.invoke(SearchSongsFlowUseCase.Params(searchText))
     }
 }

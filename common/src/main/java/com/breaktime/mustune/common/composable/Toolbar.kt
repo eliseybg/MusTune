@@ -9,6 +9,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -16,20 +20,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.breaktime.mustune.common.extentions.pxToDp
 
 @Composable
 fun Toolbar(
     modifier: Modifier = Modifier,
-    title: String,
+    content: @Composable (PaddingValues) -> Unit = {},
     navigation: @Composable () -> Unit = {},
     actions: @Composable () -> Unit = {},
     bottomContent: @Composable () -> Unit = {},
 ) {
+    var navigationWidth by remember { mutableStateOf(0) }
+    var actionsWidth by remember { mutableStateOf(0) }
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -47,14 +55,24 @@ fun Toolbar(
                 .height(50.dp)
                 .padding(horizontal = 16.dp)
         ) {
-            Box(modifier = Modifier.align(Alignment.CenterStart)) { navigation() }
-            Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
-            )
-            Box(modifier = Modifier.align(Alignment.CenterEnd)) { actions() }
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .onPlaced { navigationWidth = it.size.width }
+            ) { navigation() }
+            Box(modifier = Modifier.align(Alignment.Center)) {
+                content(
+                    PaddingValues(
+                        start = navigationWidth.pxToDp(),
+                        end = actionsWidth.pxToDp()
+                    )
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .onPlaced { actionsWidth = it.size.width }
+            ) { actions() }
         }
         bottomContent()
     }
@@ -64,7 +82,13 @@ fun Toolbar(
 @Composable
 fun ToolbarPreview() {
     Toolbar(
-        title = "Title",
+        content = {
+            Text(
+                text = "Title",
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
+            )
+        },
         navigation = {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
@@ -83,14 +107,28 @@ fun ToolbarPreview() {
 @Preview
 @Composable
 fun ToolbarTitlePreview() {
-    Toolbar(title = "Title")
+    Toolbar(
+        content = {
+            Text(
+                text = "Title",
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
+            )
+        }
+    )
 }
 
 @Preview
 @Composable
 fun ToolbarNavigationPreview() {
     Toolbar(
-        title = "Title",
+        content = {
+            Text(
+                text = "Title",
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
+            )
+        },
         navigation = {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
@@ -104,7 +142,13 @@ fun ToolbarNavigationPreview() {
 @Composable
 fun ToolbarActionPreview() {
     Toolbar(
-        title = "Title",
+        content = {
+            Text(
+                text = "Title",
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
+            )
+        },
         actions = {
             Icon(
                 imageVector = Icons.Default.Search,

@@ -55,5 +55,6 @@ dependencies {
     implementation project(':login:impl')
     implementation project(':settings:impl')
     implementation project(':music:impl')
+    implementation project(':search_songs:impl')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }

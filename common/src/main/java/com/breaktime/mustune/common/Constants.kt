@@ -2,6 +2,7 @@ package com.breaktime.mustune.common
 
 object Constants {
     const val BASE_URL = "http://10.0.2.2:8080"
+    const val SEARCH_DEBOUNCE_MILLS = 200L
 
     object Pager {
         const val INITIAL_PAGE = 1

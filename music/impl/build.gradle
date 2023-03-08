@@ -41,6 +41,7 @@ dependencies {
     implementation project(':common')
     implementation project(':music_manager:api')
     api project(':music:api')
+    api(project(":search_songs:api"))
     implementation "com.google.accompanist:accompanist-pager:$accompanist_pager_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     implementation "androidx.paging:paging-compose:1.0.0-alpha18"

@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface MusicManager {
     fun getMusicTabSetup(tab: MusicTab): TabSetup
-    fun searchSongs(searchText: String, tab: MusicTab): Flow<PagingData<Song>>
+    fun searchSongs(searchText: String): Flow<PagingData<Song>>
 }

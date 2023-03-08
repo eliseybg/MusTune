@@ -36,14 +36,14 @@ class SongsRepositoryImpl @Inject constructor(
         ).flow
     }
 
-    override fun searchSongs(searchText: String, tab: MusicTab): Flow<PagingData<SongEntity>> {
+    override fun searchSongs(searchText: String): Flow<PagingData<SongEntity>> {
         return Pager(
             config = PagingConfig(
                 pageSize = Constants.Pager.PAGE_SIZE,
                 prefetchDistance = Constants.Pager.PREFETCH_DISTANCE,
                 initialLoadSize = Constants.Pager.INITIAL_PAGE_SIZE
             ),
-            pagingSourceFactory = { SearchSongsSource(searchText, tab, songsApiService) }
+            pagingSourceFactory = { SearchSongsSource(searchText, songsApiService) }
         ).flow
     }
 }

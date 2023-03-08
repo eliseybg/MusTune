@@ -15,5 +15,5 @@ interface MusicEntryModule {
     @Singleton
     @IntoMap
     @FeatureEntryKey(MusicEntry::class)
-    fun movieSearchEntry(entry: MusicEntryImpl): FeatureEntry
+    fun musicEntry(entry: MusicEntryImpl): FeatureEntry
 }

@@ -10,7 +10,6 @@ import java.io.IOException
 
 class SearchSongsSource(
     private val searchText: String,
-    private val tab: MusicTab,
     private val songsApiService: SongsApiService,
 ) : PagingSource<Int, SongEntity>() {
     override fun getRefreshKey(state: PagingState<Int, SongEntity>): Int? {
@@ -23,7 +22,7 @@ class SearchSongsSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SongEntity> {
         val page = params.key ?: Constants.Pager.INITIAL_PAGE
         return try {
-            val response = songsApiService.searchSongs(searchText, page, params.loadSize, tab.name)
+            val response = songsApiService.searchSongs(searchText, page, params.loadSize)
             if (!response.isSuccessful) return LoadResult.Error(Exception(response.message()))
             val participants = response.body() ?: return LoadResult.Error(Exception("No data"))
             val nextKey = if (participants.isEmpty()) null else page + 1

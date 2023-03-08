@@ -1,5 +1,6 @@
-package com.breaktime.mustune.music.impl.presentation.components
+package com.breaktime.mustune.search_songs.impl.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,8 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,14 +27,14 @@ fun SearchField(
     searchText: String,
     onChangeSearchText: (String) -> Unit,
     clearSearchText: () -> Unit = {},
-    onFilterClick: () -> Unit = {},
-    isFilterActive: Boolean = false
+    focusRequester: FocusRequester = FocusRequester()
 ) {
     Row(
         modifier = modifier
-            .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(5.dp))
-            .padding(horizontal = 10.dp, vertical = 8.dp)
-            .height(IntrinsicSize.Min),
+            .clip(RoundedCornerShape(5.dp))
+            .background(Color(0xFFEAEAEA))
+            .height(40.dp)
+            .padding(horizontal = 10.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -46,7 +49,8 @@ fun SearchField(
             value = searchText,
             onValueChange = onChangeSearchText,
             hint = "Search",
-            singleLine = true
+            singleLine = true,
+            focusRequester = focusRequester
         )
         if (searchText.isNotEmpty())
             Icon(
@@ -57,13 +61,6 @@ fun SearchField(
                 imageVector = Icons.Default.Clear,
                 contentDescription = "clear icon"
             )
-        Icon(
-            modifier = Modifier.clickable { onFilterClick() },
-            painter = if (isFilterActive) painterResource(id = R.drawable.ic_sliders_filled)
-            else painterResource(id = R.drawable.ic_sliders_outlined),
-            contentDescription = "filter icon",
-            tint = if (isFilterActive) Color.Black else Color.Black.copy(alpha = 0.8f)
-        )
     }
 }
 

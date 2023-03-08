@@ -13,11 +13,10 @@ interface SongsApiService {
         @Query("tab") tab: String
     ): Response<List<SongEntity>>
 
-    @GET("allSongs")
+    @GET("searchSongs")
     suspend fun searchSongs(
         @Query("searchText") searchText: String,
         @Query("page") page: Int,
-        @Query("pageSize") pageSize: Int,
-        @Query("tab") tab: String
+        @Query("pageSize") pageSize: Int
     ): Response<List<SongEntity>>
 }
