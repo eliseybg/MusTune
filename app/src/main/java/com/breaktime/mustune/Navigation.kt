@@ -12,6 +12,7 @@ import com.breaktime.mustune.main.api.MainEntry
 import com.breaktime.mustune.music.api.MusicEntry
 import com.breaktime.mustune.search_songs.api.SearchSongsEntry
 import com.breaktime.mustune.settings.api.SettingsEntry
+import com.breaktime.mustune.song.api.SongEntry
 
 @Composable
 fun Navigation() {
@@ -20,6 +21,7 @@ fun Navigation() {
 
     val mainScreen = destinations.find<MainEntry>()
     val musicScreen = destinations.find<MusicEntry>()
+    val songScreen = destinations.find<SongEntry>()
     val searchSongsScreen = destinations.find<SearchSongsEntry>()
     val settingsScreen = destinations.find<SettingsEntry>()
 
@@ -31,6 +33,7 @@ fun Navigation() {
                     with(settingsScreen) { composable(navController, destinations) }
                 }
                 with(searchSongsScreen) { composable(navController, destinations) }
+                with(songScreen) { composable(navController, destinations) }
             }
         }
     }

@@ -27,6 +27,7 @@ import com.breaktime.mustune.common.composable.Toolbar
 import com.breaktime.mustune.common.find
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.search_songs.api.SearchSongsEntry
+import com.breaktime.mustune.song.api.SongEntry
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -97,7 +98,10 @@ fun MusicScreen(
                             MusicItem(
                                 title = item.title,
                                 artist = item.artist,
-                                onItemClick = {},
+                                onItemClick = {
+                                    val route = destinations.find<SongEntry>().destination(item.id)
+                                    navController.navigate(route)
+                                },
                                 onMoreClick = {}
                             )
                             if (index < items.itemSnapshotList.lastIndex)
