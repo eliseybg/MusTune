@@ -5,17 +5,14 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.breaktime.mustune.common.Constants
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.impl.data.entities.RemoteKeysEntity
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.local.SongsDatabase
 import retrofit2.HttpException
 import java.io.IOException
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicInteger
 import kotlin.time.Duration.Companion.hours
-
-private const val INITIAL_PAGE = 1
 
 @OptIn(ExperimentalPagingApi::class)
 class SongsRemoteMediator(
@@ -39,10 +36,10 @@ class SongsRemoteMediator(
         loadType: LoadType,
         state: PagingState<Int, SongEntity>
     ): MediatorResult {
-        val currentPage = when (loadType) {
+        val page = when (loadType) {
             LoadType.REFRESH -> {
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                remoteKeys?.nextPage?.minus(1) ?: INITIAL_PAGE
+                remoteKeys?.nextPage?.minus(1) ?: Constants.Pager.INITIAL_PAGE
             }
             LoadType.PREPEND -> {
                 val remoteKeys = getRemoteKeyForFirstItem(state)
@@ -64,7 +61,7 @@ class SongsRemoteMediator(
 
         try {
             val songsResponse = songsApiService.getAllSongs(
-                page = currentPage,
+                page = page,
                 pageSize = state.config.pageSize,
                 tab = tab.name
             )
@@ -72,8 +69,8 @@ class SongsRemoteMediator(
             val songs = songsResponse.body() ?: return MediatorResult.Error(Exception("No data"))
             val endOfPaginationReached = songs.isEmpty()
 
-            val prevPage = if (currentPage == INITIAL_PAGE) null else currentPage - 1
-            val nextPage = if (endOfPaginationReached) null else currentPage + 1
+            val prevPage = if (page == Constants.Pager.INITIAL_PAGE) null else page - 1
+            val nextPage = if (endOfPaginationReached) null else page + 1
 
             songsDatabase.withTransaction {
                 if (loadType == LoadType.REFRESH) {
