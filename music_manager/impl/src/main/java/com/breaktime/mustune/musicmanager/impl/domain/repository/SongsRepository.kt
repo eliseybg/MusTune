@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface SongsRepository {
     fun getSongs(tab: MusicTab): Flow<PagingData<SongEntity>>
+    fun searchSongs(searchText: String, tab: MusicTab): Flow<PagingData<SongEntity>>
 }

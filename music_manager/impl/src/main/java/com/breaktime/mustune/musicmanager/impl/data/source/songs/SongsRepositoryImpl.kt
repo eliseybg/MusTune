@@ -9,6 +9,7 @@ import com.breaktime.mustune.common.Constants
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.local.SongsDatabase
+import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SearchSongsSource
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SongsApiService
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SongsRemoteMediator
 import com.breaktime.mustune.musicmanager.impl.domain.repository.SongsRepository
@@ -31,11 +32,18 @@ class SongsRepositoryImpl @Inject constructor(
             pagingSourceFactory = {
                 songsDatabase.songDao.getSongsInfo(tab.name)
             },
-            remoteMediator = SongsRemoteMediator(
-                tab,
-                songsApiService,
-                songsDatabase
-            )
+            remoteMediator = SongsRemoteMediator(tab, songsApiService, songsDatabase)
+        ).flow
+    }
+
+    override fun searchSongs(searchText: String, tab: MusicTab): Flow<PagingData<SongEntity>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = Constants.Pager.PAGE_SIZE,
+                prefetchDistance = Constants.Pager.PREFETCH_DISTANCE,
+                initialLoadSize = Constants.Pager.INITIAL_PAGE_SIZE
+            ),
+            pagingSourceFactory = { SearchSongsSource(searchText, tab, songsApiService) }
         ).flow
     }
 }
