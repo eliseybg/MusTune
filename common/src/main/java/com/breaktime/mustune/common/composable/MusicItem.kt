@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 fun MusicItem(
     modifier: Modifier = Modifier,
     title: String,
-    author: String,
+    artist: String,
     onItemClick: () -> Unit,
     onMoreClick: () -> Unit,
 ) {
@@ -46,7 +46,7 @@ fun MusicItem(
                 maxLines = 1
             )
             Text(
-                text = author,
+                text = artist,
                 fontSize = 12.sp,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
@@ -65,7 +65,7 @@ fun MusicItem(
 internal fun MusicItemPreview() {
     MusicItem(
         title = "Title",
-        author = "Author",
+        artist = "Artist",
         onItemClick = {},
         onMoreClick = {}
     )

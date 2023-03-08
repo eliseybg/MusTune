@@ -8,7 +8,7 @@ data class SongEntity(
     @PrimaryKey(autoGenerate = false)
     val id: String,
     val title: String,
-    val author: String,
+    val artist: String,
     val link: String,
     val tab: String,
     var createdAt: Long = System.currentTimeMillis()

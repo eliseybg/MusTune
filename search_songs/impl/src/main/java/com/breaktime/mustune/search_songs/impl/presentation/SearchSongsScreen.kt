@@ -91,7 +91,7 @@ fun SearchSongsScreen(viewModel: SearchSongsViewModel, navController: NavHostCon
                 item?.let {
                     MusicItem(
                         title = item.title,
-                        author = item.author,
+                        artist = item.artist,
                         onItemClick = {},
                         onMoreClick = {}
                     )

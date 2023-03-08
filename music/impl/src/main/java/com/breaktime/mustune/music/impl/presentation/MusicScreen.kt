@@ -96,7 +96,7 @@ fun MusicScreen(
                         item?.let {
                             MusicItem(
                                 title = item.title,
-                                author = item.author,
+                                artist = item.artist,
                                 onItemClick = {},
                                 onMoreClick = {}
                             )
