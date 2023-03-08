@@ -1,16 +1,14 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
 }
 
 android {
-    namespace 'com.breaktime.mustune.settings.impl'
+    namespace 'com.breaktime.mustune.settings_manager.api'
     compileSdk 33
 
     defaultConfig {
         minSdk 24
-        targetSdk 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -29,17 +27,8 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_compiler_version
-    }
 }
 
 dependencies {
     implementation project(':common')
-    api project(':settings:api')
-    implementation project(':settings_manager:api')
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }

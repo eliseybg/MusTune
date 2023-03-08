@@ -3,10 +3,11 @@ package com.breaktime.mustune.di
 import androidx.compose.runtime.compositionLocalOf
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.di.CommonProvider
-import com.breaktime.mustune.data.api.DataProvider
 import com.breaktime.mustune.musicmanager.api.MusicManagerProvider
+import com.breaktime.mustune.settings_manager.api.SettingsManagerProvider
 
-interface AppProvider : CommonProvider, DataProvider, MusicManagerProvider {
+interface AppProvider : CommonProvider, MusicManagerProvider,
+    SettingsManagerProvider {
 
     val destinations: Destinations
 }
