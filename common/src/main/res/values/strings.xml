@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="edit_info">Edit info</string>
+    <string name="download_file">Download file</string>
+    <string name="share_settings">Share settings</string>
+    <string name="copy_link">Copy link</string>
+    <string name="delete_file">Delete file</string>
+    <string name="add_to_favourite">Add to favourite</string>
+    <string name="remove_from_favourite">Remove from favourite</string>
+</resources>

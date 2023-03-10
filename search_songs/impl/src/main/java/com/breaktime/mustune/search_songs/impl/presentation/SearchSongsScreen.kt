@@ -8,16 +8,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
@@ -28,12 +36,22 @@ import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import com.breaktime.common.R
+import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.composable.MusicItem
 import com.breaktime.mustune.common.composable.Toolbar
+import com.breaktime.mustune.common.composable.bottom_sheet.song_bottom_sheet.SongBottomSheet
+import com.breaktime.mustune.common.find
+import com.breaktime.mustune.musicmanager.api.models.Song
 import com.breaktime.mustune.search_songs.impl.presentation.components.SearchField
+import com.breaktime.mustune.song.api.SongEntry
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SearchSongsScreen(viewModel: SearchSongsViewModel, navController: NavHostController) {
+fun SearchSongsScreen(
+    viewModel: SearchSongsViewModel,
+    navController: NavHostController,
+    destinations: Destinations
+) {
     val state by viewModel.uiState.collectAsState()
     val focusRequester = remember { FocusRequester() }
 
@@ -81,22 +99,47 @@ fun SearchSongsScreen(viewModel: SearchSongsViewModel, navController: NavHostCon
         }
     ) {
         val items = state.songs.collectAsLazyPagingItems()
-        LazyColumn(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 12.dp)
+        var bottomSheetSong by remember { mutableStateOf<Song?>(null) }
+        val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden) {
+            if (it == ModalBottomSheetValue.Hidden) bottomSheetSong = null
+            true
+        }
+        LaunchedEffect(key1 = bottomSheetSong) {
+            if (bottomSheetSong != null) bottomSheetState.show()
+            else bottomSheetState.hide()
+        }
+        ModalBottomSheetLayout(
+            sheetState = bottomSheetState,
+            sheetShape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
+            sheetContent = {
+                val bottomSheetContent = bottomSheetSong?.bottomSheetContent
+                if (bottomSheetContent != null) {
+                    SongBottomSheet(songBottomSheetContent = bottomSheetContent)
+                } else {
+                    Text(text = "Something went wrong")
+                }
+            },
         ) {
-            itemsIndexed(items) { index, item ->
-                item?.let {
-                    MusicItem(
-                        title = item.title,
-                        artist = item.artist,
-                        onItemClick = {},
-                        onMoreClick = {}
-                    )
-                    if (index < items.itemSnapshotList.lastIndex)
-                        Divider(color = Color(0xFFD6D6D6), thickness = 1.dp)
+            LazyColumn(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize(),
+                contentPadding = PaddingValues(vertical = 12.dp)
+            ) {
+                itemsIndexed(items) { index, item ->
+                    item?.let {
+                        MusicItem(
+                            title = item.title,
+                            artist = item.artist,
+                            onItemClick = {
+                                val route = destinations.find<SongEntry>().destination(item.id)
+                                navController.navigate(route)
+                            },
+                            onMoreClick = { bottomSheetSong = item }
+                        )
+                        if (index < items.itemSnapshotList.lastIndex)
+                            Divider(color = Color(0xFFD6D6D6), thickness = 1.dp)
+                    }
                 }
             }
         }

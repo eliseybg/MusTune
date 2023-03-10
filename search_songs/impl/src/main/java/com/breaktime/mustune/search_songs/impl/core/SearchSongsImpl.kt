@@ -29,6 +29,6 @@ class SearchSongsImpl @Inject constructor() : SearchSongsEntry() {
                 .viewModel
         }
 
-        SearchSongsScreen(viewModel, navController)
+        SearchSongsScreen(viewModel, navController, destinations)
     }
 }

@@ -21,11 +21,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
+import com.breaktime.common.R
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.composable.MusicItem
 import com.breaktime.mustune.common.composable.Toolbar
+import com.breaktime.mustune.common.composable.bottom_sheet.song_bottom_sheet.SongBottomSheet
+import com.breaktime.mustune.common.composable.bottom_sheet.song_bottom_sheet.SongBottomSheetContent
 import com.breaktime.mustune.common.find
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
+import com.breaktime.mustune.musicmanager.api.models.Song
 import com.breaktime.mustune.search_songs.api.SearchSongsEntry
 import com.breaktime.mustune.song.api.SongEntry
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -33,7 +37,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun MusicScreen(
     viewModel: MusicViewModel,
@@ -76,36 +80,59 @@ fun MusicScreen(
             )
         }
     ) {
+        var bottomSheetSong by remember { mutableStateOf<Song?>(null) }
+        val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden) {
+            if (it == ModalBottomSheetValue.Hidden) bottomSheetSong = null
+            true
+        }
+        LaunchedEffect(key1 = bottomSheetSong) {
+            if (bottomSheetSong != null) bottomSheetState.show()
+            else bottomSheetState.hide()
+        }
         val tabsItems = state.tabsSetup.map { it.songs.collectAsLazyPagingItems() }
-        HorizontalPager(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-                .background(Color(0xFFFDFDFD))
-                .padding(horizontal = 16.dp),
-            count = state.screenTabs.size,
-            state = pagerState
-        ) { currentIndex ->
-            val items = tabsItems[currentIndex]
-            if (currentIndex > state.screenTabs.size) Text(text = "Something went wrong")
-            else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(vertical = 12.dp)
-                ) {
-                    itemsIndexed(items) { index, item ->
-                        item?.let {
-                            MusicItem(
-                                title = item.title,
-                                artist = item.artist,
-                                onItemClick = {
-                                    val route = destinations.find<SongEntry>().destination(item.id)
-                                    navController.navigate(route)
-                                },
-                                onMoreClick = {}
-                            )
-                            if (index < items.itemSnapshotList.lastIndex)
-                                Divider(color = Color(0xFFD6D6D6), thickness = 1.dp)
+        ModalBottomSheetLayout(
+            sheetState = bottomSheetState,
+            sheetShape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
+            sheetContent = {
+                val bottomSheetContent = bottomSheetSong?.bottomSheetContent
+                if (bottomSheetContent != null) {
+                    SongBottomSheet(songBottomSheetContent = bottomSheetContent)
+                } else {
+                    Text(text = "Something went wrong")
+                }
+            },
+        ) {
+            HorizontalPager(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize()
+                    .background(Color(0xFFFDFDFD))
+                    .padding(horizontal = 16.dp),
+                count = state.screenTabs.size,
+                state = pagerState
+            ) { currentIndex ->
+                val items = tabsItems[currentIndex]
+                if (currentIndex > state.screenTabs.size) Text(text = "Something went wrong")
+                else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(vertical = 12.dp)
+                    ) {
+                        itemsIndexed(items) { index, item ->
+                            item?.let {
+                                MusicItem(
+                                    title = item.title,
+                                    artist = item.artist,
+                                    onItemClick = {
+                                        val route =
+                                            destinations.find<SongEntry>().destination(item.id)
+                                        navController.navigate(route)
+                                    },
+                                    onMoreClick = { bottomSheetSong = item }
+                                )
+                                if (index < items.itemSnapshotList.lastIndex)
+                                    Divider(color = Color(0xFFD6D6D6), thickness = 1.dp)
+                            }
                         }
                     }
                 }
@@ -164,6 +191,14 @@ internal fun ExploreMusicTabs(
             )
         }
     }
+}
+
+private fun Song.getBottomSheetContent(): SongBottomSheetContent {
+    return SongBottomSheetContent.Builder()
+        .addRow(iconId = R.drawable.ic_favourite, textId = R.string.remove_from_favourite) {}
+        .addRow(iconId = R.drawable.ic_download, textId = R.string.download_file) {}
+        .addRow(iconId = R.drawable.ic_link, textId = R.string.copy_link) {}
+        .build()
 }
 
 @Preview
