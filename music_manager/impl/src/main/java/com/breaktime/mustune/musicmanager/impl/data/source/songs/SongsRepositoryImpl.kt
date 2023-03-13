@@ -4,17 +4,15 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.breaktime.mustune.common.Constants
-import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
+import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.local.SongsDatabase
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SearchSongsSource
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SongsApiService
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SongsRemoteMediator
 import com.breaktime.mustune.musicmanager.impl.domain.repository.SongsRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class SongsRepositoryImpl @Inject constructor(
