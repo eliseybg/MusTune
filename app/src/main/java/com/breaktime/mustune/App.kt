@@ -5,6 +5,7 @@ import com.breaktime.mustune.common.di.DaggerCommonComponent
 import com.breaktime.mustune.di.AppProvider
 import com.breaktime.mustune.di.DaggerAppComponent
 import com.breaktime.mustune.musicmanager.impl.di.DaggerMusicManagerComponent
+import com.breaktime.mustune.network.impl.DaggerNetworkComponent
 import com.breaktime.mustune.settings_manager.impl.di.DaggerSettingsManagerComponent
 
 class App : Application() {
@@ -15,10 +16,20 @@ class App : Application() {
         super.onCreate()
 
         val commonProvider = DaggerCommonComponent.factory().create(this)
-        val musicManagerProvider =
-            DaggerMusicManagerComponent.builder().commonProvider(commonProvider).build()
-        val settingsManagerProvider =
-            DaggerSettingsManagerComponent.builder().commonProvider(commonProvider).build()
+
+        val settingsManagerProvider = DaggerSettingsManagerComponent.builder()
+            .commonProvider(commonProvider)
+            .build()
+
+        val networkProvider = DaggerNetworkComponent.builder()
+            .commonProvider(commonProvider)
+            .settingsManagerProvider(settingsManagerProvider)
+            .build()
+
+        val musicManagerProvider = DaggerMusicManagerComponent.builder()
+            .commonProvider(commonProvider)
+            .networkProvider(networkProvider)
+            .build()
 
         appProvider = DaggerAppComponent.builder()
             .commonProvider(commonProvider)

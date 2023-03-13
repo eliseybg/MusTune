@@ -33,14 +33,9 @@ android {
 
 dependencies {
     implementation project(':common')
+    implementation project(':network')
     api project(':music_manager:api')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
-
-    //Retrofit
-    def retrofit_version = "2.9.0"
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-
 
     def room_version = "2.5.0"
     implementation "androidx.room:room-runtime:$room_version"

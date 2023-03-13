@@ -6,8 +6,7 @@ import com.breaktime.mustune.common.di.CommonProvider
 import com.breaktime.mustune.musicmanager.api.MusicManagerProvider
 import com.breaktime.mustune.settings_manager.api.SettingsManagerProvider
 
-interface AppProvider : CommonProvider, MusicManagerProvider,
-    SettingsManagerProvider {
+interface AppProvider : CommonProvider, MusicManagerProvider, SettingsManagerProvider {
 
     val destinations: Destinations
 }

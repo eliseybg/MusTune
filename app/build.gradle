@@ -49,6 +49,7 @@ android {
 
 dependencies {
     implementation project(':common')
+    implementation project(':network')
     implementation project(':music_manager:impl')
     implementation project(':settings_manager:impl')
     implementation project(':main:impl')
