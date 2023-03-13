@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
 }
 
 android {
@@ -37,13 +38,10 @@ dependencies {
     api project(':music_manager:api')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
-    def room_version = "2.5.0"
     implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    ksp "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-paging:$room_version"
 
-    def paging_version = "3.1.1"
-    implementation "androidx.paging:paging-runtime:3.2.0-alpha04"
-    implementation "androidx.paging:paging-compose:1.0.0-alpha18"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 }
