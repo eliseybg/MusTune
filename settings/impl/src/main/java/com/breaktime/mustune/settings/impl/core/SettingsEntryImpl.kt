@@ -21,7 +21,9 @@ class SettingsEntryImpl @Inject constructor() : SettingsEntry() {
     ) {
         val commonProvider = LocalCommonProvider.current
         val settingsManagerProvider = LocalSettingsManagerProvider.current
-        val viewModel = injectedViewModel {
+        val viewModel = injectedViewModel(viewModelStoreOwner = {
+            navController.currentBackStackEntry?.viewModelStore ?: backStackEntry.viewModelStore
+        }) {
             DaggerSettingsComponent.builder()
                 .commonProvider(commonProvider)
                 .settingsManagerProvider(settingsManagerProvider)
