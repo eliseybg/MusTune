@@ -3,6 +3,7 @@ package com.breaktime.mustune.common
 import java.util.concurrent.TimeUnit
 
 object Constants {
+    const val BACK_PRESS_DEBOUNCE_MILLS = 1200L
     const val SEARCH_DEBOUNCE_MILLS = 200L
 
     object Retrofit {
