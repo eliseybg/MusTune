@@ -52,6 +52,7 @@ dependencies {
     implementation project(':network')
     implementation project(':music_manager:impl')
     implementation project(':settings_manager:impl')
+    implementation project(':login:impl')
     implementation project(':main:impl')
     implementation project(':login:impl')
     implementation project(':settings:impl')
