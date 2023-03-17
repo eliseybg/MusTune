@@ -21,10 +21,7 @@ class App : Application() {
             .commonProvider(commonProvider)
             .build()
 
-        val networkProvider = DaggerNetworkComponent.builder()
-            .commonProvider(commonProvider)
-            .settingsManagerProvider(settingsManagerProvider)
-            .build()
+        val networkProvider = DaggerNetworkComponent.builder().build()
 
         val musicManagerProvider = DaggerMusicManagerComponent.builder()
             .commonProvider(commonProvider)

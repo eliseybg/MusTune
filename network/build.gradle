@@ -32,7 +32,6 @@ android {
 
 dependencies {
     implementation project(':common')
-    implementation project(':settings_manager:api')
 
     //Retrofit
     api "com.squareup.retrofit2:retrofit:$retrofit_version"
