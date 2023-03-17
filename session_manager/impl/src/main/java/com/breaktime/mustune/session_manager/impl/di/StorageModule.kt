@@ -1,15 +1,14 @@
 package com.breaktime.mustune.session_manager.impl.di
 
 import android.content.Context
-import android.content.SharedPreferences
-import com.breaktime.mustune.common.Constants
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
+import com.breaktime.mustune.session_manager.impl.data.entities.UserInfoEntity
+import com.breaktime.mustune.session_manager.impl.data.serializer.UserInfoEntitySerializer
+import com.breaktime.mustune.session_manager.impl.util.Constants
 import dagger.Module
 import dagger.Provides
 
 @Module
 object StorageModule {
-    @Provides
-    fun provideSharedPreferences(context: Context): SharedPreferences {
-        return context.getSharedPreferences(Constants.Settings.PREF_NAME, 0)
-    }
 }

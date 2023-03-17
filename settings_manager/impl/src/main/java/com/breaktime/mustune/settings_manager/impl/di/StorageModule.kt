@@ -2,7 +2,7 @@ package com.breaktime.mustune.settings_manager.impl.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.breaktime.mustune.common.Constants
+import com.breaktime.mustune.settings_manager.impl.util.Constants
 import dagger.Module
 import dagger.Provides
 
@@ -10,6 +10,6 @@ import dagger.Provides
 object StorageModule {
     @Provides
     fun provideSharedPreferences(context: Context): SharedPreferences {
-        return context.getSharedPreferences(Constants.Settings.PREF_NAME, 0)
+        return context.getSharedPreferences(Constants.PREF_NAME, 0)
     }
 }
