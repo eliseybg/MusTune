@@ -1,10 +1,12 @@
-package com.breaktime.mustune.ui.theme
+package com.breaktime.mustune.resources.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.breaktime.mustune.resources.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -26,3 +28,9 @@ val Typography = Typography(
     )
     */
 )
+
+val overlock = FontFamily(Font(R.font.overlock_regular))
+
+val inter = FontFamily(Font(R.font.inter_bold, weight = FontWeight.Bold))
+
+val pirataOne = FontFamily(Font(R.font.pirata_one_regular))

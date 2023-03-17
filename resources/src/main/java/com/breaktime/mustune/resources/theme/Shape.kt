@@ -1,4 +1,4 @@
-package com.breaktime.mustune.ui.theme
+package com.breaktime.mustune.resources.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

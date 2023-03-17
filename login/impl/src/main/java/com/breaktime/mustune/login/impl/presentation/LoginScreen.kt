@@ -43,6 +43,9 @@ import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.find
 import com.breaktime.mustune.resources.R
 import com.breaktime.mustune.main.api.MainEntry
+import com.breaktime.mustune.resources.theme.inter
+import com.breaktime.mustune.resources.theme.overlock
+import com.breaktime.mustune.resources.theme.pirataOne
 import kotlinx.coroutines.delay
 
 @Composable

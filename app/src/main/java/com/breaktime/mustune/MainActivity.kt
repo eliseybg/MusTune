@@ -10,7 +10,7 @@ import com.breaktime.mustune.common.di.LocalCommonProvider
 import com.breaktime.mustune.di.LocalAppProvider
 import com.breaktime.mustune.musicmanager.api.LocalMusicManagerProvider
 import com.breaktime.mustune.settings_manager.api.LocalSettingsManagerProvider
-import com.breaktime.mustune.ui.theme.MusTuneTheme
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
