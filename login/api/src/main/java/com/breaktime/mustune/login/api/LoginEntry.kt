@@ -1,4 +1,4 @@
-package com.breaktime.mustune.api
+package com.breaktime.mustune.login.api
 
 import com.breaktime.mustune.common.ComposableFeatureEntry
 

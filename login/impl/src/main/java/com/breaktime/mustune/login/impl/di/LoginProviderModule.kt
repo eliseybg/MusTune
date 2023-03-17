@@ -1,4 +1,4 @@
-package com.breaktime.mustune.impl.di
+package com.breaktime.mustune.login.impl.di
 
 import dagger.Module
 

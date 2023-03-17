@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'com.breaktime.common'
+    namespace 'com.breaktime.mustune.common'
     compileSdk 33
 
     defaultConfig {

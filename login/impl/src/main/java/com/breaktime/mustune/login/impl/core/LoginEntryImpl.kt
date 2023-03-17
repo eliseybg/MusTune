@@ -1,12 +1,12 @@
-package com.breaktime.mustune.impl.core
+package com.breaktime.mustune.login.impl.core
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
-import com.breaktime.mustune.api.LoginEntry
+import com.breaktime.mustune.login.api.LoginEntry
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.di.LocalCommonProvider
-import com.breaktime.mustune.impl.presentation.LoginScreen
+import com.breaktime.mustune.login.impl.presentation.LoginScreen
 import javax.inject.Inject
 
 class LoginEntryImpl @Inject constructor() : LoginEntry() {

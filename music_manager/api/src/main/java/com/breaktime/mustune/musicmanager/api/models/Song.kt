@@ -1,6 +1,6 @@
 package com.breaktime.mustune.musicmanager.api.models
 
-import com.breaktime.common.R
+import com.breaktime.mustune.common.R
 import com.breaktime.mustune.common.composable.bottom_sheet.song_bottom_sheet.SongBottomSheetContent
 
 data class Song(val id: String, val title: String, val artist: String) {

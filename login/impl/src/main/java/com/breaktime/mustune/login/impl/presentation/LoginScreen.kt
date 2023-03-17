@@ -1,4 +1,4 @@
-package com.breaktime.mustune.impl.presentation
+package com.breaktime.mustune.login.impl.presentation
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -42,10 +42,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.find
-import com.breaktime.mustune.impl.R
+import com.breaktime.mustune.login.impl.R
 import com.breaktime.mustune.main.api.MainEntry
 import kotlinx.coroutines.delay
-import kotlin.math.log
 
 @Composable
 fun LoginScreen(

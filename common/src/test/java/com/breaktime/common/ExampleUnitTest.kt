@@ -1,4 +1,4 @@
-package com.breaktime.common
+package com.breaktime.mustune.common
 
 import org.junit.Test
 

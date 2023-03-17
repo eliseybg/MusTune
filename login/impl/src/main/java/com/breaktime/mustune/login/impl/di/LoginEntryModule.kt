@@ -1,9 +1,9 @@
-package com.breaktime.mustune.impl.di
+package com.breaktime.mustune.login.impl.di
 
-import com.breaktime.mustune.api.LoginEntry
+import com.breaktime.mustune.login.api.LoginEntry
 import com.breaktime.mustune.common.FeatureEntry
 import com.breaktime.mustune.common.di.FeatureEntryKey
-import com.breaktime.mustune.impl.core.LoginEntryImpl
+import com.breaktime.mustune.login.impl.core.LoginEntryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

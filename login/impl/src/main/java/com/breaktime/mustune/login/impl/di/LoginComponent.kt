@@ -1,9 +1,9 @@
-package com.breaktime.mustune.impl.di
+package com.breaktime.mustune.login.impl.di
 
-import com.breaktime.mustune.api.LoginProvider
+import com.breaktime.mustune.login.api.LoginProvider
 import com.breaktime.mustune.common.di.CommonProvider
 import com.breaktime.mustune.common.di.FeatureScoped
-import com.breaktime.mustune.impl.presentation.LoginViewModel
+import com.breaktime.mustune.login.impl.presentation.LoginViewModel
 import dagger.Component
 
 @FeatureScoped

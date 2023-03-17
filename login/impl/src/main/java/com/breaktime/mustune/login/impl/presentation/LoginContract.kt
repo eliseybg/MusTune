@@ -1,4 +1,4 @@
-package com.breaktime.mustune.impl.presentation
+package com.breaktime.mustune.login.impl.presentation
 
 import com.breaktime.mustune.common.presentation.UiEffect
 import com.breaktime.mustune.common.presentation.UiEvent

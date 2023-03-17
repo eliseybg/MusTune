@@ -14,7 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.breaktime.mustune.api.LoginEntry
+import com.breaktime.mustune.login.api.LoginEntry
 import com.breaktime.mustune.common.Constants
 import com.breaktime.mustune.common.find
 import com.breaktime.mustune.di.LocalAppProvider
