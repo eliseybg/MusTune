@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">MusTune</string>
     <string name="edit_info">Edit info</string>
     <string name="download_file">Download file</string>
     <string name="share_settings">Share settings</string>

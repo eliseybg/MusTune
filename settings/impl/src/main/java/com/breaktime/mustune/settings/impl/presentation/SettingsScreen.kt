@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.breaktime.mustune.common.composable.CustomSwitch
 import com.breaktime.mustune.common.composable.Toolbar
-import com.breaktime.mustune.settings.impl.R
+import com.breaktime.mustune.resources.R
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostController) {

@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
-import com.breaktime.mustune.common.R
+import com.breaktime.mustune.resources.R
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.composable.MusicItem
 import com.breaktime.mustune.common.composable.Toolbar

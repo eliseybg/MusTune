@@ -27,7 +27,7 @@ import com.breaktime.mustune.common.FeatureEntry
 import com.breaktime.mustune.common.composable.shadow
 import com.breaktime.mustune.common.find
 import com.breaktime.mustune.main.api.MainEntry
-import com.breaktime.mustune.main.impl.R
+import com.breaktime.mustune.resources.R
 import com.breaktime.mustune.music.api.MusicEntry
 import com.breaktime.mustune.settings.api.SettingsEntry
 import javax.inject.Inject

@@ -38,6 +38,7 @@ android {
 }
 
 dependencies {
+    implementation project(':resources')
     implementation project(':common')
     api project(':settings:api')
     implementation project(':settings_manager:api')

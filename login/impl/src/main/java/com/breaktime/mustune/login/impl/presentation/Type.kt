@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.breaktime.mustune.login.impl.R
+import com.breaktime.mustune.resources.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
