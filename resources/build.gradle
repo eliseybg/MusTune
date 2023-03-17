@@ -4,11 +4,11 @@ plugins {
 
 android {
     namespace 'com.breaktime.mustune.resources'
-    compileSdk 33
+    compileSdk application.compileSdk
 
     defaultConfig {
-        minSdk 24
-        targetSdk 33
+        minSdk application.minSdk
+        targetSdk application.targetSdk
     }
     packagingOptions {
         resources {

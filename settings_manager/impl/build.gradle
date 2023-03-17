@@ -6,10 +6,11 @@ plugins {
 
 android {
     namespace 'com.breaktime.mustune.settings_manager.impl'
-    compileSdk 33
+    compileSdk application.compileSdk
 
     defaultConfig {
-        minSdk 24
+        minSdk application.minSdk
+        targetSdk application.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

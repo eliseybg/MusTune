@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace 'com.breaktime.mustune.music_manager.api'
-    compileSdk 33
+    compileSdk application.compileSdk
 
     defaultConfig {
-        minSdk 24
-        targetSdk 33
+        minSdk application.minSdk
+        targetSdk application.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

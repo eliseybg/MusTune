@@ -1,5 +1,13 @@
 buildscript {
     ext {
+        application = [
+                compileSdk : 33,
+                minSdk     : 24,
+                targetSdk  : 33,
+                versionCode: 1,
+                versionName: "1.0"
+        ]
+
         core_version = '1.9.0'
         lifecycle_version = '2.5.1'
         compose_activity_version = '1.6.1'
