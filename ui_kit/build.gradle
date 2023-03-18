@@ -1,0 +1,48 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.breaktime.mustune.ui_kit'
+    compileSdk application.compileSdk
+
+    defaultConfig {
+        minSdk application.minSdk
+        targetSdk application.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_compiler_version
+    }
+}
+
+dependencies {
+    // compose
+    api "androidx.activity:activity-compose:$compose_activity_version"
+    api "androidx.compose.ui:ui:$compose_version"
+    api "androidx.compose.material:material:$compose_material_version"
+    api "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    api "androidx.navigation:navigation-compose:$compose_navigation_version"
+    debugApi "androidx.compose.ui:ui-tooling:$compose_version"
+    debugApi "androidx.compose.ui:ui-test-manifest:$compose_version"
+}
