@@ -14,10 +14,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.breaktime.mustune.login.api.LoginEntry
 import com.breaktime.mustune.common.Constants
 import com.breaktime.mustune.common.find
+import com.breaktime.mustune.create_edit_file.api.CreateEditFileEntry
 import com.breaktime.mustune.di.LocalAppProvider
+import com.breaktime.mustune.login.api.LoginEntry
 import com.breaktime.mustune.main.api.MainEntry
 import com.breaktime.mustune.music.api.MusicEntry
 import com.breaktime.mustune.search_songs.api.SearchSongsEntry
@@ -37,6 +38,7 @@ fun Navigation() {
     val songScreen = destinations.find<SongEntry>()
     val searchSongsScreen = destinations.find<SearchSongsEntry>()
     val shareFileScreen = destinations.find<ShareFileEntry>()
+    val createEditFileScreen = destinations.find<CreateEditFileEntry>()
     BackPressHandler(navController)
     NavHost(navController, startDestination = loginScreen.destination()) {
         with(loginScreen) { composable(navController, destinations) }
@@ -49,6 +51,7 @@ fun Navigation() {
         with(searchSongsScreen) { composable(navController, destinations) }
         with(songScreen) { composable(navController, destinations) }
         with(shareFileScreen) { composable(navController, destinations) }
+        with(createEditFileScreen) { composable(navController, destinations) }
     }
 }
 

@@ -1,5 +1,6 @@
 package com.breaktime.mustune.di
 
+import com.breaktime.mustune.create_edit_file.impl.di.CreateEditFileEntryModule
 import com.breaktime.mustune.main.impl.di.MainEntryModule
 import com.breaktime.mustune.login.impl.di.LoginEntryModule
 import com.breaktime.mustune.music.impl.di.MusicEntryModule
@@ -18,6 +19,7 @@ import dagger.Module
         SongEntryModule::class,
         SearchSongsEntryModule::class,
         ShareFileEntryModule::class,
+        CreateEditFileEntryModule::class
     ]
 )
 interface NavigationModule

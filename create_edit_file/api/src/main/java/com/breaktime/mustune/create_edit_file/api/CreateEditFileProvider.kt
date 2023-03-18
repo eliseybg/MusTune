@@ -1,0 +1,3 @@
+package com.breaktime.mustune.create_edit_file.api
+
+interface CreateEditFileProvider

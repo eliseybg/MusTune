@@ -17,9 +17,7 @@ class ShareFileEntryImpl @Inject constructor() : ShareFileEntry() {
         destinations: Destinations,
         backStackEntry: NavBackStackEntry
     ) {
-        val viewModel = injectedViewModel(viewModelStoreOwner = {
-            navController.currentBackStackEntry?.viewModelStore ?: backStackEntry.viewModelStore
-        }) {
+        val viewModel = injectedViewModel {
             DaggerShareFileComponent.builder()
                 .build()
                 .viewModel

@@ -1,11 +1,10 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
 }
 
 android {
-    namespace 'com.breaktime.mustune.music.impl'
+    namespace 'com.breaktime.mustune.create_edit_file.api'
     compileSdk application.compileSdk
 
     defaultConfig {
@@ -38,14 +37,5 @@ android {
 }
 
 dependencies {
-    implementation project(':resources')
     implementation project(':common')
-    implementation project(':music_manager:api')
-    api project(':music:api')
-    api project(':song:api')
-    api(project(":search_songs:api"))
-    implementation "com.google.accompanist:accompanist-pager:$accompanist_pager_version"
-    implementation project(path: ':create_edit_file:api')
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    implementation "androidx.paging:paging-compose:$compose_paging_version"
 }

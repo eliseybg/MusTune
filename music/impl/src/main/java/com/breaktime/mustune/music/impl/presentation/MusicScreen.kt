@@ -8,12 +8,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,6 +30,7 @@ import com.breaktime.mustune.common.composable.Toolbar
 import com.breaktime.mustune.common.composable.bottom_sheet.song_bottom_sheet.SongBottomSheet
 import com.breaktime.mustune.common.composable.bottom_sheet.song_bottom_sheet.SongBottomSheetContent
 import com.breaktime.mustune.common.find
+import com.breaktime.mustune.create_edit_file.api.CreateEditFileEntry
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.api.models.Song
 import com.breaktime.mustune.search_songs.api.SearchSongsEntry
@@ -59,16 +62,31 @@ fun MusicScreen(
                     )
                 },
                 actions = {
-                    Icon(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clickable {
-                                val route = destinations.find<SearchSongsEntry>().featureRoute
-                                navController.navigate(route)
-                            },
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "search icon",
-                    )
+                    Row {
+                        Icon(
+                            modifier = Modifier
+                                .padding(end = 12.dp)
+                                .size(24.dp)
+                                .clickable {
+                                    val route = destinations
+                                        .find<CreateEditFileEntry>()
+                                        .destination()
+                                    navController.navigate(route)
+                                },
+                            painter = painterResource(id = R.drawable.ic_add_music),
+                            contentDescription = "Add music",
+                        )
+                        Icon(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable {
+                                    val route = destinations.find<SearchSongsEntry>().featureRoute
+                                    navController.navigate(route)
+                                },
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "search icon",
+                        )
+                    }
                 },
                 bottomContent = {
                     ExploreMusicTabs(
