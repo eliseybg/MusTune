@@ -8,6 +8,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +23,7 @@ import com.breaktime.mustune.resources.R
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostController) {
-    val state = viewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
             Toolbar(
@@ -55,7 +56,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostControlle
                     .padding(top = 16.dp),
                 iconId = R.drawable.ic_bell_20,
                 text = "Notifications",
-                checked = state.value.isNotificationsEnabled,
+                checked = state.isNotificationsEnabled,
                 onCheckedChange = {
                     viewModel.setEvent(
                         SettingsContract.Event.OnChangeNotificationEnabled
@@ -68,7 +69,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostControlle
                     .padding(top = 16.dp),
                 iconId = R.drawable.ic_moon_20,
                 text = "Dark mode",
-                checked = state.value.isDarkModeEnabled,
+                checked = state.isDarkModeEnabled,
                 onCheckedChange = {
                     viewModel.setEvent(
                         SettingsContract.Event.OnChangeDarkModeEnabled

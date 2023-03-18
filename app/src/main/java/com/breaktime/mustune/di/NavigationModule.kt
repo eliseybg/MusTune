@@ -5,6 +5,7 @@ import com.breaktime.mustune.login.impl.di.LoginEntryModule
 import com.breaktime.mustune.music.impl.di.MusicEntryModule
 import com.breaktime.mustune.search_songs.impl.di.SearchSongsEntryModule
 import com.breaktime.mustune.settings.impl.di.SettingsEntryModule
+import com.breaktime.mustune.share_file.impl.di.ShareFileEntryModule
 import com.breaktime.mustune.song.impl.di.SongEntryModule
 import dagger.Module
 
@@ -13,9 +14,10 @@ import dagger.Module
         LoginEntryModule::class,
         MainEntryModule::class,
         MusicEntryModule::class,
+        SettingsEntryModule::class,
         SongEntryModule::class,
         SearchSongsEntryModule::class,
-        SettingsEntryModule::class,
+        ShareFileEntryModule::class,
     ]
 )
 interface NavigationModule

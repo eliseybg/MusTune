@@ -22,6 +22,7 @@ import com.breaktime.mustune.main.api.MainEntry
 import com.breaktime.mustune.music.api.MusicEntry
 import com.breaktime.mustune.search_songs.api.SearchSongsEntry
 import com.breaktime.mustune.settings.api.SettingsEntry
+import com.breaktime.mustune.share_file.api.ShareFileEntry
 import com.breaktime.mustune.song.api.SongEntry
 
 @Composable
@@ -32,9 +33,10 @@ fun Navigation() {
     val loginScreen = destinations.find<LoginEntry>()
     val mainScreen = destinations.find<MainEntry>()
     val musicScreen = destinations.find<MusicEntry>()
+    val settingsScreen = destinations.find<SettingsEntry>()
     val songScreen = destinations.find<SongEntry>()
     val searchSongsScreen = destinations.find<SearchSongsEntry>()
-    val settingsScreen = destinations.find<SettingsEntry>()
+    val shareFileScreen = destinations.find<ShareFileEntry>()
     BackPressHandler(navController)
     NavHost(navController, startDestination = loginScreen.destination()) {
         with(loginScreen) { composable(navController, destinations) }
@@ -46,6 +48,7 @@ fun Navigation() {
         }
         with(searchSongsScreen) { composable(navController, destinations) }
         with(songScreen) { composable(navController, destinations) }
+        with(shareFileScreen) { composable(navController, destinations) }
     }
 }
 

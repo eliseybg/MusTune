@@ -1,24 +1,19 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
 }
 
 android {
-    namespace 'com.breaktime.mustune'
+    namespace 'com.breaktime.mustune.share_file.impl'
     compileSdk application.compileSdk
 
     defaultConfig {
-        applicationId "com.breaktime.mustune"
         minSdk application.minSdk
         targetSdk application.targetSdk
-        versionCode application.versionCode
-        versionName application.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary true
-        }
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -45,17 +40,6 @@ android {
 dependencies {
     implementation project(':resources')
     implementation project(':common')
-    implementation project(':network')
-    implementation project(':music_manager:impl')
-    implementation project(':settings_manager:impl')
-    implementation project(':session_manager:impl')
-    implementation project(':login:impl')
-    implementation project(':main:impl')
-    implementation project(':login:impl')
-    implementation project(':settings:impl')
-    implementation project(':music:impl')
-    implementation project(':song:impl')
-    implementation project(':search_songs:impl')
-    implementation project(':share_file:impl')
+    api project(':share_file:api')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }
