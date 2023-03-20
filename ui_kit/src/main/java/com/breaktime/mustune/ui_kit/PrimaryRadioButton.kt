@@ -77,7 +77,6 @@ fun PrimaryRadioButtonPreview() {
     )
 }
 
-
 object PrimaryRadioButtonDefaults {
     @Composable
     fun primaryRadioButtonColors(

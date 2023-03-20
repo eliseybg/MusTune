@@ -79,7 +79,7 @@ fun CustomSwitchPreview() {
     var isSwitchEnabled by remember { mutableStateOf(false) }
     PrimarySwitch(
         checked = isSwitchEnabled,
-        onCheckedChange = { isSwitchEnabled = !isSwitchEnabled },
+        onCheckedChange = { isSwitchEnabled = it },
         text = "text"
     )
 }
