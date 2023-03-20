@@ -2,7 +2,7 @@ package com.breaktime.mustune.ui_kit
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,7 +18,6 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Fill
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -29,9 +28,9 @@ import com.breaktime.mustune.common.extentions.dpToPx
 @Composable
 fun PrimarySwitch(
     modifier: Modifier = Modifier,
-    checked: Boolean,
     text: String,
-    onCheckedChange: ((Boolean) -> Unit),
+    checked: Boolean,
+    onCheckedChange: ((Boolean) -> Unit)?,
     colors: PrimarySwitchColors = PrimarySwitchDefaults.primarySwitchColors(),
     sizes: PrimarySwitchSizes = PrimarySwitchDefaults.primarySwitchSizes()
 ) {
@@ -41,7 +40,10 @@ fun PrimarySwitch(
         label = "position animation"
     )
 
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = Modifier.clickable { onCheckedChange?.invoke(!checked) },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Text(
             modifier = Modifier
                 .weight(1f)
@@ -49,15 +51,7 @@ fun PrimarySwitch(
             text = text,
             fontSize = sizes.fontSize
         )
-        Canvas(
-            modifier = modifier
-                .size(width = sizes.switchWidth, height = sizes.switchHeight)
-                .pointerInput(Unit) {
-                    detectTapGestures(
-                        onTap = { onCheckedChange(!checked) }
-                    )
-                }
-        ) {
+        Canvas(modifier = modifier.size(width = sizes.switchWidth, height = sizes.switchHeight)) {
             drawRoundRect(
                 color = if (checked) colors.checkedTrackColor else colors.uncheckedTrackColor,
                 cornerRadius = CornerRadius(
@@ -89,7 +83,6 @@ fun CustomSwitchPreview() {
         text = "text"
     )
 }
-
 
 object PrimarySwitchDefaults {
     @Composable
