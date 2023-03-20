@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation project(':common')
+    api project(':resources')
     // compose
     api "androidx.activity:activity-compose:$compose_activity_version"
     api "androidx.compose.ui:ui:$compose_version"
