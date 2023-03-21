@@ -14,11 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Checkbox
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -27,22 +25,18 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.breaktime.mustune.common.composable.CustomSwitch
-import com.breaktime.mustune.common.composable.Toolbar
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 import com.breaktime.mustune.resources.theme.inter
+import com.breaktime.mustune.ui_kit.common.PrimarySwitch
+import com.breaktime.mustune.ui_kit.common.PrimaryTextField
+import com.breaktime.mustune.ui_kit.common.Toolbar
 
 @Composable
 fun CreateEditFileScreen(
@@ -84,11 +78,11 @@ fun CreateEditFileScreen(
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
-                .background(Color(0xFFFDFDFD))
+                .background(MusTuneTheme.colors.background)
                 .padding(horizontal = 16.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
-            StrokeTextField(
+            PrimaryTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.title,
                 onValueChange = {
@@ -97,7 +91,7 @@ fun CreateEditFileScreen(
                 hint = "Title"
             )
             Spacer(modifier = Modifier.height(16.dp))
-            StrokeTextField(
+            PrimaryTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.artist,
                 onValueChange = {
@@ -107,40 +101,24 @@ fun CreateEditFileScreen(
             )
             Spacer(modifier = Modifier.height(40.dp))
 //is downloadable
-            Row(
+            PrimarySwitch(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = "Is downloadable?",
-                    fontSize = 16.sp
-                )
-                CustomSwitch(
-                    checked = state.isDownloadable,
-                    onCheckedChange = {
-                        viewModel.setEvent(CreateEditFileContract.Event.OnChangeDownloadableEnabled)
-                    }
-                )
-            }
+                text = "Is downloadable?",
+                checked = state.isDownloadable,
+                onCheckedChange = {
+                    viewModel.setEvent(CreateEditFileContract.Event.OnChangeDownloadableEnabled)
+                }
+            )
             Spacer(modifier = Modifier.height(24.dp))
 //is shareable
-            Row(
+            PrimarySwitch(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = "Is shareable?",
-                    fontSize = 16.sp
-                )
-                CustomSwitch(
-                    checked = state.shareState is ShareState.Shared,
-                    onCheckedChange = {
-                        viewModel.setEvent(CreateEditFileContract.Event.OnChangeShareableEnabled)
-                    }
-                )
-            }
+                text = "Is shareable?",
+                checked = state.shareState is ShareState.Shared,
+                onCheckedChange = {
+                    viewModel.setEvent(CreateEditFileContract.Event.OnChangeShareableEnabled)
+                }
+            )
             Spacer(modifier = Modifier.height(16.dp))
 //who has access
             Text(
@@ -154,7 +132,7 @@ fun CreateEditFileScreen(
                     .fillMaxWidth()
                     .height(24.dp)
                     .clip(RoundedCornerShape(5.dp))
-                    .background(Color.Gray)
+                    .background(MusTuneTheme.colors.secondary)
             )
             Spacer(modifier = Modifier.height(16.dp))
 //allow other to share
@@ -179,7 +157,7 @@ fun CreateEditFileScreen(
 
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFFF0F0F0)
+                        backgroundColor = MusTuneTheme.colors.secondary
                     ),
                     shape = RoundedCornerShape(10.dp),
                     interactionSource = MutableInteractionSource()
@@ -189,7 +167,7 @@ fun CreateEditFileScreen(
                         fontSize = 22.sp,
                         fontFamily = inter,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Red
+                        color = MusTuneTheme.colors.delete
                     )
                 }
             } else {
@@ -200,51 +178,21 @@ fun CreateEditFileScreen(
 
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFFF0F0F0)
+                        backgroundColor = MusTuneTheme.colors.secondary
                     ),
                     shape = RoundedCornerShape(10.dp),
                     interactionSource = MutableInteractionSource()
                 ) {
                     Text(
-                        text = "Add file",
+                        text = "Load file",
                         fontSize = 22.sp,
                         fontFamily = inter,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Red
+                        color = MusTuneTheme.colors.content
                     )
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
         }
-    }
-}
-
-@Composable
-fun StrokeTextField(
-    modifier: Modifier = Modifier,
-    value: String,
-    onValueChange: (String) -> Unit,
-    hint: String = ""
-) {
-    var hasFocus by remember { mutableStateOf(false) }
-    Column(modifier = modifier) {
-        Box {
-            if (value.isEmpty()) Text(
-                modifier = Modifier.padding(horizontal = 6.dp),
-                text = hint,
-                fontSize = 14.sp
-            )
-            BasicTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 6.dp)
-                    .onFocusChanged {
-                        hasFocus = it.hasFocus
-                    },
-                value = value,
-                onValueChange = onValueChange
-            )
-        }
-        Divider(color = if (hasFocus) Color.Blue else Color.Gray)
     }
 }

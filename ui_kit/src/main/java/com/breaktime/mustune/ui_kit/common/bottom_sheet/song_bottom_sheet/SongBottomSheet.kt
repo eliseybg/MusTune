@@ -1,4 +1,4 @@
-package com.breaktime.mustune.common.composable.bottom_sheet.song_bottom_sheet
+package com.breaktime.mustune.ui_kit.common.bottom_sheet.song_bottom_sheet
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,11 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.breaktime.mustune.resources.R
-import com.breaktime.mustune.common.composable.bottom_sheet.BottomSheet
+import com.breaktime.mustune.ui_kit.common.bottom_sheet.BottomSheetContent
 
 @Composable
 fun SongBottomSheet(songBottomSheetContent: SongBottomSheetContent) {
-    BottomSheet {
+    BottomSheetContent {
         Column(
             modifier = Modifier
                 .fillMaxWidth(),

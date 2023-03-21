@@ -1,4 +1,4 @@
-package com.breaktime.mustune.common.composable.bottom_sheet
+package com.breaktime.mustune.ui_kit.common.bottom_sheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -11,16 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 
 @Composable
-internal fun BottomSheet(content: @Composable () -> Unit) {
+internal fun BottomSheetContent(content: @Composable () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp))
-            .background(Color.White)
+            .background(MusTuneTheme.colors.sheetColor)
             .padding(vertical = 14.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -29,7 +29,7 @@ internal fun BottomSheet(content: @Composable () -> Unit) {
                 .width(100.dp)
                 .padding(bottom = 8.dp),
             thickness = 2.dp,
-            color = Color(0xFF898989)
+            color = MusTuneTheme.colors.bottomSheetLine
         )
         content()
     }

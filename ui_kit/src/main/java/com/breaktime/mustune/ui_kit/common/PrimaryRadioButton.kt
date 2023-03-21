@@ -1,4 +1,4 @@
-package com.breaktime.mustune.ui_kit
+package com.breaktime.mustune.ui_kit.common
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 
 @Composable
 fun PrimaryRadioButton(
@@ -33,10 +34,10 @@ fun PrimaryRadioButton(
     sizes: PrimaryRadioButtonSizes = PrimaryRadioButtonDefaults.primaryRadioButtonSizes()
 ) {
     Row(
-        modifier = Modifier.clickable { onCheckedChange?.invoke(!checked) },
+        modifier = modifier.clickable { onCheckedChange?.invoke(!checked) },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Canvas(modifier = modifier.size(sizes.radioButtonRadius * 2)) {
+        Canvas(modifier = Modifier.size(sizes.radioButtonRadius * 2)) {
             drawCircle(
                 color = if (checked) colors.checkedColor else colors.uncheckedColor,
                 radius = sizes.radioButtonRadius.toPx(),
@@ -80,8 +81,8 @@ fun PrimaryRadioButtonPreview() {
 object PrimaryRadioButtonDefaults {
     @Composable
     fun primaryRadioButtonColors(
-        checkedColor: Color = Color(0xFF0F235E),
-        uncheckedColor: Color = Color(0xFFEAEAEA),
+        checkedColor: Color = MusTuneTheme.colors.primary,
+        uncheckedColor: Color = MusTuneTheme.colors.secondary,
     ) = PrimaryRadioButtonColors(checkedColor, uncheckedColor)
 
     @Composable

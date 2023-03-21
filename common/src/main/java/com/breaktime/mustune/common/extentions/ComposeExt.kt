@@ -36,5 +36,3 @@ fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
 
 @Composable
 fun Number.pxToDp() = with(LocalDensity.current) { this@pxToDp.toFloat().toDp() }
-
-fun Modifier.visible(isVisible: Boolean) = alpha(if (isVisible) 1f else 0f)

@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    implementation project(':resources')
+    implementation project(':ui_kit')
     implementation project(':common')
     implementation project(':music_manager:api')
     api project(':search_songs:api')

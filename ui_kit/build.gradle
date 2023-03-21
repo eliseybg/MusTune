@@ -39,12 +39,4 @@ android {
 dependencies {
     implementation project(':common')
     api project(':resources')
-    // compose
-    api "androidx.activity:activity-compose:$compose_activity_version"
-    api "androidx.compose.ui:ui:$compose_version"
-    api "androidx.compose.material:material:$compose_material_version"
-    api "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    api "androidx.navigation:navigation-compose:$compose_navigation_version"
-    debugApi "androidx.compose.ui:ui-tooling:$compose_version"
-    debugApi "androidx.compose.ui:ui-test-manifest:$compose_version"
 }

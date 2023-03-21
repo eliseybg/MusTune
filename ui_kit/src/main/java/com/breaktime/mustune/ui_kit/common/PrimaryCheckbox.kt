@@ -1,4 +1,4 @@
-package com.breaktime.mustune.ui_kit
+package com.breaktime.mustune.ui_kit.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.breaktime.mustune.resources.R
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 
 @Composable
 fun PrimaryCheckbox(
@@ -63,8 +64,8 @@ fun CustomCheckboxPreview() {
 object PrimaryCheckboxDefaults {
     @Composable
     fun primaryCheckboxColors(
-        checkedColor: Color = Color(0xFF0F235E),
-        uncheckedColor: Color = Color(0xFFEAEAEA),
+        checkedColor: Color = MusTuneTheme.colors.primary,
+        uncheckedColor: Color = MusTuneTheme.colors.secondary,
     ) = PrimaryCheckboxColors(checkedColor, uncheckedColor)
 
     @Composable

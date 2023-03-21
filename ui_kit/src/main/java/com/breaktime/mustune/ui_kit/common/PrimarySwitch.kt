@@ -1,4 +1,4 @@
-package com.breaktime.mustune.ui_kit
+package com.breaktime.mustune.ui_kit.common
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.breaktime.mustune.common.extentions.dpToPx
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 
 @Composable
 fun PrimarySwitch(
@@ -41,7 +42,7 @@ fun PrimarySwitch(
     )
 
     Row(
-        modifier = Modifier.clickable { onCheckedChange?.invoke(!checked) },
+        modifier = modifier.clickable { onCheckedChange?.invoke(!checked) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -51,7 +52,7 @@ fun PrimarySwitch(
             text = text,
             fontSize = sizes.fontSize
         )
-        Canvas(modifier = modifier.size(width = sizes.switchWidth, height = sizes.switchHeight)) {
+        Canvas(modifier = Modifier.size(width = sizes.switchWidth, height = sizes.switchHeight)) {
             drawRoundRect(
                 color = if (checked) colors.checkedTrackColor else colors.uncheckedTrackColor,
                 cornerRadius = CornerRadius(
@@ -87,9 +88,9 @@ fun CustomSwitchPreview() {
 object PrimarySwitchDefaults {
     @Composable
     fun primarySwitchColors(
-        checkedTrackColor: Color = Color(0xFF0F235E),
-        uncheckedTrackColor: Color = Color(0xFFEAEAEA),
-        checkedThumbColor: Color = Color.White,
+        checkedTrackColor: Color = MusTuneTheme.colors.primary,
+        uncheckedTrackColor: Color = MusTuneTheme.colors.secondary,
+        checkedThumbColor: Color = MusTuneTheme.colors.switchThumb,
         uncheckedThumbColor: Color = checkedThumbColor
     ) = PrimarySwitchColors(
         checkedTrackColor,

@@ -24,12 +24,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.FeatureEntry
-import com.breaktime.mustune.common.composable.shadow
 import com.breaktime.mustune.common.find
 import com.breaktime.mustune.main.api.MainEntry
 import com.breaktime.mustune.resources.R
 import com.breaktime.mustune.music.api.MusicEntry
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 import com.breaktime.mustune.settings.api.SettingsEntry
+import com.breaktime.mustune.ui_kit.common.shadow
 import javax.inject.Inject
 
 class MainEntryImpl @Inject constructor() : MainEntry() {
@@ -43,7 +44,7 @@ class MainEntryImpl @Inject constructor() : MainEntry() {
             BottomNavigationScreens.Music,
             BottomNavigationScreens.Settings
         )
-        SpookyAppBottomNavigation(navController, bottomNavigationItems, destinations)
+        MainBottomNavigation(navController, bottomNavigationItems, destinations)
     }
 }
 
@@ -54,7 +55,7 @@ private fun NavHostController.isCurrentRoute(route: String): Boolean {
 }
 
 @Composable
-private fun SpookyAppBottomNavigation(
+private fun MainBottomNavigation(
     navController: NavHostController,
     items: List<BottomNavigationScreens>,
     destinations: Destinations
@@ -68,7 +69,7 @@ private fun SpookyAppBottomNavigation(
                 spread = 1.5.dp,
                 offsetY = 0.dp
             ),
-        backgroundColor = Color(0xFFFFFFFF),
+        backgroundColor = MusTuneTheme.colors.bottomBar,
     ) {
         items.forEach { screen ->
             val route = destinations.find(screen.featureEntry).featureRoute
@@ -93,8 +94,8 @@ private fun SpookyAppBottomNavigation(
                     modifier = Modifier.animateContentSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    val activeColor = Color(0xFF0F235E)
-                    val inactiveColor = Color(0xFF666666)
+                    val activeColor = MusTuneTheme.colors.primary
+                    val inactiveColor = MusTuneTheme.colors.unselectedBottomBarItem
                     val bottomNavigationAnimationSpec = TweenSpec<Float>(
                         durationMillis = 300,
                         easing = FastOutSlowInEasing

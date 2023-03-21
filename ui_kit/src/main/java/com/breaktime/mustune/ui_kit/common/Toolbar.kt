@@ -1,4 +1,4 @@
-package com.breaktime.mustune.common.composable
+package com.breaktime.mustune.ui_kit.common
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.foundation.background
@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.breaktime.mustune.common.extentions.pxToDp
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 
 @Composable
 fun Toolbar(
@@ -47,7 +48,7 @@ fun Toolbar(
                 spread = 1.5.dp,
                 offsetY = 50.dp
             )
-            .background(Color.White)
+            .background(MusTuneTheme.colors.toolbar)
     ) {
         Box(
             modifier = Modifier

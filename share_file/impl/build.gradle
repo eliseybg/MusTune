@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    implementation project(':resources')
+    implementation project(':ui_kit')
     implementation project(':common')
     api project(':share_file:api')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"

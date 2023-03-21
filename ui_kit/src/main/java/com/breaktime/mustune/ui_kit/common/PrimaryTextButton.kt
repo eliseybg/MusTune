@@ -1,4 +1,4 @@
-package com.breaktime.mustune.ui_kit
+package com.breaktime.mustune.ui_kit.common
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 
 @Composable
 fun PrimaryTextButton(
@@ -34,15 +35,13 @@ fun PrimaryTextButton(
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = colors.enabledButtonColor,
-            disabledBackgroundColor = colors.disabledButtonColor
+            disabledBackgroundColor = colors.disabledButtonColor,
+            contentColor = colors.enabledTextColor,
+            disabledContentColor = colors.disabledTextColor
         ),
         shape = cornersShape
     ) {
-        Text(
-            text = text,
-            fontSize = sizes.fontSize,
-            color = if (enabled) colors.enabledTextColor else colors.disabledTextColor
-        )
+        Text(text = text, fontSize = sizes.fontSize)
     }
 }
 
@@ -69,10 +68,10 @@ fun CustomTextButtonDisabledPreview() {
 object PrimaryTextButtonDefaults {
     @Composable
     fun primaryTextButtonColors(
-        enabledButtonColor: Color = Color(0xFF0F235E),
-        disabledButtonColor: Color = Color(0xFFEAEAEA),
-        enabledTextColor: Color = Color.White,
-        disabledTextColor: Color = Color.Black
+        enabledButtonColor: Color = MusTuneTheme.colors.primary,
+        disabledButtonColor: Color = MusTuneTheme.colors.secondary,
+        enabledTextColor: Color = MusTuneTheme.colors.onPrimary,
+        disabledTextColor: Color = MusTuneTheme.colors.content
     ) = PrimaryTextButtonColors(
         enabledButtonColor,
         disabledButtonColor,

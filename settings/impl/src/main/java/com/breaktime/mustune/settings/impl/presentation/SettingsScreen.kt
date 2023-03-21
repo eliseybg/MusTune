@@ -11,15 +11,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.breaktime.mustune.common.composable.CustomSwitch
-import com.breaktime.mustune.common.composable.Toolbar
 import com.breaktime.mustune.resources.R
+import com.breaktime.mustune.resources.theme.MusTuneTheme
+import com.breaktime.mustune.ui_kit.common.PrimarySwitch
+import com.breaktime.mustune.ui_kit.common.Toolbar
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostController) {
@@ -41,7 +41,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostControlle
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
-                .background(Color(0xFFFDFDFD))
+                .background(MusTuneTheme.colors.background)
                 .padding(horizontal = 16.dp)
         ) {
             Text(
@@ -145,8 +145,8 @@ fun SettingsSwitchItem(
     SettingsItem(
         modifier = modifier,
         iconId = iconId,
-        text = text,
-        option = { CustomSwitch(checked, onCheckedChange) }
+        text = "",
+        option = { PrimarySwitch(Modifier, text, checked, onCheckedChange) }
     )
 }
 
@@ -157,7 +157,7 @@ fun SettingsLanguageItem(modifier: Modifier = Modifier, @DrawableRes iconId: Int
         iconId = iconId,
         text = text,
         option = {
-            Text(text = "English", fontSize = 14.sp, color = Color(0xFF7B7B7B))
+            Text(text = "English", fontSize = 14.sp, color = MusTuneTheme.colors.textHint)
             Icon(
                 modifier = Modifier.padding(start = 6.dp),
                 painter = painterResource(id = R.drawable.ic_arrow_right_20),

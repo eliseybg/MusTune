@@ -1,4 +1,4 @@
-package com.breaktime.mustune.common.composable
+package com.breaktime.mustune.ui_kit.elements
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

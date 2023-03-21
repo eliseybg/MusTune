@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.breaktime.mustune.common.Destinations
-import com.breaktime.mustune.common.composable.Toolbar
 import com.breaktime.mustune.common.find
 import com.breaktime.mustune.search_songs.api.SearchSongsEntry
+import com.breaktime.mustune.ui_kit.common.Toolbar
 
 @Composable
 fun SetScreenOrientation(orientation: Int) {

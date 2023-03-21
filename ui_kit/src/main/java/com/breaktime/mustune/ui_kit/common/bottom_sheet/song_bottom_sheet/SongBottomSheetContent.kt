@@ -1,4 +1,4 @@
-package com.breaktime.mustune.common.composable.bottom_sheet.song_bottom_sheet
+package com.breaktime.mustune.ui_kit.common.bottom_sheet.song_bottom_sheet
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

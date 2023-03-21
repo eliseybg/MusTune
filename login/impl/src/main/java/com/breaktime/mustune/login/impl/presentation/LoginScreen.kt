@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
@@ -43,9 +42,11 @@ import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.find
 import com.breaktime.mustune.resources.R
 import com.breaktime.mustune.main.api.MainEntry
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 import com.breaktime.mustune.resources.theme.inter
 import com.breaktime.mustune.resources.theme.overlock
 import com.breaktime.mustune.resources.theme.pirataOne
+import com.breaktime.mustune.ui_kit.common.PrimaryTextField
 import kotlinx.coroutines.delay
 
 @Composable
@@ -105,7 +106,7 @@ fun FullLogo(modifier: Modifier = Modifier) {
         Text(
             text = "Break time",
             fontSize = 33.sp,
-            color = Color(0xFF0F235E),
+            color = MusTuneTheme.colors.primary,
             fontFamily = pirataOne
         )
     }
@@ -230,7 +231,7 @@ fun SignIn(
             var email by remember { mutableStateOf("") }
             var password by remember { mutableStateOf("") }
 
-            StrokeTextField(
+            PrimaryTextField(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 value = email,
                 onValueChange = { email = it },
@@ -239,7 +240,7 @@ fun SignIn(
 
             Spacer(modifier = Modifier.height(35.dp))
 
-            StrokeTextField(
+            PrimaryTextField(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 value = password,
                 onValueChange = { password = it },
@@ -305,9 +306,9 @@ fun SignIn(
 @Composable
 fun OrDivider(modifier: Modifier = Modifier) {
     Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Divider(modifier = Modifier.weight(1f), color = Color.Black)
+        Divider(modifier = Modifier.weight(1f), color = MusTuneTheme.colors.content)
         Text(modifier = Modifier.padding(horizontal = 10.dp), text = "or")
-        Divider(modifier = Modifier.weight(1f), color = Color.Black)
+        Divider(modifier = Modifier.weight(1f), color = MusTuneTheme.colors.content)
     }
 }
 
@@ -360,7 +361,7 @@ fun SignUp(
             var email by remember { mutableStateOf("") }
             var password by remember { mutableStateOf("") }
 
-            StrokeTextField(
+            PrimaryTextField(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 value = username,
                 onValueChange = { username = it },
@@ -369,7 +370,7 @@ fun SignUp(
 
             Spacer(modifier = Modifier.height(35.dp))
 
-            StrokeTextField(
+            PrimaryTextField(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 value = email,
                 onValueChange = { email = it },
@@ -378,7 +379,7 @@ fun SignUp(
 
             Spacer(modifier = Modifier.height(35.dp))
 
-            StrokeTextField(
+            PrimaryTextField(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 value = password,
                 onValueChange = { password = it },
@@ -428,27 +429,5 @@ fun SignUp(
             Spacer(modifier = Modifier.height(20.dp))
             SocialMedia(modifier = Modifier.align(Alignment.CenterHorizontally))
         }
-    }
-}
-
-@Composable
-fun StrokeTextField(
-    modifier: Modifier = Modifier,
-    value: String,
-    onValueChange: (String) -> Unit,
-    hint: String = ""
-) {
-    Column(modifier = modifier) {
-        Box {
-            if (value.isEmpty()) Text(text = hint, fontSize = 18.sp)
-            BasicTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 6.dp),
-                value = value,
-                onValueChange = onValueChange
-            )
-        }
-        Divider(color = Color.Gray)
     }
 }
