@@ -2,7 +2,14 @@ package com.breaktime.mustune.settings.impl.presentation
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -16,13 +23,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.breaktime.mustune.common.Destinations
+import com.breaktime.mustune.common.find
+import com.breaktime.mustune.login.api.LoginEntry
 import com.breaktime.mustune.resources.R
 import com.breaktime.mustune.resources.theme.MusTuneTheme
 import com.breaktime.mustune.ui_kit.common.PrimarySwitch
+import com.breaktime.mustune.ui_kit.common.PrimaryTextButton
+import com.breaktime.mustune.ui_kit.common.PrimaryTextButtonDefaults
 import com.breaktime.mustune.ui_kit.common.Toolbar
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostController) {
+fun SettingsScreen(
+    viewModel: SettingsViewModel,
+    navController: NavHostController,
+    destinations: Destinations
+) {
     val state by viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
@@ -33,6 +49,19 @@ fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostControlle
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp
                     )
+                },
+                actions = {
+                    Icon(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clickable {
+                                val route = destinations.find<LoginEntry>().featureRoute
+                                navController.popBackStack()
+                                navController.navigate(route)
+                            },
+                        painter = painterResource(id = R.drawable.ic_log_out),
+                        contentDescription = "search icon",
+                    )
                 }
             )
         }
@@ -42,10 +71,10 @@ fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostControlle
                 .padding(it)
                 .fillMaxSize()
                 .background(MusTuneTheme.colors.background)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp, vertical = 24.dp)
         ) {
             Text(
-                modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
                 text = "Common",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium
@@ -58,9 +87,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostControlle
                 text = "Notifications",
                 checked = state.isNotificationsEnabled,
                 onCheckedChange = {
-                    viewModel.setEvent(
-                        SettingsContract.Event.OnChangeNotificationEnabled
-                    )
+                    viewModel.setEvent(SettingsContract.Event.OnChangeNotificationEnabled)
                 }
             )
             SettingsSwitchItem(
@@ -71,9 +98,7 @@ fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostControlle
                 text = "Dark mode",
                 checked = state.isDarkModeEnabled,
                 onCheckedChange = {
-                    viewModel.setEvent(
-                        SettingsContract.Event.OnChangeDarkModeEnabled
-                    )
+                    viewModel.setEvent(SettingsContract.Event.OnChangeDarkModeEnabled)
                 }
             )
             Text(
@@ -129,6 +154,19 @@ fun SettingsScreen(viewModel: SettingsViewModel, navController: NavHostControlle
                 text = "Google",
                 checked = false,
                 onCheckedChange = {}
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            PrimaryTextButton(
+                text = "Remove account",
+                onClick = {
+                    val route = destinations.find<LoginEntry>().featureRoute
+                    navController.popBackStack()
+                    navController.navigate(route)
+                },
+                colors = PrimaryTextButtonDefaults.primaryTextButtonColors(
+                    enabledButtonColor = MusTuneTheme.colors.secondary,
+                    enabledTextColor = MusTuneTheme.colors.delete
+                )
             )
         }
     }

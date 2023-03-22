@@ -28,6 +28,6 @@ class SettingsEntryImpl @Inject constructor() : SettingsEntry() {
                 .viewModel
         }
 
-        SettingsScreen(viewModel, navController)
+        SettingsScreen(viewModel, navController, destinations)
     }
 }
