@@ -13,6 +13,7 @@ import com.breaktime.mustune.musicmanager.impl.data.source.songs.local.SongsData
 import retrofit2.HttpException
 import java.io.IOException
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalPagingApi::class)
 class SongsRemoteMediator(
@@ -21,14 +22,15 @@ class SongsRemoteMediator(
     private val songsDatabase: SongsDatabase
 ) : RemoteMediator<Int, SongEntity>() {
     override suspend fun initialize(): InitializeAction {
-        val cacheTimeout = 1.hours.inWholeMilliseconds
-        val currentTime = System.currentTimeMillis()
+        val cacheFrequency = tab.pagingRefreshFrequency.inWholeDays
+        val currentTimeInDay = System.currentTimeMillis().milliseconds.inWholeDays
         val firstSongCreationTime = songsDatabase.remoteKeysDao.getCreationTime(tab.name) ?: 0
+        val firstSongCreationTimeInDay = firstSongCreationTime.milliseconds.inWholeDays
 
-        return if (currentTime - firstSongCreationTime < cacheTimeout) {
-            InitializeAction.SKIP_INITIAL_REFRESH
-        } else {
+        return if (currentTimeInDay - firstSongCreationTimeInDay > cacheFrequency) {
             InitializeAction.LAUNCH_INITIAL_REFRESH
+        } else {
+            InitializeAction.SKIP_INITIAL_REFRESH
         }
     }
 
@@ -41,6 +43,7 @@ class SongsRemoteMediator(
                 val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
                 remoteKeys?.nextPage?.minus(1) ?: Constants.Pager.INITIAL_PAGE
             }
+
             LoadType.PREPEND -> {
                 val remoteKeys = getRemoteKeyForFirstItem(state)
                 val prevPage = remoteKeys?.prevPage
@@ -49,6 +52,7 @@ class SongsRemoteMediator(
                     )
                 prevPage
             }
+
             LoadType.APPEND -> {
                 val remoteKeys = getRemoteKeyForLastItem(state)
                 val nextPage = remoteKeys?.nextPage

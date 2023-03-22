@@ -6,10 +6,13 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.milliseconds
 
-enum class MusicTab(val icon: ImageVector) {
-    EXPLORE(Icons.Default.Explore),
-    FAVOURITE(Icons.Default.Star),
-    PERSONAL(Icons.Default.Person),
-    SHARED(Icons.Default.Share)
+enum class MusicTab(val icon: ImageVector, val pagingRefreshFrequency: Duration) {
+    EXPLORE(Icons.Default.Explore, 1.days),
+    FAVOURITE(Icons.Default.Star, 0.days),
+    PERSONAL(Icons.Default.Person, 0.days),
+    SHARED(Icons.Default.Share, 0.days)
 }
