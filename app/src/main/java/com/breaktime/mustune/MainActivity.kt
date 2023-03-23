@@ -11,6 +11,7 @@ import com.breaktime.mustune.di.LocalAppProvider
 import com.breaktime.mustune.musicmanager.api.LocalMusicManagerProvider
 import com.breaktime.mustune.settings_manager.api.LocalSettingsManagerProvider
 import com.breaktime.mustune.resources.theme.MusTuneTheme
+import com.breaktime.mustune.session_manager.api.LocalSessionManagerProvider
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +22,7 @@ class MainActivity : ComponentActivity() {
                     CompositionLocalProvider(
                         LocalAppProvider provides application.appProvider,
                         LocalCommonProvider provides application.appProvider,
+                        LocalSessionManagerProvider provides application.appProvider,
                         LocalMusicManagerProvider provides application.appProvider,
                         LocalSettingsManagerProvider provides application.appProvider,
                     ) {

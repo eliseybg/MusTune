@@ -14,7 +14,7 @@ class DefaultColors constructor(
     override val toolbar: Color = Color(0xFFFFFFFF),
     override val bottomBar: Color = Color(0xFFFFFFFF),
     override val unselectedBottomBarItem: Color = Color(0xFF666666),
-    override val sheetBackground: Color = Color(0x66636363),
+    override val shadowBackground: Color = Color(0x66636363),
     override val sheetColor: Color = Color(0xFFFFFFFF),
     override val switchThumb: Color = Color(0xFFFFFFFF),
     override val textHint: Color = Color(0xFF7C7C7C)

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
@@ -27,6 +28,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -42,6 +44,8 @@ fun PrimaryTextField(
     hint: String = "",
     singleLine: Boolean = true,
     showUnderline: Boolean = true,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     focusRequester: FocusRequester = FocusRequester(),
     colors: PrimaryTextFieldColors = PrimaryTextFieldDefaults.primaryTextFieldColors(),
     sizes: PrimaryTextFieldSizes = PrimaryTextFieldDefaults.primaryTextFieldSizes()
@@ -68,6 +72,8 @@ fun PrimaryTextField(
                         .focusRequester(focusRequester)
                         .onFocusChanged { hasFocus = it.hasFocus },
                     value = value,
+                    visualTransformation = visualTransformation,
+                    keyboardOptions = keyboardOptions,
                     onValueChange = onValueChange,
                     singleLine = singleLine,
                     textStyle = LocalTextStyle.current.copy(

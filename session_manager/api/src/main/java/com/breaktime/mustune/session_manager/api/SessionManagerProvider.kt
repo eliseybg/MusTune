@@ -1,7 +1,7 @@
 package com.breaktime.mustune.session_manager.api
 
 import androidx.compose.runtime.compositionLocalOf
-import com.breaktime.mustune.network.api.TokenProvider
+import com.breaktime.mustune.common.provider.TokenProvider
 
 interface SessionManagerProvider {
     val sessionManager: SessionManager

@@ -1,6 +1,6 @@
 package com.breaktime.mustune.session_manager.impl.di
 
-import com.breaktime.mustune.network.api.TokenProvider
+import com.breaktime.mustune.common.provider.TokenProvider
 import com.breaktime.mustune.session_manager.api.SessionManager
 import com.breaktime.mustune.session_manager.impl.SessionManagerImpl
 import com.breaktime.mustune.session_manager.impl.data.source.DataSource

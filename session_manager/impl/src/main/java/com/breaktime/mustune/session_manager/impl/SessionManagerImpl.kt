@@ -1,7 +1,7 @@
 package com.breaktime.mustune.session_manager.impl
 
 import com.breaktime.mustune.common.domain.Outcome
-import com.breaktime.mustune.network.api.TokenProvider
+import com.breaktime.mustune.common.provider.TokenProvider
 import com.breaktime.mustune.session_manager.api.SessionManager
 import com.breaktime.mustune.session_manager.api.models.UserInfo
 import com.breaktime.mustune.session_manager.impl.domain.use_case.GetUserDataUseCase

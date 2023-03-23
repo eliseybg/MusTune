@@ -1,7 +1,7 @@
 package com.breaktime.mustune.network.impl
 
 import com.breaktime.mustune.network.api.NetworkProvider
-import com.breaktime.mustune.network.api.TokenProvider
+import com.breaktime.mustune.common.provider.TokenProvider
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

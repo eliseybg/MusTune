@@ -1,6 +1,6 @@
 package com.breaktime.mustune.network.impl
 
-import com.breaktime.mustune.network.api.TokenProvider
+import com.breaktime.mustune.common.provider.TokenProvider
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

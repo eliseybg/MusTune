@@ -1,4 +1,4 @@
-package com.breaktime.mustune.network.api
+package com.breaktime.mustune.common.provider
 
 interface TokenProvider {
     fun getToken(): String

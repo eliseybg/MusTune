@@ -38,6 +38,7 @@ class App : Application() {
 
         appProvider = DaggerAppComponent.builder()
             .commonProvider(commonProvider)
+            .sessionManagerProvider(sessionManagerProvider)
             .musicManagerProvider(musicManagerProvider)
             .settingsManagerProvider(settingsManagerProvider)
             .build()
