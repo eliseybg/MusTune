@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -41,4 +42,5 @@ dependencies {
     implementation project(':common')
     api project(':login:api')
     implementation project(':main:api')
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }

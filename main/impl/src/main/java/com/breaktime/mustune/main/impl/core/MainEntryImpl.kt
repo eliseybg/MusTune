@@ -20,8 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.FeatureEntry
 import com.breaktime.mustune.common.find
@@ -36,15 +39,29 @@ import javax.inject.Inject
 class MainEntryImpl @Inject constructor() : MainEntry() {
     @Composable
     override fun Composable(
-        navController: NavHostController,
         destinations: Destinations,
-        backStackEntry: NavBackStackEntry
+        backStackEntry: NavBackStackEntry,
+        startDestination: String,
+        builder: NavGraphBuilder.(NavHostController) -> Unit
     ) {
-        val bottomNavigationItems = listOf(
-            BottomNavigationScreens.Music,
-            BottomNavigationScreens.Settings
-        )
-        MainBottomNavigation(navController, bottomNavigationItems, destinations)
+        val innerNavController = rememberNavController()
+        Scaffold(
+            bottomBar = {
+                val bottomNavigationItems = listOf(
+                    BottomNavigationScreens.Music,
+                    BottomNavigationScreens.Settings
+                )
+                MainBottomNavigation(innerNavController, bottomNavigationItems, destinations)
+            },
+        ) {
+            NavHost(
+                modifier = Modifier.padding(it),
+                navController = innerNavController,
+                startDestination = startDestination,
+                route = featureRoute,
+                builder = { builder(innerNavController) }
+            )
+        }
     }
 }
 

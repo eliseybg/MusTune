@@ -41,7 +41,7 @@ fun Navigation() {
     val createEditFileScreen = destinations.find<CreateEditFileEntry>()
     BackPressHandler(navController)
     NavHost(navController, startDestination = loginScreen.destination()) {
-        with(loginScreen) { composable(navController, destinations) }
+        with(loginScreen) { navigation(navController, destinations) }
         with(mainScreen) {
             subNavigation(destinations, musicScreen.destination()) {
                 with(musicScreen) { composable(navController, destinations) }

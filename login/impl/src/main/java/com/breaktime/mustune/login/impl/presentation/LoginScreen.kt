@@ -25,69 +25,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.find
-import com.breaktime.mustune.resources.R
+import com.breaktime.mustune.login.api.LoginEntry
 import com.breaktime.mustune.main.api.MainEntry
+import com.breaktime.mustune.resources.R
 import com.breaktime.mustune.resources.theme.MusTuneTheme
 import com.breaktime.mustune.resources.theme.inter
 import com.breaktime.mustune.resources.theme.overlock
 import com.breaktime.mustune.resources.theme.pirataOne
 import com.breaktime.mustune.ui_kit.common.PrimaryTextField
 import kotlinx.coroutines.delay
-
-@Composable
-fun LoginScreen(
-//    viewModel: LoginViewModel,
-    navController: NavHostController,
-    destinations: Destinations
-) {
-//    val state by viewModel.uiState.collectAsState()
-    val loginNavController = rememberNavController()
-    LaunchedEffect(key1 = true) {
-        delay(5000)
-        loginNavController.popBackStack()
-        loginNavController.navigate("OnBoarding")
-    }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .paint(
-                painterResource(id = R.drawable.login_background),
-                contentScale = ContentScale.Crop
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-
-        NavHost(navController = loginNavController, startDestination = "SplashScreen") {
-            composable("SplashScreen") {
-                SplashScreen()
-            }
-            composable("OnBoarding") {
-                OnBoarding(loginNavController)
-            }
-            composable("SignIn") {
-                SignIn(loginNavController, navController, destinations)
-            }
-            composable("SignUp") {
-                SignUp(loginNavController, navController, destinations)
-            }
-        }
-    }
-}
 
 @Composable
 fun FullLogo(modifier: Modifier = Modifier) {
@@ -122,7 +78,12 @@ fun Logo(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(loginNavController: NavController) {
+    LaunchedEffect(key1 = true) {
+        delay(2000)
+        loginNavController.popBackStack()
+        loginNavController.navigate(LoginEntry.LoginScreen.ONBOARDING.name)
+    }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -164,7 +125,7 @@ fun OnBoarding(loginNavController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     loginNavController.popBackStack()
-                    loginNavController.navigate("SignIn")
+                    loginNavController.navigate(LoginEntry.LoginScreen.SIGN_IN.name)
                 },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color(0xFF5A6993)
@@ -189,7 +150,7 @@ fun OnBoarding(loginNavController: NavController) {
                 Text(
                     modifier = Modifier.clickable {
                         loginNavController.popBackStack()
-                        loginNavController.navigate("SignUp")
+                        loginNavController.navigate(LoginEntry.LoginScreen.SIGN_UP.name)
                     },
                     text = "Register",
                     fontSize = 18.sp,
@@ -203,8 +164,8 @@ fun OnBoarding(loginNavController: NavController) {
 
 @Composable
 fun SignIn(
-    loginNavController: NavController,
     navController: NavController,
+    loginNavController: NavHostController,
     destinations: Destinations
 ) {
     Column(
@@ -288,7 +249,7 @@ fun SignIn(
                 Text(
                     modifier = Modifier.clickable {
                         loginNavController.popBackStack()
-                        loginNavController.navigate("SignUp")
+                        loginNavController.navigate(LoginEntry.LoginScreen.SIGN_UP.name)
                     },
                     text = "Register",
                     fontSize = 18.sp,
@@ -332,8 +293,8 @@ fun SocialMedia(modifier: Modifier = Modifier) {
 
 @Composable
 fun SignUp(
-    loginNavController: NavController,
     navController: NavController,
+    loginNavController: NavHostController,
     destinations: Destinations
 ) {
     Column(
@@ -417,7 +378,7 @@ fun SignUp(
                 Text(
                     modifier = Modifier.clickable {
                         loginNavController.popBackStack()
-                        loginNavController.navigate("SignIn")
+                        loginNavController.navigate(LoginEntry.LoginScreen.SIGN_IN.name)
                     },
                     text = "Log in",
                     fontSize = 18.sp,

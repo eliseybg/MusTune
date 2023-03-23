@@ -55,7 +55,9 @@ fun SettingsScreen(
                         modifier = Modifier
                             .size(24.dp)
                             .clickable {
-                                val route = destinations.find<LoginEntry>().featureRoute
+                                val route = destinations
+                                    .find<LoginEntry>()
+                                    .destination(LoginEntry.LoginScreen.ONBOARDING)
                                 navController.popBackStack()
                                 navController.navigate(route)
                             },
