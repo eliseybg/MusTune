@@ -40,7 +40,7 @@ fun Navigation() {
     val shareFileScreen = destinations.find<ShareFileEntry>()
     val createEditFileScreen = destinations.find<CreateEditFileEntry>()
     BackPressHandler(navController)
-    NavHost(navController, startDestination = loginScreen.destination()) {
+    NavHost(navController, startDestination = mainScreen.destination()) {
         with(loginScreen) { navigation(navController, destinations) }
         with(mainScreen) {
             subNavigation(destinations, musicScreen.destination()) {

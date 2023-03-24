@@ -10,7 +10,7 @@ class CreateEditFileContract {
         data class UpdateArtistText(val artistText: String) : Event()
         object OnChangeDownloadableEnabled : Event()
         object OnChangeShareableEnabled : Event()
-        object OnChangeWhoHasAccess : Event()
+        data class OnSelectShareType(val shareState: ShareState.Shared) : Event()
         object OnChangeAllowOtherToShare : Event()
         object OnSaveClick : Event()
     }
@@ -28,9 +28,11 @@ class CreateEditFileContract {
 
 sealed class ShareState {
     object NoSharing : ShareState()
-    sealed class Shared : ShareState() {
-        data class OnlyInvited(val allowOtherToShare: Boolean) : Shared()
-        object AnyOneWithLink : Shared()
-        object AllUsers : Shared()
+    sealed class Shared(val name: String) : ShareState() {
+        data class OnlyInvited(val allowOtherToShare: Boolean = true) :
+            Shared("only invited people")
+
+        object AnyOneWithLink : Shared("anyone with the link")
+        object AllUsers : Shared("all users")
     }
 }

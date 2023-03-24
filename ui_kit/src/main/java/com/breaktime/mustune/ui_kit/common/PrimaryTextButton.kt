@@ -33,6 +33,10 @@ fun PrimaryTextButton(
             .fillMaxWidth(),
         onClick = onClick,
         enabled = enabled,
+        elevation = ButtonDefaults.elevation(
+            defaultElevation = 0.dp,
+            pressedElevation = 4.dp
+        ),
         colors = ButtonDefaults.buttonColors(
             backgroundColor = colors.enabledButtonColor,
             disabledBackgroundColor = colors.disabledButtonColor,

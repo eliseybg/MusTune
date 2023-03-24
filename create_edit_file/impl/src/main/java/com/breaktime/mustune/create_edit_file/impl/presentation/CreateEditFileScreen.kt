@@ -1,10 +1,11 @@
 package com.breaktime.mustune.create_edit_file.impl.presentation
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,27 +15,36 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Checkbox
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.breaktime.mustune.common.extentions.pxToDp
+import com.breaktime.mustune.resources.R
 import com.breaktime.mustune.resources.theme.MusTuneTheme
-import com.breaktime.mustune.resources.theme.inter
+import com.breaktime.mustune.ui_kit.common.PrimaryCheckbox
 import com.breaktime.mustune.ui_kit.common.PrimarySwitch
+import com.breaktime.mustune.ui_kit.common.PrimaryTextButton
+import com.breaktime.mustune.ui_kit.common.PrimaryTextButtonDefaults
 import com.breaktime.mustune.ui_kit.common.PrimaryTextField
 import com.breaktime.mustune.ui_kit.common.Toolbar
 
@@ -88,6 +98,9 @@ fun CreateEditFileScreen(
                 onValueChange = {
                     viewModel.setEvent(CreateEditFileContract.Event.UpdateTitleText(it))
                 },
+                onClearedClick = {
+                    viewModel.setEvent(CreateEditFileContract.Event.UpdateTitleText(""))
+                },
                 hint = "Title"
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -97,10 +110,12 @@ fun CreateEditFileScreen(
                 onValueChange = {
                     viewModel.setEvent(CreateEditFileContract.Event.UpdateArtistText(it))
                 },
+                onClearedClick = {
+                    viewModel.setEvent(CreateEditFileContract.Event.UpdateArtistText(""))
+                },
                 hint = "Artist"
             )
             Spacer(modifier = Modifier.height(40.dp))
-//is downloadable
             PrimarySwitch(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Is downloadable?",
@@ -110,7 +125,6 @@ fun CreateEditFileScreen(
                 }
             )
             Spacer(modifier = Modifier.height(24.dp))
-//is shareable
             PrimarySwitch(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Is shareable?",
@@ -119,80 +133,116 @@ fun CreateEditFileScreen(
                     viewModel.setEvent(CreateEditFileContract.Event.OnChangeShareableEnabled)
                 }
             )
-            Spacer(modifier = Modifier.height(16.dp))
-//who has access
-            Text(
-                text = "Who have access?",
-                fontSize = 14.sp
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-//drop down
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(24.dp)
-                    .clip(RoundedCornerShape(5.dp))
-                    .background(MusTuneTheme.colors.secondary)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-//allow other to share
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(checked = false, onCheckedChange = {})
-                Spacer(modifier = Modifier.width(8.dp))
+            if (state.shareState is ShareState.Shared) {
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    modifier = Modifier.weight(1f),
                     text = "Who have access?",
                     fontSize = 14.sp
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+                ShareTypesDropDown(
+                    selected = state.shareState as ShareState.Shared,
+                    items = listOf(
+                        ShareState.Shared.AllUsers,
+                        ShareState.Shared.OnlyInvited(),
+                        ShareState.Shared.AnyOneWithLink
+                    ),
+                    onSelect = {
+                        viewModel.setEvent(CreateEditFileContract.Event.OnSelectShareType(it))
+                    }
+                )
+                if (state.shareState is ShareState.Shared.OnlyInvited) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    PrimaryCheckbox(
+                        text = "Allow others to share",
+                        checked = (state.shareState as ShareState.Shared.OnlyInvited).allowOtherToShare,
+                        onCheckedChange = { viewModel.setEvent(CreateEditFileContract.Event.OnChangeAllowOtherToShare) }
+                    )
+                }
             }
             Spacer(modifier = Modifier.weight(1f))
-            if (state.isEdit) {
-//remove file
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
+            if (state.isEdit) PrimaryTextButton(
+                text = "Remove file",
+                onClick = {
+                },
+                colors = PrimaryTextButtonDefaults.primaryTextButtonColors(
+                    enabledButtonColor = MusTuneTheme.colors.secondary,
+                    enabledTextColor = MusTuneTheme.colors.delete
+                )
+            )
+            else PrimaryTextButton(
+                text = "Select file",
+                onClick = {},
+                colors = PrimaryTextButtonDefaults.primaryTextButtonColors(
+                    enabledButtonColor = MusTuneTheme.colors.secondary,
+                    enabledTextColor = MusTuneTheme.colors.content
+                )
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
 
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MusTuneTheme.colors.secondary
-                    ),
-                    shape = RoundedCornerShape(10.dp),
-                    interactionSource = MutableInteractionSource()
-                ) {
-                    Text(
-                        text = "Remove file",
-                        fontSize = 22.sp,
-                        fontFamily = inter,
-                        fontWeight = FontWeight.Bold,
-                        color = MusTuneTheme.colors.delete
-                    )
-                }
-            } else {
-//add file
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
 
+@Composable
+fun ShareTypesDropDown(
+    selected: ShareState.Shared,
+    items: List<ShareState.Shared>,
+    onSelect: (ShareState.Shared) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var width by remember { mutableStateOf(0) }
+
+    Box(contentAlignment = Alignment.Center) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .onPlaced { width = it.size.width }
+                .clip(RoundedCornerShape(5.dp))
+                .clickable(onClick = { expanded = true })
+                .background(MusTuneTheme.colors.secondary)
+                .padding(horizontal = 6.dp, vertical = 3.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = selected.name,
+                fontSize = 16.sp
+            )
+            Image(
+                painter = painterResource(id = R.drawable.ic_drop_down),
+                contentDescription = null
+            )
+        }
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.width(width.pxToDp())
+        ) {
+            items.forEach { item ->
+                DropdownMenuItem(
+                    modifier = Modifier.height(30.dp),
+                    onClick = {
+                        onSelect(item)
+                        expanded = false
                     },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MusTuneTheme.colors.secondary
-                    ),
-                    shape = RoundedCornerShape(10.dp),
-                    interactionSource = MutableInteractionSource()
+                    contentPadding = PaddingValues(0.dp)
                 ) {
-                    Text(
-                        text = "Load file",
-                        fontSize = 22.sp,
-                        fontFamily = inter,
-                        fontWeight = FontWeight.Bold,
-                        color = MusTuneTheme.colors.content
+                    if (selected == item) Icon(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .padding(horizontal = 4.dp),
+                        imageVector = Icons.Default.Check,
+                        contentDescription = null
+                    ) else Spacer(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .padding(horizontal = 4.dp)
                     )
+                    Text(text = item.name)
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }

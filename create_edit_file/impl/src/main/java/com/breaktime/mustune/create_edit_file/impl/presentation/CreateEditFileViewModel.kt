@@ -1,7 +1,6 @@
 package com.breaktime.mustune.create_edit_file.impl.presentation
 
 import com.breaktime.mustune.common.presentation.BaseViewModel
-import com.breaktime.mustune.create_edit_file.impl.presentation.CreateEditFileContract
 import javax.inject.Inject
 
 class CreateEditFileViewModel @Inject constructor(
@@ -28,15 +27,13 @@ class CreateEditFileViewModel @Inject constructor(
                 copy(shareState = if (isShared) ShareState.NoSharing else ShareState.Shared.AllUsers)
             }
 
-            CreateEditFileContract.Event.OnChangeWhoHasAccess -> TODO()
-            CreateEditFileContract.Event.OnSaveClick -> TODO()
-            is CreateEditFileContract.Event.UpdateArtistText -> setState {
-                copy(artist = event.artistText)
-            }
+            is CreateEditFileContract.Event.OnSelectShareType -> setState { copy(shareState = event.shareState) }
 
-            is CreateEditFileContract.Event.UpdateTitleText -> setState {
-                copy(title = event.titleText)
-            }
+            CreateEditFileContract.Event.OnSaveClick -> TODO()
+
+            is CreateEditFileContract.Event.UpdateArtistText -> setState { copy(artist = event.artistText) }
+
+            is CreateEditFileContract.Event.UpdateTitleText -> setState { copy(title = event.titleText) }
         }
     }
 }
