@@ -3,13 +3,15 @@ package com.breaktime.mustune.musicmanager.impl.data.source.songs.remote
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.breaktime.mustune.common.Constants
-import com.breaktime.mustune.musicmanager.api.models.MusicTab
+import com.breaktime.mustune.musicmanager.api.models.SearchFilter
+import com.breaktime.mustune.musicmanager.impl.data.entities.SearchSongsBody
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 import retrofit2.HttpException
 import java.io.IOException
 
 class SearchSongsSource(
-    private val searchText: String,
+    private val text: String,
+    private val filter: SearchFilter,
     private val songsApiService: SongsApiService,
 ) : PagingSource<Int, SongEntity>() {
     override fun getRefreshKey(state: PagingState<Int, SongEntity>): Int? {
@@ -22,7 +24,8 @@ class SearchSongsSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SongEntity> {
         val page = params.key ?: Constants.Pager.INITIAL_PAGE
         return try {
-            val response = songsApiService.searchSongs(searchText, page, params.loadSize)
+            val body = SearchSongsBody(text, filter, page, params.loadSize)
+            val response = songsApiService.searchSongs(body)
             if (!response.isSuccessful) return LoadResult.Error(Exception(response.message()))
             val participants = response.body() ?: return LoadResult.Error(Exception("No data"))
             val nextKey = if (participants.isEmpty()) null else page + 1

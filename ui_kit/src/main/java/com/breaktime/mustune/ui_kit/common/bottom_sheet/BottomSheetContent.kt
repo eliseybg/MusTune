@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.breaktime.mustune.resources.theme.MusTuneTheme
 
 @Composable
-internal fun BottomSheetContent(content: @Composable () -> Unit) {
+fun BottomSheetContent(content: @Composable () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

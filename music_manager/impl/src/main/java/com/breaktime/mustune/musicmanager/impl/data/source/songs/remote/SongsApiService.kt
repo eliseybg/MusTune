@@ -1,8 +1,11 @@
 package com.breaktime.mustune.musicmanager.impl.data.source.songs.remote
 
+import com.breaktime.mustune.musicmanager.impl.data.entities.SearchSongsBody
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface SongsApiService {
@@ -13,10 +16,8 @@ interface SongsApiService {
         @Query("tab") tab: String
     ): Response<List<SongEntity>>
 
-    @GET("searchSongs")
+    @POST("searchSongs")
     suspend fun searchSongs(
-        @Query("searchText") searchText: String,
-        @Query("page") page: Int,
-        @Query("pageSize") pageSize: Int
+        @Body body: SearchSongsBody,
     ): Response<List<SongEntity>>
 }

@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.breaktime.mustune.common.Constants
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
+import com.breaktime.mustune.musicmanager.api.models.SearchFilter
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.local.SongsDatabase
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SearchSongsSource
@@ -34,14 +35,17 @@ class SongsRepositoryImpl @Inject constructor(
         ).flow
     }
 
-    override fun searchSongs(searchText: String): Flow<PagingData<SongEntity>> {
+    override fun searchSongs(
+        searchText: String,
+        searchFilter: SearchFilter
+    ): Flow<PagingData<SongEntity>> {
         return Pager(
             config = PagingConfig(
                 pageSize = Constants.Pager.PAGE_SIZE,
                 prefetchDistance = Constants.Pager.PREFETCH_DISTANCE,
                 initialLoadSize = Constants.Pager.INITIAL_PAGE_SIZE
             ),
-            pagingSourceFactory = { SearchSongsSource(searchText, songsApiService) }
+            pagingSourceFactory = { SearchSongsSource(searchText, searchFilter, songsApiService) }
         ).flow
     }
 }

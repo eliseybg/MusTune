@@ -3,6 +3,7 @@ package com.breaktime.mustune.musicmanager.impl
 import androidx.paging.PagingData
 import com.breaktime.mustune.musicmanager.api.MusicManager
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
+import com.breaktime.mustune.musicmanager.api.models.SearchFilter
 import com.breaktime.mustune.musicmanager.api.models.Song
 import com.breaktime.mustune.musicmanager.api.models.TabSetup
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.GetSongsFlowUseCase
@@ -21,7 +22,15 @@ class MusicManagerImpl @Inject constructor(
         )
     }
 
-    override fun searchSongs(searchText: String): Flow<PagingData<Song>> {
-        return searchSongsFlowUseCase.invoke(SearchSongsFlowUseCase.Params(searchText))
+    override fun searchSongs(
+        searchText: String,
+        searchFilter: SearchFilter
+    ): Flow<PagingData<Song>> {
+        return searchSongsFlowUseCase.invoke(
+            SearchSongsFlowUseCase.Params(
+                searchText,
+                searchFilter
+            )
+        )
     }
 }

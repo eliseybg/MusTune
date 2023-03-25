@@ -1,17 +1,20 @@
 package com.breaktime.mustune.ui_kit.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -23,35 +26,31 @@ import com.breaktime.mustune.resources.theme.MusTuneTheme
 fun PrimaryChipButton(
     modifier: Modifier = Modifier,
     text: String,
-    onClick: () -> Unit,
-    enabled: Boolean = true,
+    selected: Boolean,
+    onSelect: (isSelected: Boolean) -> Unit,
     cornersShape: Shape = RoundedCornerShape(10.dp),
     colors: PrimaryChipButtonColors = PrimaryChipButtonDefaults.primaryChipButtonColors(),
     sizes: PrimaryChipButtonSizes = PrimaryChipButtonDefaults.primaryChipButtonSizes()
 ) {
-    Button(
+    Box(
         modifier = modifier
             .height(sizes.chipButtonHeight)
+            .clip(cornersShape)
             .border(
                 width = 1.dp,
-                color = if (enabled) colors.enabledButtonStrokeColor else colors.disabledButtonStrokeColor,
+                color = if (selected) colors.enabledButtonStrokeColor else colors.disabledButtonStrokeColor,
                 shape = cornersShape
             )
-            .fillMaxWidth(),
-        onClick = onClick,
-        enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = colors.enabledButtonColor,
-            disabledBackgroundColor = colors.disabledButtonColor,
-            contentColor = colors.enabledTextColor,
-            disabledContentColor = colors.disabledTextColor
-        ),
-        contentPadding = PaddingValues(),
-        shape = cornersShape
+            .fillMaxWidth()
+            .background(if (selected) colors.enabledButtonColor else colors.disabledButtonColor)
+            .clickable { onSelect(!selected) },
+        contentAlignment = Alignment.Center
     ) {
         Text(
             text = text,
-            fontSize = sizes.fontSize
+            fontSize = sizes.fontSize,
+            color = if (selected) colors.enabledTextColor else colors.disabledTextColor,
+            fontWeight = if (selected) FontWeight.Bold else null
         )
     }
 }
@@ -61,8 +60,8 @@ fun PrimaryChipButton(
 fun CustomChipButtonEnabledPreview() {
     PrimaryChipButton(
         text = "text",
-        onClick = { },
-        enabled = true
+        onSelect = { },
+        selected = true
     )
 }
 
@@ -71,8 +70,8 @@ fun CustomChipButtonEnabledPreview() {
 fun CustomChipButtonDisabledPreview() {
     PrimaryChipButton(
         text = "text",
-        onClick = { },
-        enabled = false
+        onSelect = { },
+        selected = false
     )
 }
 
