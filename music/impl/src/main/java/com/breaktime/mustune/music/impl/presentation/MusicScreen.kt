@@ -2,14 +2,18 @@ package com.breaktime.mustune.music.impl.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -41,6 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import com.breaktime.mustune.common.Destinations
@@ -157,20 +162,54 @@ fun MusicScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(vertical = 12.dp)
                     ) {
-                        itemsIndexed(items) { index, item ->
-                            item?.let {
+                        itemsIndexed(items) { index, song ->
+                            song?.let {
                                 MusicItem(
-                                    title = item.title,
-                                    artist = item.artist,
+                                    title = song.title,
+                                    artist = song.artist,
                                     onItemClick = {
                                         val route =
-                                            destinations.find<SongEntry>().destination(item.id)
+                                            destinations.find<SongEntry>().destination(song.id)
                                         navController.navigate(route)
                                     },
-                                    onMoreClick = { bottomSheetSong = item }
+                                    onMoreClick = { bottomSheetSong = song }
                                 )
                                 if (index < items.itemSnapshotList.lastIndex)
                                     Divider(color = MusTuneTheme.colors.divider, thickness = 1.dp)
+                            }
+                        }
+                        when {
+                            items.itemCount == 0 && items.loadState.refresh is LoadState.NotLoading -> {
+                                item {
+                                    Box(
+                                        modifier = Modifier.fillParentMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text("No items to display")
+                                    }
+                                }
+                            }
+
+                            items.loadState.refresh is LoadState.Loading -> {
+                                item {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        CircularProgressIndicator(color = MusTuneTheme.colors.primary)
+                                    }
+                                }
+                            }
+
+                            items.loadState.append is LoadState.Loading -> {
+                                item {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        CircularProgressIndicator(color = MusTuneTheme.colors.primary)
+                                    }
+                                }
                             }
                         }
                     }
