@@ -7,12 +7,14 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.breaktime.mustune.common.Constants
 import com.breaktime.mustune.common.find
@@ -60,7 +62,7 @@ fun BackPressHandler(
     navController: NavController,
     backPressedDispatcher: OnBackPressedDispatcher? = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 ) {
-    val backStack by navController.currentBackStackEntryAsState()
+    val backStackSize by navController.rememberBackStackSize()
     val context = LocalContext.current
     val backCallback = remember {
         object : OnBackPressedCallback(true) {
@@ -81,8 +83,25 @@ fun BackPressHandler(
         }
     }
 
-    if (backStack != null) DisposableEffect(key1 = backPressedDispatcher) {
+    if (backStackSize == 1) DisposableEffect(key1 = backPressedDispatcher) {
         backPressedDispatcher?.addCallback(backCallback)
         onDispose { backCallback.remove() }
     }
+}
+
+@Composable
+private fun NavController.rememberBackStackSize(): State<Int> {
+    val backStackSize = remember {
+        mutableStateOf(backQueue.filter { it.destination is ComposeNavigator.Destination }.size)
+    }
+    DisposableEffect(this) {
+        val callback = NavController.OnDestinationChangedListener { _, _, _ ->
+            backStackSize.value = backQueue.filter {
+                it.destination is ComposeNavigator.Destination
+            }.size
+        }
+        addOnDestinationChangedListener(callback)
+        onDispose { removeOnDestinationChangedListener(callback) }
+    }
+    return backStackSize
 }

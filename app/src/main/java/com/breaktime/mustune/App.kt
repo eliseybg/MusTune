@@ -24,11 +24,14 @@ class App : Application() {
 
         val sessionManagerProvider = DaggerSessionManagerComponent.builder()
             .commonProvider(commonProvider)
-            .networkProvider(DaggerNetworkComponent.builder().build())
+            .networkProvider(
+                DaggerNetworkComponent.builder().commonProvider(commonProvider).build()
+            )
             .build()
 
         val networkProvider = DaggerNetworkComponent.builder()
             .tokenProvider(sessionManagerProvider.tokenProvider)
+            .commonProvider(commonProvider)
             .build()
 
         val musicManagerProvider = DaggerMusicManagerComponent.builder()
