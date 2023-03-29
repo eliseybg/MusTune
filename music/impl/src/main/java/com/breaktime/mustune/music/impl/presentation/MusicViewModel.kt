@@ -1,6 +1,7 @@
 package com.breaktime.mustune.music.impl.presentation
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.breaktime.mustune.common.presentation.BaseViewModel
 import com.breaktime.mustune.musicmanager.api.MusicManager
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
@@ -17,6 +18,7 @@ class MusicViewModel @Inject constructor(
 
     private val tabsSetup = screenTabs.map { tabs ->
         tabs.map { tab -> musicManager.getMusicTabSetup(tab) }
+            .map { tabSetup -> tabSetup.copy(songs = tabSetup.songs.cachedIn(viewModelScope)) }
     }
 
     init {

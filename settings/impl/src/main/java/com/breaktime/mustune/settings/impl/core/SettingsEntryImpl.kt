@@ -1,6 +1,7 @@
 package com.breaktime.mustune.settings.impl.core
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.breaktime.mustune.common.Destinations
@@ -19,9 +20,10 @@ class SettingsEntryImpl @Inject constructor() : SettingsEntry() {
         backStackEntry: NavBackStackEntry
     ) {
         val settingsManagerProvider = LocalSettingsManagerProvider.current
-        val viewModel = injectedViewModel(viewModelStoreOwner = {
+        val viewModelStore = remember {
             navController.currentBackStackEntry?.viewModelStore ?: backStackEntry.viewModelStore
-        }) {
+        }
+        val viewModel = injectedViewModel(viewModelStoreOwner = { viewModelStore }) {
             DaggerSettingsComponent.builder()
                 .settingsManagerProvider(settingsManagerProvider)
                 .build()

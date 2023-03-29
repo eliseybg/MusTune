@@ -1,6 +1,7 @@
 package com.breaktime.mustune.search_songs.impl.presentation
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.breaktime.mustune.common.Constants
 import com.breaktime.mustune.common.presentation.BaseViewModel
 import com.breaktime.mustune.musicmanager.api.MusicManager
@@ -27,7 +28,7 @@ class SearchSongsViewModel @Inject constructor(
     ) { searchText, searchFilter ->
         searchText to searchFilter
     }.flatMapLatest { (searchText, searchFilter) ->
-        flow { emit(musicManager.searchSongs(searchText, searchFilter)) }
+        flow { emit(musicManager.searchSongs(searchText, searchFilter).cachedIn(viewModelScope)) }
     }
 
     init {

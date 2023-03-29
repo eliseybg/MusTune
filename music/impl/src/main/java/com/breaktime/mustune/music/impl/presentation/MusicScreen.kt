@@ -45,10 +45,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import com.breaktime.mustune.common.Destinations
+import com.breaktime.mustune.common.extentions.isLoading
 import com.breaktime.mustune.common.find
 import com.breaktime.mustune.create_edit_file.api.CreateEditFileEntry
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
@@ -179,35 +179,23 @@ fun MusicScreen(
                             }
                         }
                         when {
-                            items.itemCount == 0 && items.loadState.refresh is LoadState.NotLoading -> {
+                            items.loadState.isLoading -> {
+                                item {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        CircularProgressIndicator(color = MusTuneTheme.colors.primary)
+                                    }
+                                }
+                            }
+                            items.itemCount == 0 && !items.loadState.isLoading -> {
                                 item {
                                     Box(
                                         modifier = Modifier.fillParentMaxSize(),
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Text("No items to display")
-                                    }
-                                }
-                            }
-
-                            items.loadState.refresh is LoadState.Loading -> {
-                                item {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.Center
-                                    ) {
-                                        CircularProgressIndicator(color = MusTuneTheme.colors.primary)
-                                    }
-                                }
-                            }
-
-                            items.loadState.append is LoadState.Loading -> {
-                                item {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.Center
-                                    ) {
-                                        CircularProgressIndicator(color = MusTuneTheme.colors.primary)
                                     }
                                 }
                             }
