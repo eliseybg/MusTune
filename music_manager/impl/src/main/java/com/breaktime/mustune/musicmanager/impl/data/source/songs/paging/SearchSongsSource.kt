@@ -1,4 +1,4 @@
-package com.breaktime.mustune.musicmanager.impl.data.source.songs.remote
+package com.breaktime.mustune.musicmanager.impl.data.source.songs.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -6,6 +6,7 @@ import com.breaktime.mustune.common.Constants
 import com.breaktime.mustune.musicmanager.api.models.SearchFilter
 import com.breaktime.mustune.musicmanager.impl.data.entities.SearchSongsBody
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
+import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SongsApiService
 import retrofit2.HttpException
 import java.io.IOException
 

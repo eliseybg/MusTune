@@ -1,4 +1,4 @@
-package com.breaktime.mustune.musicmanager.impl.data.source.songs.remote
+package com.breaktime.mustune.musicmanager.impl.data.source.songs.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -10,6 +10,7 @@ import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.impl.data.entities.RemoteKeysEntity
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.local.SongsDatabase
+import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SongsApiService
 import retrofit2.HttpException
 import java.io.IOException
 import kotlin.time.Duration.Companion.milliseconds
@@ -26,7 +27,7 @@ class SongsRemoteMediator(
         val firstSongCreationTime = songsDatabase.remoteKeysDao.getCreationTime(tab.name) ?: 0
         val firstSongCreationTimeInDay = firstSongCreationTime.milliseconds.inWholeDays
 
-        return if (currentTimeInDay - firstSongCreationTimeInDay > cacheFrequency) {
+        return if (currentTimeInDay - firstSongCreationTimeInDay >= cacheFrequency) {
             InitializeAction.LAUNCH_INITIAL_REFRESH
         } else {
             InitializeAction.SKIP_INITIAL_REFRESH

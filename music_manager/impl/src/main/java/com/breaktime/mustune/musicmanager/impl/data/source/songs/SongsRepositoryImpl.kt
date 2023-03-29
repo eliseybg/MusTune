@@ -9,9 +9,9 @@ import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.api.models.SearchFilter
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.local.SongsDatabase
-import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SearchSongsSource
+import com.breaktime.mustune.musicmanager.impl.data.source.songs.paging.SearchSongsSource
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SongsApiService
-import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SongsRemoteMediator
+import com.breaktime.mustune.musicmanager.impl.data.source.songs.paging.SongsRemoteMediator
 import com.breaktime.mustune.musicmanager.impl.domain.repository.SongsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
