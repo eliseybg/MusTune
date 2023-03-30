@@ -4,6 +4,7 @@ import android.app.Application
 import com.breaktime.mustune.common.di.DaggerCommonComponent
 import com.breaktime.mustune.di.AppProvider
 import com.breaktime.mustune.di.DaggerAppComponent
+import com.breaktime.mustune.file_manager.impl.di.DaggerFileManagerComponent
 import com.breaktime.mustune.musicmanager.impl.di.DaggerMusicManagerComponent
 import com.breaktime.mustune.network.impl.DaggerNetworkComponent
 import com.breaktime.mustune.session_manager.impl.di.DaggerSessionManagerComponent
@@ -15,8 +16,11 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         val commonProvider = DaggerCommonComponent.factory().create(this)
+
+        val fileManagerProvider = DaggerFileManagerComponent.builder()
+            .commonProvider(commonProvider)
+            .build()
 
         val settingsManagerProvider = DaggerSettingsManagerComponent.builder()
             .commonProvider(commonProvider)
@@ -41,6 +45,7 @@ class App : Application() {
 
         appProvider = DaggerAppComponent.builder()
             .commonProvider(commonProvider)
+            .fileManagerProvider(fileManagerProvider)
             .sessionManagerProvider(sessionManagerProvider)
             .musicManagerProvider(musicManagerProvider)
             .settingsManagerProvider(settingsManagerProvider)

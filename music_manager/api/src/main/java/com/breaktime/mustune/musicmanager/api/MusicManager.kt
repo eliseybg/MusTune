@@ -1,13 +1,37 @@
 package com.breaktime.mustune.musicmanager.api
 
 import androidx.paging.PagingData
+import com.breaktime.mustune.common.domain.Outcome
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.api.models.SearchFilter
+import com.breaktime.mustune.musicmanager.api.models.ShareSettings
 import com.breaktime.mustune.musicmanager.api.models.Song
 import com.breaktime.mustune.musicmanager.api.models.TabSetup
 import kotlinx.coroutines.flow.Flow
+import java.io.File
 
 interface MusicManager {
+    suspend fun getSong(songId: String, isForce: Boolean = false): Outcome<Song>
+
     fun getMusicTabSetup(tab: MusicTab): TabSetup
+
     fun searchSongs(searchText: String, searchFilter: SearchFilter): Flow<PagingData<Song>>
+
+    suspend fun addSong(
+        title: String,
+        artist: String,
+        isDownloadable: Boolean,
+        shareSettings: ShareSettings,
+        file: File
+    ): Outcome<Unit>
+
+    suspend fun editSong(
+        songId: String,
+        title: String,
+        artist: String,
+        isDownloadable: Boolean,
+        shareSettings: ShareSettings
+    ): Outcome<Unit>
+
+    suspend fun deleteSong(songId: String): Outcome<Unit>
 }

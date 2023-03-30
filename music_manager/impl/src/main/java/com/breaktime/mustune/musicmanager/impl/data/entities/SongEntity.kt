@@ -11,5 +11,7 @@ data class SongEntity(
     val artist: String,
     val link: String,
     val tab: String,
+    val isDownloadable: Boolean,
+    val shareType: ShareType,
     var createdAt: Long = System.currentTimeMillis()
 )

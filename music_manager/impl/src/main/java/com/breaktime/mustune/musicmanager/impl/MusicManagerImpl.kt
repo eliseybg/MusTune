@@ -1,20 +1,35 @@
 package com.breaktime.mustune.musicmanager.impl
 
 import androidx.paging.PagingData
+import com.breaktime.mustune.common.domain.Outcome
 import com.breaktime.mustune.musicmanager.api.MusicManager
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.api.models.SearchFilter
+import com.breaktime.mustune.musicmanager.api.models.ShareSettings
 import com.breaktime.mustune.musicmanager.api.models.Song
 import com.breaktime.mustune.musicmanager.api.models.TabSetup
+import com.breaktime.mustune.musicmanager.impl.domain.use_case.AddSongUseCase
+import com.breaktime.mustune.musicmanager.impl.domain.use_case.DeleteSongUseCase
+import com.breaktime.mustune.musicmanager.impl.domain.use_case.EditSongUseCase
+import com.breaktime.mustune.musicmanager.impl.domain.use_case.GetSongUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.GetSongsFlowUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.SearchSongsFlowUseCase
 import kotlinx.coroutines.flow.Flow
+import java.io.File
 import javax.inject.Inject
 
 class MusicManagerImpl @Inject constructor(
+    private val getSongUseCase: GetSongUseCase,
     private val getSongsFlowUseCase: GetSongsFlowUseCase,
-    private val searchSongsFlowUseCase: SearchSongsFlowUseCase
+    private val searchSongsFlowUseCase: SearchSongsFlowUseCase,
+    private val addSongUseCase: AddSongUseCase,
+    private val editSongUseCase: EditSongUseCase,
+    private val deleteSongUseCase: DeleteSongUseCase,
 ) : MusicManager {
+    override suspend fun getSong(songId: String, isForce: Boolean): Outcome<Song> {
+        return getSongUseCase.invoke(GetSongUseCase.Params(songId, isForce))
+    }
+
     override fun getMusicTabSetup(tab: MusicTab): TabSetup {
         return TabSetup(
             tab = tab,
@@ -32,5 +47,32 @@ class MusicManagerImpl @Inject constructor(
                 searchFilter
             )
         )
+    }
+
+    override suspend fun addSong(
+        title: String,
+        artist: String,
+        isDownloadable: Boolean,
+        shareSettings: ShareSettings,
+        file: File
+    ): Outcome<Unit> {
+        val params = AddSongUseCase.Params(title, artist, isDownloadable, shareSettings, file)
+        return addSongUseCase.invoke(params)
+    }
+
+    override suspend fun editSong(
+        songId: String,
+        title: String,
+        artist: String,
+        isDownloadable: Boolean,
+        shareSettings: ShareSettings
+    ): Outcome<Unit> {
+        val params = EditSongUseCase.Params(songId, title, artist, isDownloadable, shareSettings)
+        return editSongUseCase.invoke(params)
+    }
+
+    override suspend fun deleteSong(songId: String): Outcome<Unit> {
+        val params = DeleteSongUseCase.Params(songId)
+        return deleteSongUseCase.invoke(params)
     }
 }

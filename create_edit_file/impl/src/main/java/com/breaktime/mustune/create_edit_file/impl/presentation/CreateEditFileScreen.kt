@@ -1,5 +1,12 @@
 package com.breaktime.mustune.create_edit_file.impl.presentation
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,7 +21,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
@@ -24,21 +34,27 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.breaktime.mustune.common.extentions.pxToDp
+import com.breaktime.mustune.musicmanager.api.models.ShareSettings
 import com.breaktime.mustune.resources.R
 import com.breaktime.mustune.resources.theme.MusTuneTheme
 import com.breaktime.mustune.ui_kit.common.PrimaryCheckbox
@@ -47,6 +63,9 @@ import com.breaktime.mustune.ui_kit.common.PrimaryTextButton
 import com.breaktime.mustune.ui_kit.common.PrimaryTextButtonDefaults
 import com.breaktime.mustune.ui_kit.common.PrimaryTextField
 import com.breaktime.mustune.ui_kit.common.Toolbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun CreateEditFileScreen(
@@ -54,6 +73,24 @@ fun CreateEditFileScreen(
     navController: NavHostController
 ) {
     val state by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = true) {
+        viewModelObserver(viewModel, scope, navController)
+    }
+
+    val openFileContract = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri -> viewModel.setEvent(CreateEditFileContract.Event.SelectFile(uri)) }
+
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) openFileContract.launch(arrayOf(""))
+        else Toast.makeText(context, "You need to grant permissions", Toast.LENGTH_SHORT).show()
+    }
+
     Scaffold(
         topBar = {
             Toolbar(
@@ -128,12 +165,12 @@ fun CreateEditFileScreen(
             PrimarySwitch(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Is shareable?",
-                checked = state.shareState is ShareState.Shared,
+                checked = state.shareSettings is ShareSettings.Shared,
                 onCheckedChange = {
                     viewModel.setEvent(CreateEditFileContract.Event.OnChangeShareableEnabled)
                 }
             )
-            if (state.shareState is ShareState.Shared) {
+            if (state.shareSettings is ShareSettings.Shared) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = "Who have access?",
@@ -141,21 +178,21 @@ fun CreateEditFileScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 ShareTypesDropDown(
-                    selected = state.shareState as ShareState.Shared,
+                    selected = state.shareSettings as ShareSettings.Shared,
                     items = listOf(
-                        ShareState.Shared.AllUsers,
-                        ShareState.Shared.OnlyInvited(),
-                        ShareState.Shared.AnyOneWithLink
+                        ShareSettings.Shared.AllUsers,
+                        ShareSettings.Shared.OnlyInvited(),
+                        ShareSettings.Shared.AnyOneWithLink
                     ),
                     onSelect = {
                         viewModel.setEvent(CreateEditFileContract.Event.OnSelectShareType(it))
                     }
                 )
-                if (state.shareState is ShareState.Shared.OnlyInvited) {
+                if (state.shareSettings is ShareSettings.Shared.OnlyInvited) {
                     Spacer(modifier = Modifier.height(16.dp))
                     PrimaryCheckbox(
                         text = "Allow others to share",
-                        checked = (state.shareState as ShareState.Shared.OnlyInvited).allowOtherToShare,
+                        checked = (state.shareSettings as ShareSettings.Shared.OnlyInvited).allowOtherToShare,
                         onCheckedChange = { viewModel.setEvent(CreateEditFileContract.Event.OnChangeAllowOtherToShare) }
                     )
                 }
@@ -163,16 +200,30 @@ fun CreateEditFileScreen(
             Spacer(modifier = Modifier.weight(1f))
             if (state.isEdit) PrimaryTextButton(
                 text = "Remove file",
-                onClick = {
-                },
+                onClick = { viewModel.setEvent(CreateEditFileContract.Event.OnDeleteFileClicked) },
                 colors = PrimaryTextButtonDefaults.primaryTextButtonColors(
                     enabledButtonColor = MusTuneTheme.colors.secondary,
                     enabledTextColor = MusTuneTheme.colors.delete
                 )
             )
-            else PrimaryTextButton(
+            else state.attachedFileName?.let { filename ->
+                FileItem(
+                    filename = filename,
+                    onCancelClick = {
+                        viewModel.setEvent(CreateEditFileContract.Event.OnDeleteFileClicked)
+                    }
+                )
+            } ?: PrimaryTextButton(
                 text = "Select file",
-                onClick = {},
+                onClick = {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+                        || context.isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    ) {
+                        openFileContract.launch(arrayOf("*/*"))
+                    } else {
+                        requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    }
+                },
                 colors = PrimaryTextButtonDefaults.primaryTextButtonColors(
                     enabledButtonColor = MusTuneTheme.colors.secondary,
                     enabledTextColor = MusTuneTheme.colors.content
@@ -183,12 +234,11 @@ fun CreateEditFileScreen(
     }
 }
 
-
 @Composable
 fun ShareTypesDropDown(
-    selected: ShareState.Shared,
-    items: List<ShareState.Shared>,
-    onSelect: (ShareState.Shared) -> Unit
+    selected: ShareSettings.Shared,
+    items: List<ShareSettings.Shared>,
+    onSelect: (ShareSettings.Shared) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var width by remember { mutableStateOf(0) }
@@ -245,4 +295,70 @@ fun ShareTypesDropDown(
             }
         }
     }
+}
+
+@Composable
+fun FileItem(
+    filename: String,
+    onCancelClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(46.dp)
+            .clip(RoundedCornerShape(15.dp))
+            .background(MusTuneTheme.colors.primary)
+            .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier.size(24.dp),
+            painter = painterResource(id = R.drawable.ic_file),
+            contentDescription = null,
+            tint = MusTuneTheme.colors.onPrimary
+        )
+
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 8.dp),
+            text = filename,
+            fontSize = 18.sp,
+            overflow = TextOverflow.Ellipsis,
+            color = MusTuneTheme.colors.onPrimary
+        )
+
+        Button(
+            modifier = Modifier.size(24.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = MusTuneTheme.colors.onPrimary
+            ),
+            onClick = onCancelClick,
+            shape = CircleShape,
+            contentPadding = PaddingValues(0.dp)
+        ) {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(id = R.drawable.ic_cancel_w2),
+                contentDescription = null,
+                tint = MusTuneTheme.colors.primary
+            )
+        }
+    }
+}
+
+fun Context.isPermissionGranted(permission: String): Boolean {
+    return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+}
+
+private fun viewModelObserver(
+    viewModel: CreateEditFileViewModel,
+    scope: CoroutineScope,
+    navController: NavHostController
+) {
+    viewModel.effect.onEach {
+        when (it) {
+            CreateEditFileContract.Effect.CloseScreen -> navController.popBackStack()
+        }
+    }.launchIn(scope)
 }

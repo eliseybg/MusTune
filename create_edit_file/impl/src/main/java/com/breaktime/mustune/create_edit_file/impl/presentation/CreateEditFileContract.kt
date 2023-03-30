@@ -1,8 +1,10 @@
 package com.breaktime.mustune.create_edit_file.impl.presentation
 
+import android.net.Uri
 import com.breaktime.mustune.common.presentation.UiEffect
 import com.breaktime.mustune.common.presentation.UiEvent
 import com.breaktime.mustune.common.presentation.UiState
+import com.breaktime.mustune.musicmanager.api.models.ShareSettings
 
 class CreateEditFileContract {
     sealed class Event : UiEvent {
@@ -10,7 +12,10 @@ class CreateEditFileContract {
         data class UpdateArtistText(val artistText: String) : Event()
         object OnChangeDownloadableEnabled : Event()
         object OnChangeShareableEnabled : Event()
-        data class OnSelectShareType(val shareState: ShareState.Shared) : Event()
+        object OnDeleteFileClicked : Event()
+        data class OnSelectShareType(val shareSettings: ShareSettings.Shared) : Event()
+        data class SelectFile(val uri: Uri?) : Event()
+
         object OnChangeAllowOtherToShare : Event()
         object OnSaveClick : Event()
     }
@@ -20,19 +25,11 @@ class CreateEditFileContract {
         val title: String = "",
         val artist: String = "",
         val isDownloadable: Boolean = true,
-        val shareState: ShareState = ShareState.Shared.AllUsers
+        val shareSettings: ShareSettings = ShareSettings.Shared.AllUsers,
+        val attachedFileName: String? = null
     ) : UiState
 
-    sealed class Effect : UiEffect
-}
-
-sealed class ShareState {
-    object NoSharing : ShareState()
-    sealed class Shared(val name: String) : ShareState() {
-        data class OnlyInvited(val allowOtherToShare: Boolean = true) :
-            Shared("only invited people")
-
-        object AnyOneWithLink : Shared("anyone with the link")
-        object AllUsers : Shared("all users")
+    sealed class Effect : UiEffect {
+        object CloseScreen : Effect()
     }
 }

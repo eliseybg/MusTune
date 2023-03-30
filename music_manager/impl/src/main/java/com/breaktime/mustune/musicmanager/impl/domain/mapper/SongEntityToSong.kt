@@ -6,5 +6,7 @@ import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 fun SongEntity.toSong() = Song(
     id = id,
     title = title,
-    artist = artist
+    artist = artist,
+    isDownloadable = isDownloadable,
+    shareSettings = shareType.toShareSettings()
 )

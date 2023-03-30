@@ -46,6 +46,7 @@ dependencies {
     implementation project(':resources')
     implementation project(':common')
     implementation project(':network')
+    implementation project(':file_manager:impl')
     implementation project(':music_manager:impl')
     implementation project(':settings_manager:impl')
     implementation project(':session_manager:impl')
