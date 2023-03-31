@@ -9,10 +9,7 @@ class IsAuthorizedUseCase @Inject constructor(
     private val sessionRepository: SessionRepository
 ) : BaseOutcomeUseCase<Boolean, IsAuthorizedUseCase.Params>() {
     override suspend fun execute(params: Params): Outcome<Boolean> {
-        val token = sessionRepository.getUserInfo()?.token.orEmpty()
-        if (token.isNotBlank()) {
-            sessionRepository.checkUserToken(token)
-        }
+        val token = sessionRepository.getUserInfo()?.registerToken.orEmpty()
         return Outcome.Success.Value(token.isNotBlank())
     }
 

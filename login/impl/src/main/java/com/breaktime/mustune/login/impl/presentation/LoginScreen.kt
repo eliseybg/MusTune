@@ -327,7 +327,7 @@ fun SignUp(
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    viewModel.setEvent(LoginContract.Event.OnSignInClick)
+                    viewModel.setEvent(LoginContract.Event.OnSignUpClick)
                 },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color(0xFF5A6993)
@@ -336,7 +336,7 @@ fun SignUp(
                 interactionSource = MutableInteractionSource()
             ) {
                 Text(
-                    text = "Log in",
+                    text = "Sign up",
                     fontSize = 22.sp,
                     fontFamily = inter,
                     fontWeight = FontWeight.Bold,

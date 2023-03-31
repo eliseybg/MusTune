@@ -8,7 +8,7 @@ class GetUserTokenUseCase @Inject constructor(
     private val sessionRepository: SessionRepository
 ) : BaseUseCase<String, GetUserTokenUseCase.Params>() {
     override suspend fun execute(params: Params): String {
-        return sessionRepository.getUserInfo()?.token.orEmpty()
+        return sessionRepository.getUserInfo()?.registerToken.orEmpty()
     }
 
     object Params
