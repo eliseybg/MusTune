@@ -43,6 +43,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -213,7 +214,7 @@ fun SearchSongsScreen(
                                     modifier = Modifier.fillParentMaxSize(),
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    Text("No items to display")
+                                    Text(stringResource(R.string.no_items_to_display))
                                 }
                             }
                         }
@@ -237,7 +238,7 @@ fun SearchBottomSheet(
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 modifier = Modifier.padding(horizontal = 32.dp),
-                text = "Search in tabs",
+                text = stringResource(R.string.search_in_tabs),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -249,7 +250,7 @@ fun SearchBottomSheet(
                 Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     PrimaryChipButton(
                         modifier = Modifier.weight(1f),
-                        text = "Explore",
+                        text = stringResource(R.string.explore),
                         selected = searchInTabs.contains(MusicTab.EXPLORE),
                         onSelect = { isSelected ->
                             if (isSelected) searchInTabs.add(MusicTab.EXPLORE)
@@ -258,7 +259,7 @@ fun SearchBottomSheet(
                     )
                     PrimaryChipButton(
                         modifier = Modifier.weight(1f),
-                        text = "Favourite",
+                        text = stringResource(R.string.favourite),
                         selected = searchInTabs.contains(MusicTab.FAVOURITE),
                         onSelect = { isSelected ->
                             if (isSelected) searchInTabs.add(MusicTab.FAVOURITE)
@@ -269,7 +270,7 @@ fun SearchBottomSheet(
                 Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     PrimaryChipButton(
                         modifier = Modifier.weight(1f),
-                        text = "Personal",
+                        text = stringResource(R.string.personal),
                         selected = searchInTabs.contains(MusicTab.PERSONAL),
                         onSelect = { isSelected ->
                             if (isSelected) searchInTabs.add(MusicTab.PERSONAL)
@@ -278,7 +279,7 @@ fun SearchBottomSheet(
                     )
                     PrimaryChipButton(
                         modifier = Modifier.weight(1f),
-                        text = "Shared",
+                        text = stringResource(R.string.shared),
                         selected = searchInTabs.contains(MusicTab.SHARED),
                         onSelect = { isSelected ->
                             if (isSelected) searchInTabs.add(MusicTab.SHARED)
@@ -292,7 +293,7 @@ fun SearchBottomSheet(
 
             Text(
                 modifier = Modifier.padding(horizontal = 32.dp),
-                text = "Search in text",
+                text = stringResource(R.string.search_in_text),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -302,17 +303,17 @@ fun SearchBottomSheet(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 PrimaryRadioButton(
-                    text = "Title and artist",
+                    text = stringResource(R.string.title_and_artist),
                     checked = searchInText == SearchFilter.SearchInText.TITLE_ARTIST,
                     onCheckedChange = { searchInText = SearchFilter.SearchInText.TITLE_ARTIST }
                 )
                 PrimaryRadioButton(
-                    text = "Title",
+                    text = stringResource(R.string.title),
                     checked = searchInText == SearchFilter.SearchInText.TITLE,
                     onCheckedChange = { searchInText = SearchFilter.SearchInText.TITLE }
                 )
                 PrimaryRadioButton(
-                    text = "Artist",
+                    text = stringResource(R.string.artist),
                     checked = searchInText == SearchFilter.SearchInText.ARTIST,
                     onCheckedChange = { searchInText = SearchFilter.SearchInText.ARTIST }
                 )
@@ -322,7 +323,7 @@ fun SearchBottomSheet(
 
             PrimaryTextButton(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                text = "Apply",
+                text = stringResource(R.string.apply),
                 onClick = { onApplyClick(SearchFilter(searchInTabs, searchInText)) }
             )
         }

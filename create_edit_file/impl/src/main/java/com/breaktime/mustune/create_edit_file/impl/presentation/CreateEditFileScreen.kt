@@ -47,6 +47,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -88,7 +89,11 @@ fun CreateEditFileScreen(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) openFileContract.launch(arrayOf(""))
-        else Toast.makeText(context, "You need to grant permissions", Toast.LENGTH_SHORT).show()
+        else Toast.makeText(
+            context,
+            context.getText(R.string.you_need_to_grant_permissions),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     Scaffold(
@@ -105,7 +110,7 @@ fun CreateEditFileScreen(
                 },
                 content = {
                     Text(
-                        text = if (state.isEdit) "Edit file" else "Load file",
+                        text = stringResource(if (state.isEdit) R.string.edit_file else R.string.load_file),
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp
                     )
@@ -113,7 +118,7 @@ fun CreateEditFileScreen(
                 actions = {
                     Text(
                         modifier = Modifier.clickable { viewModel.setEvent(CreateEditFileContract.Event.OnSaveClick) },
-                        text = "save",
+                        text = stringResource(R.string.save),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
                     )
@@ -138,7 +143,7 @@ fun CreateEditFileScreen(
                 onClearedClick = {
                     viewModel.setEvent(CreateEditFileContract.Event.UpdateTitleText(""))
                 },
-                hint = "Title"
+                hint = stringResource(R.string.title)
             )
             Spacer(modifier = Modifier.height(16.dp))
             PrimaryTextField(
@@ -150,12 +155,12 @@ fun CreateEditFileScreen(
                 onClearedClick = {
                     viewModel.setEvent(CreateEditFileContract.Event.UpdateArtistText(""))
                 },
-                hint = "Artist"
+                hint = stringResource(R.string.artist)
             )
             Spacer(modifier = Modifier.height(40.dp))
             PrimarySwitch(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Is downloadable?",
+                text = stringResource(R.string.is_downloadable),
                 checked = state.isDownloadable,
                 onCheckedChange = {
                     viewModel.setEvent(CreateEditFileContract.Event.OnChangeDownloadableEnabled)
@@ -164,7 +169,7 @@ fun CreateEditFileScreen(
             Spacer(modifier = Modifier.height(24.dp))
             PrimarySwitch(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Is shareable?",
+                text = stringResource(R.string.is_shareable),
                 checked = state.shareSettings is ShareSettings.Shared,
                 onCheckedChange = {
                     viewModel.setEvent(CreateEditFileContract.Event.OnChangeShareableEnabled)
@@ -173,7 +178,7 @@ fun CreateEditFileScreen(
             if (state.shareSettings is ShareSettings.Shared) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Who have access?",
+                    text = stringResource(R.string.who_have_access),
                     fontSize = 14.sp
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -191,7 +196,7 @@ fun CreateEditFileScreen(
                 if (state.shareSettings is ShareSettings.Shared.OnlyInvited) {
                     Spacer(modifier = Modifier.height(16.dp))
                     PrimaryCheckbox(
-                        text = "Allow others to share",
+                        text = stringResource(R.string.allow_others_to_share),
                         checked = (state.shareSettings as ShareSettings.Shared.OnlyInvited).allowOtherToShare,
                         onCheckedChange = { viewModel.setEvent(CreateEditFileContract.Event.OnChangeAllowOtherToShare) }
                     )
@@ -199,7 +204,7 @@ fun CreateEditFileScreen(
             }
             Spacer(modifier = Modifier.weight(1f))
             if (state.isEdit) PrimaryTextButton(
-                text = "Remove file",
+                text = stringResource(R.string.remove_file),
                 onClick = { viewModel.setEvent(CreateEditFileContract.Event.OnDeleteFileClicked) },
                 colors = PrimaryTextButtonDefaults.primaryTextButtonColors(
                     enabledButtonColor = MusTuneTheme.colors.secondary,
@@ -214,7 +219,7 @@ fun CreateEditFileScreen(
                     }
                 )
             } ?: PrimaryTextButton(
-                text = "Select file",
+                text = stringResource(R.string.select_file),
                 onClick = {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
                         || context.isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE)

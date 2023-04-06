@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -51,12 +53,12 @@ fun FullLogo(modifier: Modifier = Modifier) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Logo()
         Text(
-            text = "MusTune",
+            text = stringResource(id = R.string.app_name),
             fontSize = 44.sp,
             fontFamily = overlock
         )
         Text(
-            text = "Break time",
+            text = stringResource(R.string.break_time),
             fontSize = 33.sp,
             color = MusTuneTheme.colors.primary,
             fontFamily = pirataOne
@@ -103,13 +105,13 @@ fun OnBoarding(loginNavController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Hello",
+                text = stringResource(R.string.hello),
                 fontSize = 24.sp,
                 fontFamily = overlock
             )
             Text(
                 modifier = Modifier.padding(horizontal = 26.dp),
-                text = "Start learning how to play musical instruments and join us",
+                text = stringResource(R.string.start_learning_how_to_play_musical_instruments_and_join_us),
                 fontSize = 20.sp,
                 fontFamily = overlock
             )
@@ -128,7 +130,7 @@ fun OnBoarding(loginNavController: NavController) {
                 interactionSource = MutableInteractionSource()
             ) {
                 Text(
-                    text = "Log in",
+                    text = stringResource(id = R.string.log_in),
                     fontSize = 22.sp,
                     fontFamily = inter,
                     fontWeight = FontWeight.Bold,
@@ -138,15 +140,16 @@ fun OnBoarding(loginNavController: NavController) {
             Spacer(modifier = Modifier.height(20.dp))
             Row {
                 Text(
-                    text = "Don’t you have account? ",
+                    text = stringResource(id = R.string.don_t_you_have_account),
                     fontSize = 18.sp
                 )
+                Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     modifier = Modifier.clickable {
                         loginNavController.popBackStack()
                         loginNavController.navigate(LoginEntry.LoginScreen.SIGN_UP.name)
                     },
-                    text = "Register",
+                    text = stringResource(id = R.string.register),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -178,7 +181,7 @@ fun SignIn(
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                text = "Log in",
+                text = stringResource(id = R.string.log_in),
                 fontSize = 37.sp,
                 fontFamily = overlock
             )
@@ -190,7 +193,7 @@ fun SignIn(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 onValueChange = { viewModel.setEvent(LoginContract.Event.UpdateEmailText(it)) },
                 onClearedClick = { viewModel.setEvent(LoginContract.Event.UpdateEmailText("")) },
-                hint = "email"
+                hint = stringResource(R.string.email)
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -202,14 +205,14 @@ fun SignIn(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 onValueChange = { viewModel.setEvent(LoginContract.Event.UpdatePasswordText(it)) },
                 onClearedClick = { viewModel.setEvent(LoginContract.Event.UpdatePasswordText("")) },
-                hint = "password"
+                hint = stringResource(id = R.string.password)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 modifier = Modifier.align(Alignment.End),
-                text = "Forget password",
+                text = stringResource(R.string.forget_password),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF006CD0)
@@ -229,7 +232,7 @@ fun SignIn(
                 interactionSource = MutableInteractionSource()
             ) {
                 Text(
-                    text = "Log in",
+                    text = stringResource(id = R.string.log_in),
                     fontSize = 22.sp,
                     fontFamily = inter,
                     fontWeight = FontWeight.Bold,
@@ -239,15 +242,16 @@ fun SignIn(
             Spacer(modifier = Modifier.height(32.dp))
             Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 Text(
-                    text = "Don’t you have account? ",
+                    text = stringResource(R.string.don_t_you_have_account),
                     fontSize = 18.sp
                 )
+                Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     modifier = Modifier.clickable {
                         loginNavController.popBackStack()
                         loginNavController.navigate(LoginEntry.LoginScreen.SIGN_UP.name)
                     },
-                    text = "Register",
+                    text = stringResource(R.string.register),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -284,7 +288,7 @@ fun SignUp(
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                text = "Sign up",
+                text = stringResource(id = R.string.sign_up),
                 fontSize = 37.sp,
                 fontFamily = overlock
             )
@@ -296,7 +300,7 @@ fun SignUp(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 onValueChange = { viewModel.setEvent(LoginContract.Event.UpdateUsernameText(it.filterUsername())) },
                 onClearedClick = { viewModel.setEvent(LoginContract.Event.UpdateUsernameText("")) },
-                hint = "username"
+                hint = stringResource(R.string.username)
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -307,7 +311,7 @@ fun SignUp(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 onValueChange = { viewModel.setEvent(LoginContract.Event.UpdateEmailText(it)) },
                 onClearedClick = { viewModel.setEvent(LoginContract.Event.UpdateEmailText("")) },
-                hint = "email"
+                hint = stringResource(id = R.string.email)
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -319,7 +323,7 @@ fun SignUp(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 onValueChange = { viewModel.setEvent(LoginContract.Event.UpdatePasswordText(it)) },
                 onClearedClick = { viewModel.setEvent(LoginContract.Event.UpdatePasswordText("")) },
-                hint = "password"
+                hint = stringResource(R.string.password)
             )
 
             Spacer(modifier = Modifier.height(40.dp))
@@ -336,7 +340,7 @@ fun SignUp(
                 interactionSource = MutableInteractionSource()
             ) {
                 Text(
-                    text = "Sign up",
+                    text = stringResource(R.string.sign_up),
                     fontSize = 22.sp,
                     fontFamily = inter,
                     fontWeight = FontWeight.Bold,
@@ -346,15 +350,16 @@ fun SignUp(
             Spacer(modifier = Modifier.height(32.dp))
             Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 Text(
-                    text = "Do you have account? ",
+                    text = stringResource(R.string.do_you_have_account),
                     fontSize = 18.sp
                 )
+                Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     modifier = Modifier.clickable {
                         loginNavController.popBackStack()
                         loginNavController.navigate(LoginEntry.LoginScreen.SIGN_IN.name)
                     },
-                    text = "Log in",
+                    text = stringResource(R.string.log_in),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -372,7 +377,7 @@ fun SignUp(
 fun OrDivider(modifier: Modifier = Modifier) {
     Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Divider(modifier = Modifier.weight(1f), color = MusTuneTheme.colors.content)
-        Text(modifier = Modifier.padding(horizontal = 10.dp), text = "or")
+        Text(modifier = Modifier.padding(horizontal = 10.dp), text = stringResource(R.string.or))
         Divider(modifier = Modifier.weight(1f), color = MusTuneTheme.colors.content)
     }
 }

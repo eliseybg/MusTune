@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MusTune</string>
+    <string name="edit_info">Modifica informazioni</string>
+    <string name="download_file">Download file</string>
+    <string name="share_settings">Condividi le impostazioni</string>
+    <string name="copy_link">Copia link</string>
+    <string name="delete_file">Cancella il file</string>
+    <string name="add_to_favourite">Aggiungi ai preferiti</string>
+    <string name="remove_from_favourite">Rimuovi dai preferiti</string>
+</resources>

@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,7 +46,7 @@ fun SettingsScreen(
             Toolbar(
                 content = {
                     Text(
-                        text = "Settings",
+                        text = stringResource(R.string.settings),
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp
                     )
@@ -77,7 +78,7 @@ fun SettingsScreen(
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                text = "Common",
+                text = stringResource(R.string.common),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -86,7 +87,7 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .padding(top = 16.dp),
                 iconId = R.drawable.ic_bell_20,
-                text = "Notifications",
+                text = stringResource(R.string.notifications),
                 checked = state.isNotificationsEnabled,
                 onCheckedChange = {
                     viewModel.setEvent(SettingsContract.Event.OnChangeNotificationEnabled)
@@ -97,7 +98,7 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .padding(top = 16.dp),
                 iconId = R.drawable.ic_moon_20,
-                text = "Dark mode",
+                text = stringResource(R.string.dark_mode),
                 checked = state.isDarkModeEnabled,
                 onCheckedChange = {
                     viewModel.setEvent(SettingsContract.Event.OnChangeDarkModeEnabled)
@@ -105,7 +106,7 @@ fun SettingsScreen(
             )
             Text(
                 modifier = Modifier.padding(top = 40.dp, start = 16.dp, end = 16.dp),
-                text = "Account",
+                text = stringResource(R.string.account),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -114,19 +115,19 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .padding(top = 16.dp),
                 iconId = R.drawable.ic_globe_20,
-                text = "Language"
+                text = stringResource(R.string.language)
             )
             SettingsMoreItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
                 iconId = R.drawable.ic_lock_20,
-                text = "Change password"
+                text = stringResource(R.string.change_password)
             )
 
             Text(
                 modifier = Modifier.padding(top = 40.dp, start = 16.dp, end = 16.dp),
-                text = "Social",
+                text = stringResource(R.string.social),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -135,7 +136,7 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .padding(top = 16.dp),
                 iconId = R.drawable.ic_bell_20,
-                text = "iCloud",
+                text = stringResource(R.string.icloud),
                 checked = true,
                 onCheckedChange = {}
             )
@@ -144,7 +145,7 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .padding(top = 16.dp),
                 iconId = R.drawable.ic_facebook_logo_20,
-                text = "Facebook",
+                text = stringResource(R.string.facebook),
                 checked = false,
                 onCheckedChange = {}
             )
@@ -153,13 +154,13 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .padding(top = 16.dp),
                 iconId = R.drawable.ic_google_logo_20,
-                text = "Google",
+                text = stringResource(R.string.google),
                 checked = false,
                 onCheckedChange = {}
             )
             Spacer(modifier = Modifier.weight(1f))
             PrimaryTextButton(
-                text = "Remove account",
+                text = stringResource(R.string.remove_account),
                 onClick = {
                     val route = destinations.find<LoginEntry>().featureRoute
                     navController.popBackStack()

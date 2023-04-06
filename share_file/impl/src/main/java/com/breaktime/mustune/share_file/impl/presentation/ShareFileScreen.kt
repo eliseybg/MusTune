@@ -3,10 +3,7 @@ package com.breaktime.mustune.share_file.impl.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,10 +20,8 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +29,6 @@ import androidx.navigation.NavHostController
 import com.breaktime.mustune.resources.R
 import com.breaktime.mustune.resources.theme.MusTuneTheme
 import com.breaktime.mustune.share_file.impl.presentation.elements.SharedUserItem
-import com.breaktime.mustune.ui_kit.common.PrimaryTextField
 import com.breaktime.mustune.ui_kit.common.Toolbar
 import com.breaktime.mustune.ui_kit.elements.SearchTextField
 
@@ -55,7 +49,7 @@ fun ShareFileScreen(viewModel: ShareFileViewModel, navController: NavHostControl
                 },
                 content = {
                     Text(
-                        text = "Share settings",
+                        text = stringResource(id = R.string.share_settings),
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp
                     )
@@ -63,7 +57,7 @@ fun ShareFileScreen(viewModel: ShareFileViewModel, navController: NavHostControl
                 actions = {
                     Text(
                         modifier = Modifier.clickable { viewModel.setEvent(ShareFileContract.Event.OnSaveClick) },
-                        text = "save",
+                        text = stringResource(id = R.string.save),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
                     )
@@ -79,12 +73,12 @@ fun ShareFileScreen(viewModel: ShareFileViewModel, navController: NavHostControl
                 .padding(horizontal = 16.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
-            Text(text = "Provide access to file", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = stringResource(R.string.provide_access_to_file), fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(16.dp))
             SearchTextField(
                 modifier = Modifier.fillMaxWidth(),
                 searchText = state.searchText,
-                hint = "Person’s username or email",
+                hint = stringResource(R.string.person_s_username_or_email),
                 onChangeSearchText = { text ->
                     viewModel.setEvent(ShareFileContract.Event.UpdateSearchText(text))
                 },
@@ -93,7 +87,7 @@ fun ShareFileScreen(viewModel: ShareFileViewModel, navController: NavHostControl
                 }
             )
             Spacer(modifier = Modifier.height(40.dp))
-            Text(text = "Have access to file", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = stringResource(R.string.have_access_to_file), fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(16.dp))
             LazyColumn {
                 itemsIndexed(state.sharedUsers) { index, sharedUser ->

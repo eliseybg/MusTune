@@ -43,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -86,7 +87,7 @@ fun MusicScreen(
             Toolbar(
                 content = {
                     Text(
-                        text = "Music",
+                        text = stringResource(R.string.music),
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp
                     )
@@ -160,7 +161,7 @@ fun MusicScreen(
                 state = pagerState
             ) { currentIndex ->
                 val items = tabsItems[currentIndex]
-                if (currentIndex > state.screenTabs.size) Text(text = "Something went wrong")
+                if (currentIndex > state.screenTabs.size) Text(text = stringResource(R.string.something_went_wrong))
                 else {
                     val pullRefreshState = rememberPullRefreshState(
                         refreshing = items.loadState.refresh == LoadState.Loading,
@@ -208,7 +209,7 @@ fun MusicScreen(
                                             modifier = Modifier.fillParentMaxSize(),
                                             contentAlignment = Alignment.Center
                                         ) {
-                                            Text("No items to display")
+                                            Text(stringResource(id = R.string.no_items_to_display))
                                         }
                                     }
                                 }
