@@ -37,8 +37,7 @@ fun PrimarySwitch(
 ) {
     val animatePosition = animateFloatAsState(
         targetValue = if (checked) (sizes.switchWidth - sizes.gapBetweenThumbAndTrackEdge - sizes.thumbRadius).dpToPx()
-        else (sizes.gapBetweenThumbAndTrackEdge + sizes.thumbRadius).dpToPx(),
-        label = "position animation"
+        else (sizes.gapBetweenThumbAndTrackEdge + sizes.thumbRadius).dpToPx()
     )
 
     Row(

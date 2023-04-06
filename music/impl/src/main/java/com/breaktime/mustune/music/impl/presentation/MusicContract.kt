@@ -7,7 +7,9 @@ import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.api.models.TabSetup
 
 class MusicContract {
-    sealed class Event : UiEvent
+    sealed class Event : UiEvent {
+        data class UpdateSongTabs(val isForce: Boolean = false) : Event()
+    }
 
     data class State(
         val currentTab: MusicTab = MusicTab.EXPLORE,

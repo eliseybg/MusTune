@@ -27,6 +27,9 @@ import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,6 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import com.breaktime.mustune.common.Destinations
@@ -115,7 +119,7 @@ fun MusicScreen(
                     }
                 },
                 bottomContent = {
-                    ExploreMusicTabs(
+                    if (state.screenTabs.size > 1) ExploreMusicTabs(
                         tabsNames = state.screenTabs,
                         currentTab = pagerState.currentPage,
                         onChangeTab = { scope.launch { pagerState.animateScrollToPage(it) } }
@@ -146,7 +150,7 @@ fun MusicScreen(
                 SongBottomSheet(songBottomSheetContent = bottomSheetContent)
             },
         ) {
-            HorizontalPager(
+            if (tabsItems.isNotEmpty()) HorizontalPager(
                 modifier = Modifier
                     .padding(it)
                     .fillMaxSize()
@@ -158,48 +162,64 @@ fun MusicScreen(
                 val items = tabsItems[currentIndex]
                 if (currentIndex > state.screenTabs.size) Text(text = "Something went wrong")
                 else {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(vertical = 12.dp)
-                    ) {
-                        itemsIndexed(items) { index, song ->
-                            song?.let {
-                                MusicItem(
-                                    title = song.title,
-                                    artist = song.artist,
-                                    onItemClick = {
-                                        val route =
-                                            destinations.find<SongEntry>().destination(song.id)
-                                        navController.navigate(route)
-                                    },
-                                    onMoreClick = { bottomSheetSong = song }
-                                )
-                                if (index < items.itemSnapshotList.lastIndex)
-                                    Divider(color = MusTuneTheme.colors.divider, thickness = 1.dp)
+                    val pullRefreshState = rememberPullRefreshState(
+                        refreshing = items.loadState.refresh == LoadState.Loading,
+                        onRefresh = items::refresh
+                    )
+                    Box(Modifier.pullRefresh(pullRefreshState)) {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(vertical = 12.dp)
+                        ) {
+                            itemsIndexed(items) { index, song ->
+                                song?.let {
+                                    MusicItem(
+                                        title = song.title,
+                                        artist = song.artist,
+                                        onItemClick = {
+                                            val route =
+                                                destinations.find<SongEntry>().destination(song.id)
+                                            navController.navigate(route)
+                                        },
+                                        onMoreClick = { bottomSheetSong = song }
+                                    )
+                                    if (index < items.itemSnapshotList.lastIndex)
+                                        Divider(
+                                            color = MusTuneTheme.colors.divider,
+                                            thickness = 1.dp
+                                        )
+                                }
                             }
-                        }
-                        when {
-                            items.loadState.isLoading -> {
-                                item {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.Center
-                                    ) {
-                                        CircularProgressIndicator(color = MusTuneTheme.colors.primary)
+                            when {
+                                items.loadState.isLoading -> {
+                                    item {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.Center
+                                        ) {
+                                            CircularProgressIndicator(color = MusTuneTheme.colors.primary)
+                                        }
+                                    }
+                                }
+
+                                items.itemCount == 0 && !items.loadState.isLoading -> {
+                                    item {
+                                        Box(
+                                            modifier = Modifier.fillParentMaxSize(),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text("No items to display")
+                                        }
                                     }
                                 }
                             }
-                            items.itemCount == 0 && !items.loadState.isLoading -> {
-                                item {
-                                    Box(
-                                        modifier = Modifier.fillParentMaxSize(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Text("No items to display")
-                                    }
-                                }
-                            }
                         }
+                        PullRefreshIndicator(
+                            modifier = Modifier.align(Alignment.TopCenter),
+                            refreshing = items.loadState.refresh == LoadState.Loading,
+                            state = pullRefreshState,
+                            contentColor = MusTuneTheme.colors.primary
+                        )
                     }
                 }
             }

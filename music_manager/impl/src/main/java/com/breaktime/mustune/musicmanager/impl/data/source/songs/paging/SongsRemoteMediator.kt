@@ -9,6 +9,7 @@ import com.breaktime.mustune.common.Constants
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.impl.data.entities.RemoteKeysEntity
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
+import com.breaktime.mustune.musicmanager.impl.data.entities.TabQuery
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.local.SongsDatabase
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SongsApiService
 import retrofit2.HttpException
@@ -78,7 +79,7 @@ class SongsRemoteMediator(
 
             songsDatabase.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    songsDatabase.songDao.clearAllSongs(tab.name)
+                    songsDatabase.songDao.clearAllSongs(TabQuery.fromString(tab.name))
                     songsDatabase.remoteKeysDao.clearRemoteKeys(tab.name)
                 }
                 val keys = songs.map { song ->

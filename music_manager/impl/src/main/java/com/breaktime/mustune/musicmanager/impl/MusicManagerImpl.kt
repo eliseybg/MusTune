@@ -13,6 +13,7 @@ import com.breaktime.mustune.musicmanager.impl.domain.use_case.DeleteSongUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.EditSongUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.GetSongUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.GetSongsFlowUseCase
+import com.breaktime.mustune.musicmanager.impl.domain.use_case.GetUserMusicTabsUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.SearchSongsFlowUseCase
 import kotlinx.coroutines.flow.Flow
 import java.io.File
@@ -22,6 +23,7 @@ class MusicManagerImpl @Inject constructor(
     private val getSongUseCase: GetSongUseCase,
     private val getSongsFlowUseCase: GetSongsFlowUseCase,
     private val searchSongsFlowUseCase: SearchSongsFlowUseCase,
+    private val getUserMusicTabsUseCase: GetUserMusicTabsUseCase,
     private val addSongUseCase: AddSongUseCase,
     private val editSongUseCase: EditSongUseCase,
     private val deleteSongUseCase: DeleteSongUseCase,
@@ -35,6 +37,10 @@ class MusicManagerImpl @Inject constructor(
             tab = tab,
             songs = getSongsFlowUseCase.invoke(GetSongsFlowUseCase.Params(tab))
         )
+    }
+
+    override suspend fun getUserMusicTabs(isForce: Boolean): Outcome<List<MusicTab>> {
+        return getUserMusicTabsUseCase.invoke(GetUserMusicTabsUseCase.Params(isForce))
     }
 
     override fun searchSongs(

@@ -36,7 +36,7 @@ dependencies {
 
     //Retrofit
     api "com.squareup.retrofit2:retrofit:$retrofit_version"
-    api "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    api "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
 
     kapt "com.google.dagger:dagger-compiler:$dagger_version"

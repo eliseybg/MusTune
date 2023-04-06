@@ -3,6 +3,7 @@ package com.breaktime.mustune.musicmanager.impl.data.source.songs.remote
 import com.breaktime.mustune.musicmanager.impl.data.entities.SearchSongsBody
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongInfoBody
+import com.breaktime.mustune.musicmanager.impl.data.entities.TabQuery
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -17,6 +18,9 @@ import retrofit2.http.Query
 interface SongsApiService {
     @GET("song")
     suspend fun getSong(@Query("songId") songId: String): Response<SongEntity>
+
+    @GET("songsCategories")
+    suspend fun getSongsCategories(): Response<List<TabQuery>>
 
     @GET("allSongs")
     suspend fun getAllSongs(

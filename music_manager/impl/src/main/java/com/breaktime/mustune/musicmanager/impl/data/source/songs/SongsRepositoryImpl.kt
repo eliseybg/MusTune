@@ -10,6 +10,7 @@ import com.breaktime.mustune.musicmanager.api.models.SearchFilter
 import com.breaktime.mustune.musicmanager.impl.data.entities.ShareType
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongInfoBody
+import com.breaktime.mustune.musicmanager.impl.data.entities.TabQuery
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.local.SongsDatabase
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.paging.SearchSongsSource
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.paging.SongsRemoteMediator
@@ -17,7 +18,7 @@ import com.breaktime.mustune.musicmanager.impl.data.source.songs.remote.SongsApi
 import com.breaktime.mustune.musicmanager.impl.domain.repository.SongsRepository
 import com.breaktime.mustune.network.api.extentions.handleResponse
 import com.breaktime.mustune.network.api.extentions.retrieveBody
-import com.squareup.moshi.Moshi
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -51,6 +52,19 @@ class SongsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getUserMusicTabs(isForce: Boolean): List<TabQuery> =
+        withContext(Dispatchers.IO) {
+            if (isForce) {
+                val response = songsApiService.getSongsCategories()
+                return@withContext response.retrieveBody()
+            }
+
+            return@withContext songsDatabase.songDao.getSongsCategories().ifEmpty {
+                val response = songsApiService.getSongsCategories()
+                response.retrieveBody()
+            }
+        }
+
     @OptIn(ExperimentalPagingApi::class)
     override fun getSongs(tab: MusicTab): Flow<PagingData<SongEntity>> {
         return Pager(
@@ -60,7 +74,7 @@ class SongsRepositoryImpl @Inject constructor(
                 initialLoadSize = Constants.Pager.INITIAL_PAGE_SIZE
             ),
             pagingSourceFactory = {
-                songsDatabase.songDao.getSongsInfo(tab.name)
+                songsDatabase.songDao.getPagingSongsInfo(TabQuery.fromString(tab.name))
             },
             remoteMediator = SongsRemoteMediator(tab, songsApiService, songsDatabase)
         ).flow
@@ -89,7 +103,7 @@ class SongsRepositoryImpl @Inject constructor(
     ): Unit = withContext(Dispatchers.IO) {
         val filePart = MultipartBody.Part.createFormData("file", file.name, file.asRequestBody())
         val body = SongInfoBody(null, title, artist, isDownloadable, shareType)
-        val bodyJson = Moshi.Builder().build().adapter(SongInfoBody::class.java).toJson(body)
+        val bodyJson = Gson().toJson(body)
         val requestBody = bodyJson.toRequestBody("multipart/form-data".toMediaTypeOrNull())
 
         val song = songsApiService.addSong(requestBody, filePart).retrieveBody()

@@ -52,6 +52,7 @@ import androidx.paging.compose.itemsIndexed
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.extentions.isLoading
 import com.breaktime.mustune.common.find
+import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.api.models.SearchFilter
 import com.breaktime.mustune.musicmanager.api.models.Song
 import com.breaktime.mustune.resources.R
@@ -249,19 +250,19 @@ fun SearchBottomSheet(
                     PrimaryChipButton(
                         modifier = Modifier.weight(1f),
                         text = "Explore",
-                        selected = searchInTabs.contains(SearchFilter.SearchInTab.EXPLORE),
+                        selected = searchInTabs.contains(MusicTab.EXPLORE),
                         onSelect = { isSelected ->
-                            if (isSelected) searchInTabs.add(SearchFilter.SearchInTab.EXPLORE)
-                            else searchInTabs.remove(SearchFilter.SearchInTab.EXPLORE)
+                            if (isSelected) searchInTabs.add(MusicTab.EXPLORE)
+                            else searchInTabs.remove(MusicTab.EXPLORE)
                         }
                     )
                     PrimaryChipButton(
                         modifier = Modifier.weight(1f),
                         text = "Favourite",
-                        selected = searchInTabs.contains(SearchFilter.SearchInTab.FAVOURITE),
+                        selected = searchInTabs.contains(MusicTab.FAVOURITE),
                         onSelect = { isSelected ->
-                            if (isSelected) searchInTabs.add(SearchFilter.SearchInTab.FAVOURITE)
-                            else searchInTabs.remove(SearchFilter.SearchInTab.FAVOURITE)
+                            if (isSelected) searchInTabs.add(MusicTab.FAVOURITE)
+                            else searchInTabs.remove(MusicTab.FAVOURITE)
                         }
                     )
                 }
@@ -269,19 +270,19 @@ fun SearchBottomSheet(
                     PrimaryChipButton(
                         modifier = Modifier.weight(1f),
                         text = "Personal",
-                        selected = searchInTabs.contains(SearchFilter.SearchInTab.PERSONAL),
+                        selected = searchInTabs.contains(MusicTab.PERSONAL),
                         onSelect = { isSelected ->
-                            if (isSelected) searchInTabs.add(SearchFilter.SearchInTab.PERSONAL)
-                            else searchInTabs.remove(SearchFilter.SearchInTab.PERSONAL)
+                            if (isSelected) searchInTabs.add(MusicTab.PERSONAL)
+                            else searchInTabs.remove(MusicTab.PERSONAL)
                         }
                     )
                     PrimaryChipButton(
                         modifier = Modifier.weight(1f),
                         text = "Shared",
-                        selected = searchInTabs.contains(SearchFilter.SearchInTab.SHARED),
+                        selected = searchInTabs.contains(MusicTab.SHARED),
                         onSelect = { isSelected ->
-                            if (isSelected) searchInTabs.add(SearchFilter.SearchInTab.SHARED)
-                            else searchInTabs.remove(SearchFilter.SearchInTab.SHARED)
+                            if (isSelected) searchInTabs.add(MusicTab.SHARED)
+                            else searchInTabs.remove(MusicTab.SHARED)
                         }
                     )
                 }

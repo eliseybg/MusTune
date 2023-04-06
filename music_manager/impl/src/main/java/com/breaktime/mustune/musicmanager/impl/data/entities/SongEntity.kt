@@ -2,6 +2,8 @@ package com.breaktime.mustune.musicmanager.impl.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Calendar
+import java.util.Date
 
 @Entity(tableName = "SongEntity")
 data class SongEntity(
@@ -9,9 +11,12 @@ data class SongEntity(
     val id: String,
     val title: String,
     val artist: String,
-    val link: String,
-    val tab: String,
     val isDownloadable: Boolean,
+    val isFavourite: Boolean,
+    val isShared: Boolean,
+    val isCreator: Boolean,
     val shareType: ShareType,
-    var createdAt: Long = System.currentTimeMillis()
+    val createdAt: Date = Calendar.getInstance().time,
+    val updatedAt: Date = Calendar.getInstance().time,
+    val createdBy: String?
 )
