@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
-import kotlin.time.Duration.Companion.milliseconds
 
 enum class MusicTab(val icon: ImageVector, val pagingRefreshFrequency: Duration) {
     EXPLORE(Icons.Default.Explore, 1.days),

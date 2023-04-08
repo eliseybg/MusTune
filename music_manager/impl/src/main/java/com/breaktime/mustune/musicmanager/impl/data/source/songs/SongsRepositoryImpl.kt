@@ -21,6 +21,7 @@ import com.breaktime.mustune.network.api.extentions.retrieveBody
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -52,17 +53,12 @@ class SongsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserMusicTabs(isForce: Boolean): List<TabQuery> =
-        withContext(Dispatchers.IO) {
-            if (isForce) {
-                val response = songsApiService.getSongsCategories()
-                return@withContext response.retrieveBody()
-            }
-
-            return@withContext songsDatabase.songDao.getSongsCategories().ifEmpty {
+    override fun getUserMusicTabs(isForce: Boolean): Flow<List<TabQuery>> =
+        songsDatabase.songDao.getSongsCategories().map {
+            if (it.isEmpty() || isForce) {
                 val response = songsApiService.getSongsCategories()
                 response.retrieveBody()
-            }
+            } else it
         }
 
     @OptIn(ExperimentalPagingApi::class)

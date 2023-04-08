@@ -7,8 +7,8 @@ enum class TabQuery {
         fun fromString(value: String): TabQuery = when (value) {
             EXPLORE.name -> EXPLORE
             FAVOURITE.name -> FAVOURITE
-            FAVOURITE.name -> FAVOURITE
             SHARED.name -> SHARED
+            PERSONAL.name -> PERSONAL
             else -> UNKNOWN
         }
     }

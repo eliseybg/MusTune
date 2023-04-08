@@ -15,7 +15,7 @@ interface MusicManager {
 
     fun getMusicTabSetup(tab: MusicTab): TabSetup
 
-    suspend fun getUserMusicTabs(isForce: Boolean): Outcome<List<MusicTab>>
+    fun getUserMusicTabs(isForce: Boolean): Flow<List<MusicTab>>
 
     fun searchSongs(searchText: String, searchFilter: SearchFilter): Flow<PagingData<Song>>
 

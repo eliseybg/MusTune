@@ -1,5 +1,6 @@
 package com.breaktime.mustune.music.impl.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -120,11 +121,13 @@ fun MusicScreen(
                     }
                 },
                 bottomContent = {
-                    if (state.screenTabs.size > 1) ExploreMusicTabs(
-                        tabsNames = state.screenTabs,
-                        currentTab = pagerState.currentPage,
-                        onChangeTab = { scope.launch { pagerState.animateScrollToPage(it) } }
-                    )
+                    AnimatedVisibility(visible = state.screenTabs.size > 1) {
+                        ExploreMusicTabs(
+                            tabsNames = state.screenTabs,
+                            currentTab = pagerState.currentPage,
+                            onChangeTab = { scope.launch { pagerState.animateScrollToPage(it) } }
+                        )
+                    }
                 }
             )
         }
@@ -165,7 +168,10 @@ fun MusicScreen(
                 else {
                     val pullRefreshState = rememberPullRefreshState(
                         refreshing = items.loadState.refresh == LoadState.Loading,
-                        onRefresh = items::refresh
+                        onRefresh = {
+                            viewModel.setEvent(MusicContract.Event.UpdateSongTabs(true))
+                            items.refresh()
+                        }
                     )
                     Box(Modifier.pullRefresh(pullRefreshState)) {
                         LazyColumn(

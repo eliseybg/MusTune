@@ -9,6 +9,8 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
 import com.breaktime.mustune.musicmanager.impl.data.entities.TabQuery
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 @Dao
 interface SongsDao {
@@ -27,13 +29,19 @@ interface SongsDao {
         return getSong(it.id)
     }
 
-    @Transaction
-    suspend fun getSongsCategories(): List<TabQuery> {
-        return listOf(TabQuery.EXPLORE, TabQuery.FAVOURITE, TabQuery.SHARED, TabQuery.PERSONAL)
-            .filter { tab ->
+    fun getSongsCategories(): Flow<List<TabQuery>> = combine(
+        listOf(TabQuery.EXPLORE, TabQuery.FAVOURITE, TabQuery.SHARED, TabQuery.PERSONAL)
+            .map { tab ->
                 val query = tab.toQuery()
-                getSongInfoIfExist(query.first, query.second, query.third) != null
+                getSongInfoIfExist(query.first, query.second, query.third)
             }
+    ) { list ->
+        buildList {
+            if (list.getOrNull(0) != null) add(TabQuery.EXPLORE)
+            if (list.getOrNull(1) != null) add(TabQuery.FAVOURITE)
+            if (list.getOrNull(2) != null) add(TabQuery.SHARED)
+            if (list.getOrNull(3) != null) add(TabQuery.PERSONAL)
+        }
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -50,7 +58,7 @@ interface SongsDao {
     @Query(
         "SELECT * FROM SongEntity WHERE " +
                 "(:isFavourite IS NULL OR isFavourite = :isFavourite)" +
-                "AND (:isCreator IS NULL OR isFavourite = :isCreator)" +
+                "AND (:isCreator IS NULL OR isCreator = :isCreator)" +
                 "AND (:isShared IS NULL OR isShared = :isShared)"
     )
     fun getPagingSongsInfo(
@@ -62,14 +70,14 @@ interface SongsDao {
     @Query(
         "SELECT * FROM SongEntity WHERE " +
                 "(:isFavourite IS NULL OR isFavourite = :isFavourite)" +
-                "AND (:isCreator IS NULL OR isFavourite = :isCreator)" +
+                "AND (:isCreator IS NULL OR isCreator = :isCreator)" +
                 "AND (:isShared IS NULL OR isShared = :isShared) LIMIT 1"
     )
-    suspend fun getSongInfoIfExist(
+    fun getSongInfoIfExist(
         isFavourite: Boolean? = null,
         isCreator: Boolean? = null,
         isShared: Boolean? = null
-    ): SongEntity?
+    ): Flow<SongEntity?>
 
     suspend fun clearAllSongs(tab: TabQuery) {
         val query = tab.toQuery()
@@ -79,7 +87,7 @@ interface SongsDao {
     @Query(
         "DELETE FROM SongEntity WHERE " +
                 "(:isFavourite = '' OR isFavourite = :isFavourite)" +
-                "AND (:isCreator = '' OR isFavourite = :isCreator)" +
+                "AND (:isCreator = '' OR isCreator = :isCreator)" +
                 "AND (:isShared = '' OR isShared = :isShared)"
     )
     suspend fun clearAllSongs(

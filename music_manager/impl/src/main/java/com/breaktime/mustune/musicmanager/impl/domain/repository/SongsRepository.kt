@@ -12,7 +12,7 @@ import java.io.File
 interface SongsRepository {
     suspend fun getSong(songId: String, isForce: Boolean = false): SongEntity?
 
-    suspend fun getUserMusicTabs(isForce: Boolean): List<TabQuery>
+    fun getUserMusicTabs(isForce: Boolean): Flow<List<TabQuery>>
 
     fun getSongs(tab: MusicTab): Flow<PagingData<SongEntity>>
 

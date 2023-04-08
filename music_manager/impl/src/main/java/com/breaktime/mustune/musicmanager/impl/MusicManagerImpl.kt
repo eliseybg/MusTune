@@ -39,7 +39,7 @@ class MusicManagerImpl @Inject constructor(
         )
     }
 
-    override suspend fun getUserMusicTabs(isForce: Boolean): Outcome<List<MusicTab>> {
+    override fun getUserMusicTabs(isForce: Boolean): Flow<List<MusicTab>> {
         return getUserMusicTabsUseCase.invoke(GetUserMusicTabsUseCase.Params(isForce))
     }
 

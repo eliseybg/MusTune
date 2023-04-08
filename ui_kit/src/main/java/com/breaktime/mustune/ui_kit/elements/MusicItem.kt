@@ -3,7 +3,9 @@ package com.breaktime.mustune.ui_kit.elements
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -17,6 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 
 @Composable
 fun MusicItem(
@@ -40,16 +43,19 @@ fun MusicItem(
         ) {
             Text(
                 text = title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 1
+                maxLines = 1,
+                color = MusTuneTheme.colors.content
             )
+            Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = artist,
                 fontSize = 12.sp,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 1
+                maxLines = 1,
+                color = MusTuneTheme.colors.content.copy(alpha = 0.7f)
             )
         }
         Icon(
