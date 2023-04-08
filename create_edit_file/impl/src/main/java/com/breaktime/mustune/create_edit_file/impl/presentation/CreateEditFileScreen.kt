@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
+import com.breaktime.mustune.common.Constants
 import com.breaktime.mustune.common.extentions.pxToDp
 import com.breaktime.mustune.musicmanager.api.models.ShareSettings
 import com.breaktime.mustune.resources.R
@@ -78,7 +79,7 @@ fun CreateEditFileScreen(
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = true) {
-        viewModelObserver(viewModel, scope, navController)
+        viewModelObserver(viewModel, context, scope, navController)
     }
 
     val openFileContract = rememberLauncherForActivityResult(
@@ -88,7 +89,7 @@ fun CreateEditFileScreen(
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
-        if (isGranted) openFileContract.launch(arrayOf(""))
+        if (isGranted) openFileContract.launch(arrayOf("*/*"))
         else Toast.makeText(
             context,
             context.getText(R.string.you_need_to_grant_permissions),
@@ -117,10 +118,13 @@ fun CreateEditFileScreen(
                 },
                 actions = {
                     Text(
-                        modifier = Modifier.clickable { viewModel.setEvent(CreateEditFileContract.Event.OnSaveClick) },
+                        modifier = Modifier.clickable(enabled = state.isSaveEnabled) {
+                            viewModel.setEvent(CreateEditFileContract.Event.OnSaveClick)
+                        },
                         text = stringResource(R.string.save),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
+                        fontSize = 16.sp,
+                        color = if (state.isSaveEnabled) MusTuneTheme.colors.content else MusTuneTheme.colors.deactivatedContent
                     )
                 }
             )
@@ -329,6 +333,7 @@ fun FileItem(
                 .padding(horizontal = 8.dp),
             text = filename,
             fontSize = 18.sp,
+            maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             color = MusTuneTheme.colors.onPrimary
         )
@@ -358,12 +363,16 @@ fun Context.isPermissionGranted(permission: String): Boolean {
 
 private fun viewModelObserver(
     viewModel: CreateEditFileViewModel,
+    context: Context,
     scope: CoroutineScope,
     navController: NavHostController
 ) {
     viewModel.effect.onEach {
         when (it) {
             CreateEditFileContract.Effect.CloseScreen -> navController.popBackStack()
+            CreateEditFileContract.Effect.WrongFileFormat -> Toast.makeText(
+                context, context.getText(R.string.wrong_file_format), Toast.LENGTH_SHORT
+            ).show()
         }
     }.launchIn(scope)
 }

@@ -10,4 +10,7 @@ object Constants {
         const val PAGE_SIZE = 20
         const val PREFETCH_DISTANCE = 10
     }
+
+    // show be in parser module
+    val supportedMusicFormats = arrayOf("gp", "gpx", "gp1", "gp2", "gp3", "gp4", "gp5")
 }

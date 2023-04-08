@@ -11,6 +11,7 @@
     <string name="edit_file">Edit file</string>
     <string name="load_file">Load file</string>
     <string name="you_need_to_grant_permissions">You need to grant permissions</string>
+    <string name="wrong_file_format">Wrong file format</string>
     <string name="save">save</string>
     <string name="title">Title</string>
     <string name="artist">Artist</string>

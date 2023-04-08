@@ -8,6 +8,7 @@ interface MusTuneColors {
     val onPrimary: Color
     val secondary: Color
     val content: Color
+    val deactivatedContent: Color
     val bottomSheetLine: Color
     val delete: Color
     val background: Color

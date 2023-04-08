@@ -2,14 +2,15 @@ package com.breaktime.mustune.create_edit_file.impl.presentation
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import com.breaktime.mustune.common.Constants
 import com.breaktime.mustune.common.domain.Outcome
 import com.breaktime.mustune.common.presentation.BaseViewModel
 import com.breaktime.mustune.file_manager.api.FileManager
 import com.breaktime.mustune.musicmanager.api.MusicManager
 import com.breaktime.mustune.musicmanager.api.models.ShareSettings
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,11 +25,21 @@ class CreateEditFileViewModel @Inject constructor(
     }
 
     private val selectedFileUri = MutableStateFlow<Uri?>(null)
+    private val title = MutableStateFlow("")
+    private val artist = MutableStateFlow("")
 
     init {
         loadSongInfo()
-        selectedFileUri.onEach { uri ->
-            setState { copy(attachedFileName = uri?.let { fileManager.getFileName(it) }) }
+        combine(title, artist, selectedFileUri) { title, artist, selectedFileUri ->
+            val isSaveEnabled = title.isNotEmpty() && artist.isNotEmpty() && selectedFileUri != null
+            setState {
+                copy(
+                    title = title,
+                    artist = artist,
+                    isSaveEnabled = isSaveEnabled,
+                    attachedFileName = selectedFileUri?.let { fileManager.getFileName(it) }
+                )
+            }
         }.launchIn(viewModelScope)
     }
 
@@ -71,12 +82,17 @@ class CreateEditFileViewModel @Inject constructor(
 
             CreateEditFileContract.Event.OnSaveClick -> onSave()
 
-            is CreateEditFileContract.Event.UpdateArtistText -> setState { copy(artist = event.artistText) }
-
-            is CreateEditFileContract.Event.UpdateTitleText -> setState { copy(title = event.titleText) }
-            is CreateEditFileContract.Event.SelectFile -> selectedFileUri.value = event.uri
+            is CreateEditFileContract.Event.UpdateTitleText -> title.value = event.titleText
+            is CreateEditFileContract.Event.UpdateArtistText -> artist.value = event.artistText
+            is CreateEditFileContract.Event.SelectFile -> selectFile(event.uri)
             is CreateEditFileContract.Event.OnDeleteFileClicked -> deleteFile()
         }
+    }
+
+    private fun selectFile(uri: Uri?) = viewModelScope.launch {
+        val fileName = uri?.let { fileManager.getFileName(it).substringAfterLast(".") }
+        if (fileName in Constants.supportedMusicFormats) selectedFileUri.value = uri
+        else setEffect { CreateEditFileContract.Effect.WrongFileFormat }
     }
 
     private fun deleteFile() = viewModelScope.launch {

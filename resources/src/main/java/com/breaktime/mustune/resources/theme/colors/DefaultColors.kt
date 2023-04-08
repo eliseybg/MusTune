@@ -7,6 +7,7 @@ class DefaultColors constructor(
     override val onPrimary: Color = Color(0xFFFFFFFF),
     override val secondary: Color = Color(0xFFEAEAEA),
     override val content: Color = Color(0xFF000000),
+    override val deactivatedContent: Color = Color(0xFF8F8F8F),
     override val bottomSheetLine: Color = Color(0xFF898989),
     override val delete: Color = Color(0xFFFF0000),
     override val background: Color = Color(0xFFFDFDFD),

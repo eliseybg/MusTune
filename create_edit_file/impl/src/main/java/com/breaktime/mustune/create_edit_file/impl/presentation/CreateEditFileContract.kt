@@ -24,6 +24,7 @@ class CreateEditFileContract {
         val isEdit: Boolean,
         val title: String = "",
         val artist: String = "",
+        val isSaveEnabled: Boolean = false,
         val isDownloadable: Boolean = true,
         val shareSettings: ShareSettings = ShareSettings.Shared.AllUsers,
         val attachedFileName: String? = null
@@ -31,5 +32,6 @@ class CreateEditFileContract {
 
     sealed class Effect : UiEffect {
         object CloseScreen : Effect()
+        object WrongFileFormat : Effect()
     }
 }

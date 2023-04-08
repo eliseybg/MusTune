@@ -74,7 +74,7 @@ fun PrimaryTextField(
                     value = value,
                     visualTransformation = visualTransformation,
                     keyboardOptions = keyboardOptions,
-                    onValueChange = onValueChange,
+                    onValueChange = { onValueChange(if (singleLine) it.replace("\n", "") else it) },
                     singleLine = singleLine,
                     textStyle = LocalTextStyle.current.copy(
                         color = colors.textColor,
