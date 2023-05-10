@@ -15,18 +15,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -49,9 +44,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import androidx.paging.compose.itemsIndexed
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.extentions.isLoading
+import com.breaktime.mustune.common.extentions.rememberLazyListState
 import com.breaktime.mustune.common.find
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.api.models.SearchFilter
@@ -59,18 +57,20 @@ import com.breaktime.mustune.musicmanager.api.models.Song
 import com.breaktime.mustune.resources.R
 import com.breaktime.mustune.resources.theme.MusTuneTheme
 import com.breaktime.mustune.song.api.SongEntry
+import com.breaktime.mustune.song_bottom_sheet.SongBottomSheet
+import com.breaktime.mustune.ui_kit.common.ContentBottomSheet
+import com.breaktime.mustune.ui_kit.common.ContentBottomSheetValue
 import com.breaktime.mustune.ui_kit.common.PrimaryChipButton
 import com.breaktime.mustune.ui_kit.common.PrimaryRadioButton
 import com.breaktime.mustune.ui_kit.common.PrimaryTextButton
 import com.breaktime.mustune.ui_kit.common.Toolbar
 import com.breaktime.mustune.ui_kit.common.bottom_sheet.BottomSheetContent
-import com.breaktime.mustune.ui_kit.common.bottom_sheet.song_bottom_sheet.SongBottomSheet
-import com.breaktime.mustune.ui_kit.common.bottom_sheet.song_bottom_sheet.SongBottomSheetContent
+import com.breaktime.mustune.ui_kit.common.rememberContentBottomSheetState
 import com.breaktime.mustune.ui_kit.elements.MusicItem
 import com.breaktime.mustune.ui_kit.elements.SearchTextField
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchSongsScreen(
     viewModel: SearchSongsViewModel,
@@ -84,104 +84,95 @@ fun SearchSongsScreen(
 
     LaunchedEffect(key1 = true) { focusRequester.requestFocus() }
 
-    val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden) {
-        if (it == ModalBottomSheetValue.Hidden) keyboardController?.show()
+    val filterBottomSheetState = rememberContentBottomSheetState<SearchFilter> {
+        if (it is ContentBottomSheetValue.Hidden) keyboardController?.show()
         true
     }
-
-    ModalBottomSheetLayout(
-        sheetContent = {
+    val songBottomSheetState = rememberContentBottomSheetState<Song> {
+        if (it is ContentBottomSheetValue.Hidden) keyboardController?.show()
+        true
+    }
+    ContentBottomSheet(
+        state = filterBottomSheetState,
+        sheetContent = { filter ->
             SearchBottomSheet(
-                isVisible = bottomSheetState.isVisible,
-                filter = state.searchFilter,
+                filter = filter,
                 onApplyClick = { searchFilter ->
                     viewModel.setEvent(SearchSongsContract.Event.UpdateFilter(searchFilter))
-                    scope.launch { bottomSheetState.hide() }
+                    scope.launch { filterBottomSheetState.hide() }
                     keyboardController?.show()
                 }
             )
-        },
-        sheetState = bottomSheetState
+        }
     ) {
-        Scaffold(
-            topBar = {
-                Toolbar(
-                    content = {
-                        SearchTextField(
-                            modifier = Modifier.padding(
-                                start = it.calculateStartPadding(LocalLayoutDirection.current) + 10.dp,
-                                end = it.calculateEndPadding(LocalLayoutDirection.current) + 10.dp,
-                            ),
-                            searchText = state.searchText,
-                            onChangeSearchText = { text ->
-                                viewModel.setEvent(SearchSongsContract.Event.UpdateSearchText(text))
-                            },
-                            onClearedClick = {
-                                viewModel.setEvent(SearchSongsContract.Event.UpdateSearchText(""))
-                            },
-                            focusRequester = focusRequester
-                        )
-                    },
-                    actions = {
-                        Icon(
-                            modifier = Modifier
-                                .size(24.dp)
-                                .clickable {
-                                    keyboardController?.hide()
-                                    scope.launch { bottomSheetState.show() }
+        SongBottomSheet(songBottomSheetState, navController, destinations) {
+            Scaffold(
+                topBar = {
+                    Toolbar(
+                        content = {
+                            SearchTextField(
+                                modifier = Modifier.padding(
+                                    start = it.calculateStartPadding(LocalLayoutDirection.current) + 10.dp,
+                                    end = it.calculateEndPadding(LocalLayoutDirection.current) + 10.dp,
+                                ),
+                                searchText = state.searchText,
+                                hint = stringResource(id = R.string.search),
+                                onChangeSearchText = { text ->
+                                    viewModel.setEvent(
+                                        SearchSongsContract.Event.UpdateSearchText(
+                                            text
+                                        )
+                                    )
                                 },
-                            painter = painterResource(id = R.drawable.ic_sliders_outlined),
-                            contentDescription = "filter icon",
-                            tint = MusTuneTheme.colors.content
-                        )
-                    },
-                    navigation = {
-                        Icon(
-                            modifier = Modifier
-                                .size(24.dp)
-                                .clickable {
-                                    keyboardController?.hide()
-                                    navController.popBackStack()
+                                onClearedClick = {
+                                    viewModel.setEvent(SearchSongsContract.Event.UpdateSearchText(""))
                                 },
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "back icon",
-                        )
-                    }
-                )
-            }
-        ) {
-            val items = state.songs.collectAsLazyPagingItems()
-            var bottomSheetSong by remember { mutableStateOf<Song?>(null) }
-            val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden) {
-                if (it == ModalBottomSheetValue.Hidden) bottomSheetSong = null
-                true
-            }
-            LaunchedEffect(key1 = bottomSheetSong) {
-                if (bottomSheetSong != null) bottomSheetState.show()
-                else bottomSheetState.hide()
-            }
-            ModalBottomSheetLayout(
-                sheetState = bottomSheetState,
-                sheetShape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
-                sheetContent = {
-                    val bottomSheetContent = SongBottomSheetContent.build {
-                        addRow(
-                            iconId = R.drawable.ic_favourite,
-                            textId = R.string.add_to_favourite
-                        ) {}
-                        addRow(iconId = R.drawable.ic_download, textId = R.string.download_file) {}
-                        addRow(iconId = R.drawable.ic_link, textId = R.string.copy_link) {}
-                    }
-                    SongBottomSheet(songBottomSheetContent = bottomSheetContent)
-                },
+                                focusRequester = focusRequester
+                            )
+                        },
+                        actions = {
+                            Icon(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clickable {
+                                        keyboardController?.hide()
+                                        filterBottomSheetState.show(state.searchFilter)
+                                    },
+                                painter = painterResource(id = R.drawable.ic_sliders_outlined),
+                                contentDescription = "filter icon",
+                                tint = MusTuneTheme.colors.content
+                            )
+                        },
+                        navigation = {
+                            Icon(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clickable {
+                                        keyboardController?.hide()
+                                        navController.popBackStack()
+                                    },
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "back icon",
+                            )
+                        }
+                    )
+                }
             ) {
+                val items = state.songs.collectAsLazyPagingItems()
                 LazyColumn(
                     modifier = Modifier
                         .padding(it)
                         .fillMaxSize(),
-                    contentPadding = PaddingValues(vertical = 12.dp)
+                    contentPadding = PaddingValues(vertical = 12.dp),
+                    state = items.rememberLazyListState()
                 ) {
-                    itemsIndexed(items) { index, song ->
+                    items(
+                        count = items.itemCount,
+                        key = items.itemKey(),
+                        contentType = items.itemContentType(
+                        )
+                    ) { index ->
+                        val song = items[index]
                         song?.let {
                             MusicItem(
                                 title = song.title,
@@ -191,7 +182,10 @@ fun SearchSongsScreen(
                                         destinations.find<SongEntry>().destination(song.id)
                                     navController.navigate(route)
                                 },
-                                onMoreClick = { bottomSheetSong = song }
+                                onMoreClick = {
+                                    songBottomSheetState.show(song)
+                                    keyboardController?.hide()
+                                }
                             )
                             if (index < items.itemSnapshotList.lastIndex)
                                 Divider(color = MusTuneTheme.colors.divider, thickness = 1.dp)
@@ -208,6 +202,7 @@ fun SearchSongsScreen(
                                 }
                             }
                         }
+
                         items.itemCount == 0 && !items.loadState.isLoading -> {
                             item {
                                 Box(
@@ -228,12 +223,11 @@ fun SearchSongsScreen(
 
 @Composable
 fun SearchBottomSheet(
-    isVisible: Boolean,
     filter: SearchFilter,
     onApplyClick: (SearchFilter) -> Unit
 ) {
-    val searchInTabs = remember(isVisible) { filter.searchInTabs.toMutableStateList() }
-    var searchInText by remember(isVisible) { mutableStateOf(filter.searchInText) }
+    val searchInTabs = remember { filter.searchInTabs.toMutableStateList() }
+    var searchInText by remember { mutableStateOf(filter.searchInText) }
     BottomSheetContent {
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(

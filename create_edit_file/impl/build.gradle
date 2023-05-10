@@ -42,6 +42,6 @@ dependencies {
     implementation project(':common')
     api project(':create_edit_file:api')
     api project(':file_manager:api')
-    implementation project(path: ':music_manager:api')
+    implementation project(':music_manager:api')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }

@@ -20,10 +20,8 @@ class SettingsEntryImpl @Inject constructor() : SettingsEntry() {
         backStackEntry: NavBackStackEntry
     ) {
         val settingsManagerProvider = LocalSettingsManagerProvider.current
-        val viewModelStore = remember {
-            navController.currentBackStackEntry?.viewModelStore ?: backStackEntry.viewModelStore
-        }
-        val viewModel = injectedViewModel(viewModelStoreOwner = { viewModelStore }) {
+        val viewModelStore = remember { navController.currentBackStackEntry ?: backStackEntry }
+        val viewModel = injectedViewModel(viewModelStoreOwner = viewModelStore) {
             DaggerSettingsComponent.builder()
                 .settingsManagerProvider(settingsManagerProvider)
                 .build()

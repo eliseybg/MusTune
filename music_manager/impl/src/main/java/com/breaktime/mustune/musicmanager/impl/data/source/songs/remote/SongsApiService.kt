@@ -2,6 +2,7 @@ package com.breaktime.mustune.musicmanager.impl.data.source.songs.remote
 
 import com.breaktime.mustune.musicmanager.impl.data.entities.SearchSongsBody
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
+import com.breaktime.mustune.musicmanager.impl.data.entities.SongIdBody
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongInfoBody
 import com.breaktime.mustune.musicmanager.impl.data.entities.TabQuery
 import okhttp3.MultipartBody
@@ -46,4 +47,10 @@ interface SongsApiService {
 
     @DELETE("deleteSong")
     suspend fun deleteSong(@Query("songId") songId: String): Response<Unit>
+
+    @POST("addSongToFavourite")
+    suspend fun addSongToFavourite(@Body body: SongIdBody): Response<SongEntity>
+
+    @POST("removeSongFromFavourite")
+    suspend fun removeSongFromFavourite(@Body body: SongIdBody): Response<SongEntity>
 }

@@ -8,12 +8,14 @@ import com.breaktime.mustune.musicmanager.api.models.SearchFilter
 import com.breaktime.mustune.musicmanager.api.models.ShareSettings
 import com.breaktime.mustune.musicmanager.api.models.Song
 import com.breaktime.mustune.musicmanager.api.models.TabSetup
+import com.breaktime.mustune.musicmanager.impl.domain.use_case.AddSongToFavouriteUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.AddSongUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.DeleteSongUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.EditSongUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.GetSongUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.GetSongsFlowUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.GetUserMusicTabsUseCase
+import com.breaktime.mustune.musicmanager.impl.domain.use_case.RemoveSongFromFavouriteUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.SearchSongsFlowUseCase
 import kotlinx.coroutines.flow.Flow
 import java.io.File
@@ -27,6 +29,8 @@ class MusicManagerImpl @Inject constructor(
     private val addSongUseCase: AddSongUseCase,
     private val editSongUseCase: EditSongUseCase,
     private val deleteSongUseCase: DeleteSongUseCase,
+    private val addSongToFavouriteUseCase: AddSongToFavouriteUseCase,
+    private val removeSongFromFavouriteUseCase: RemoveSongFromFavouriteUseCase
 ) : MusicManager {
     override suspend fun getSong(songId: String, isForce: Boolean): Outcome<Song> {
         return getSongUseCase.invoke(GetSongUseCase.Params(songId, isForce))
@@ -80,5 +84,15 @@ class MusicManagerImpl @Inject constructor(
     override suspend fun deleteSong(songId: String): Outcome<Unit> {
         val params = DeleteSongUseCase.Params(songId)
         return deleteSongUseCase.invoke(params)
+    }
+
+    override suspend fun addToFavourite(songId: String): Outcome<Unit> {
+        val params = AddSongToFavouriteUseCase.Params(songId)
+        return addSongToFavouriteUseCase.invoke(params)
+    }
+
+    override suspend fun removeFromFavourite(songId: String): Outcome<Unit> {
+        val params = RemoveSongFromFavouriteUseCase.Params(songId)
+        return removeSongFromFavouriteUseCase.invoke(params)
     }
 }

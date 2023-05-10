@@ -20,10 +20,8 @@ class MusicEntryImpl @Inject constructor() : MusicEntry() {
         backStackEntry: NavBackStackEntry
     ) {
         val musicManagerProvider = LocalMusicManagerProvider.current
-        val viewModelStore = remember {
-            navController.currentBackStackEntry?.viewModelStore ?: backStackEntry.viewModelStore
-        }
-        val viewModel = injectedViewModel(viewModelStoreOwner = { viewModelStore }) {
+        val viewModelStore = remember { navController.currentBackStackEntry ?: backStackEntry }
+        val viewModel = injectedViewModel(viewModelStoreOwner = viewModelStore) {
             DaggerMusicComponent.builder()
                 .musicManagerProvider(musicManagerProvider)
                 .build()

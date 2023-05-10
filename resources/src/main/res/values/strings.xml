@@ -21,6 +21,7 @@
     <string name="allow_others_to_share">Allow others to share</string>
     <string name="remove_file">Remove file</string>
     <string name="search_in_tabs">Search in tabs</string>
+    <string name="search">Search</string>
     <string name="explore">Explore</string>
     <string name="favourite">Favourite</string>
     <string name="personal">Personal</string>

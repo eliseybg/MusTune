@@ -1,11 +1,14 @@
 package com.breaktime.mustune.common.extentions
 
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.paging.compose.LazyPagingItems
 
 @Preview(device = "id:Nexus One")
 @Preview(device = "id:Nexus S")
@@ -36,3 +39,11 @@ fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
 
 @Composable
 fun Number.pxToDp() = with(LocalDensity.current) { this@pxToDp.toFloat().toDp() }
+
+@Composable
+fun <T : Any> LazyPagingItems<T>.rememberLazyListState(): LazyListState {
+    return when (itemCount) {
+        0 -> remember(this) { LazyListState(0, 0) }
+        else -> androidx.compose.foundation.lazy.rememberLazyListState()
+    }
+}

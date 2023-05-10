@@ -36,4 +36,8 @@ interface MusicManager {
     ): Outcome<Unit>
 
     suspend fun deleteSong(songId: String): Outcome<Unit>
+
+    suspend fun addToFavourite(songId: String): Outcome<Unit>
+
+    suspend fun removeFromFavourite(songId: String): Outcome<Unit>
 }

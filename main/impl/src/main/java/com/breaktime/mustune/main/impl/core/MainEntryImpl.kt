@@ -83,8 +83,7 @@ private fun MainBottomNavigation(
             .shadow(
                 color = Color.Black.copy(0.25f),
                 blurRadius = 4.dp,
-                spread = 1.5.dp,
-                offsetY = 0.dp
+                spread = 1.5.dp
             ),
         backgroundColor = MusTuneTheme.colors.bottomBar,
     ) {

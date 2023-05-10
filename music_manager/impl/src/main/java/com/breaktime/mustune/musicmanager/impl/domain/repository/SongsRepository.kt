@@ -35,4 +35,8 @@ interface SongsRepository {
     )
 
     suspend fun deleteSong(songId: String)
+
+    suspend fun addSongToFavourite(songId: String)
+
+    suspend fun removeSongFromFavourite(songId: String)
 }

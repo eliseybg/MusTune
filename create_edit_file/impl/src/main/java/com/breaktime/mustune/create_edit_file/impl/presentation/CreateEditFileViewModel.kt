@@ -31,12 +31,13 @@ class CreateEditFileViewModel @Inject constructor(
     init {
         loadSongInfo()
         combine(title, artist, selectedFileUri) { title, artist, selectedFileUri ->
-            val isSaveEnabled = title.isNotEmpty() && artist.isNotEmpty() && selectedFileUri != null
+            val isFieldsNotEmpty = title.isNotEmpty() && artist.isNotEmpty()
+            val isFileSelected = selectedFileUri != null
             setState {
                 copy(
                     title = title,
                     artist = artist,
-                    isSaveEnabled = isSaveEnabled,
+                    isSaveEnabled = isFieldsNotEmpty && (isFileSelected || isEdit),
                     attachedFileName = selectedFileUri?.let { fileManager.getFileName(it) }
                 )
             }
@@ -46,14 +47,13 @@ class CreateEditFileViewModel @Inject constructor(
     private fun loadSongInfo() = viewModelScope.launch {
         songId ?: return@launch
         when (val songOutcome = musicManager.getSong(songId)) {
-            is Outcome.Success -> setState {
+            is Outcome.Success -> {
                 val song = songOutcome.value
-                copy(
-                    title = song.title,
-                    artist = song.artist,
-                    isDownloadable = song.isDownloadable,
-                    shareSettings = song.shareSettings
-                )
+                title.value = song.title
+                artist.value = song.artist
+                setState {
+                    copy(isDownloadable = song.isDownloadable, shareSettings = song.shareSettings)
+                }
             }
 
             is Outcome.Failure<*> -> {}
@@ -107,32 +107,24 @@ class CreateEditFileViewModel @Inject constructor(
     }
 
     private fun onSave() = viewModelScope.launch {
-        if (uiState.value.isEdit) {
-            val editSongOutcome = musicManager.editSong(
-                songId!!,
-                uiState.value.title,
-                uiState.value.artist,
-                uiState.value.isDownloadable,
-                uiState.value.shareSettings,
-            )
+        val saveResult = if (uiState.value.isEdit) musicManager.editSong(
+            songId!!,
+            uiState.value.title,
+            uiState.value.artist,
+            uiState.value.isDownloadable,
+            uiState.value.shareSettings,
+        )
+        else musicManager.addSong(
+            uiState.value.title,
+            uiState.value.artist,
+            uiState.value.isDownloadable,
+            uiState.value.shareSettings,
+            fileManager.getTempFile(selectedFileUri.value!!)!!
+        )
 
-            when (editSongOutcome) {
-                is Outcome.Success -> setEffect { CreateEditFileContract.Effect.CloseScreen }
-                is Outcome.Failure<*> -> {}
-            }
-        } else {
-            val addSongOutcome = musicManager.addSong(
-                uiState.value.title,
-                uiState.value.artist,
-                uiState.value.isDownloadable,
-                uiState.value.shareSettings,
-                fileManager.getTempFile(selectedFileUri.value!!)!!
-            )
-
-            when (addSongOutcome) {
-                is Outcome.Success -> setEffect { CreateEditFileContract.Effect.CloseScreen }
-                is Outcome.Failure<*> -> {}
-            }
+        when (saveResult) {
+            is Outcome.Success -> setEffect { CreateEditFileContract.Effect.CloseScreen }
+            is Outcome.Failure<*> -> {}
         }
     }
 }

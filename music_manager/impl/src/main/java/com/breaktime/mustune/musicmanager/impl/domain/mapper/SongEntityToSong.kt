@@ -8,5 +8,8 @@ fun SongEntity.toSong() = Song(
     title = title,
     artist = artist,
     isDownloadable = isDownloadable,
+    isFavourite = isFavourite,
+    isShared = isShared,
+    isCreator = isCreator,
     shareSettings = shareType.toShareSettings()
 )

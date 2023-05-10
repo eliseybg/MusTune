@@ -7,6 +7,7 @@ import com.breaktime.mustune.common.presentation.BaseViewModel
 import com.breaktime.mustune.musicmanager.api.MusicManager
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.api.models.TabSetup
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,6 +15,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
 
@@ -23,9 +26,10 @@ class MusicViewModel @Inject constructor(
     override fun createInitialState() = MusicContract.State()
 
     private val currentTab = MutableStateFlow(MusicTab.EXPLORE)
-    private val loadScreenTabsEvent = MutableSharedFlow<Boolean>(replay = 1)
-    private val screenTabs = loadScreenTabsEvent.flatMapLatest { musicManager.getUserMusicTabs(it) }
-        .shareIn(viewModelScope, SharingStarted.Eagerly)
+    private val loadScreenTabsEvent = Channel<Boolean>(1)
+    private val screenTabs = loadScreenTabsEvent.receiveAsFlow()
+        .flatMapLatest { musicManager.getUserMusicTabs(it) }
+        .shareIn(viewModelScope, SharingStarted.Eagerly, 1)
         .distinctUntilChanged()
 
     private val tabsSetup = screenTabs.mapWithPrev<List<MusicTab>, List<TabSetup>> { prev, tabs ->
@@ -38,10 +42,10 @@ class MusicViewModel @Inject constructor(
                 tabSetup.copy(songs = tabSetup.songs.cachedIn(viewModelScope))
             } else prevResult[prevTabIndex]
         }
-    }
+    }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
     init {
-        loadScreenTabsEvent.tryEmit(true)
+        loadScreenTabsEvent.trySend(true)
         combine(currentTab, screenTabs, tabsSetup) { currentTab, screenTabs, tabsSetup ->
             setState {
                 copy(currentTab = currentTab, screenTabs = screenTabs, tabsSetup = tabsSetup)
@@ -51,7 +55,7 @@ class MusicViewModel @Inject constructor(
 
     override fun handleEvent(event: MusicContract.Event) {
         when (event) {
-            is MusicContract.Event.UpdateSongTabs -> loadScreenTabsEvent.tryEmit(event.isForce)
+            is MusicContract.Event.UpdateSongTabs -> loadScreenTabsEvent.trySend(event.isForce)
         }
     }
 }

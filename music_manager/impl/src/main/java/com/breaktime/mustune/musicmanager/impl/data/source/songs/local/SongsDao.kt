@@ -32,8 +32,12 @@ interface SongsDao {
     fun getSongsCategories(): Flow<List<TabQuery>> = combine(
         listOf(TabQuery.EXPLORE, TabQuery.FAVOURITE, TabQuery.SHARED, TabQuery.PERSONAL)
             .map { tab ->
-                val query = tab.toQuery()
-                getSongInfoIfExist(query.first, query.second, query.third)
+                val query = tab.getQuery()
+                getSongInfoIfExist(
+                    isFavourite = query.isFavourite,
+                    isShared = query.isShared,
+                    isCreator = query.isCreator
+                )
             }
     ) { list ->
         buildList {
@@ -51,56 +55,56 @@ interface SongsDao {
     suspend fun getSong(songId: String): SongEntity?
 
     fun getPagingSongsInfo(tab: TabQuery): PagingSource<Int, SongEntity> {
-        val query = tab.toQuery()
-        return getPagingSongsInfo(query.first, query.second, query.third)
+        val query = tab.getQuery()
+        return getPagingSongsInfo(
+            isFavourite = query.isFavourite,
+            isShared = query.isShared,
+            isCreator = query.isCreator
+        )
     }
 
     @Query(
         "SELECT * FROM SongEntity WHERE " +
                 "(:isFavourite IS NULL OR isFavourite = :isFavourite)" +
-                "AND (:isCreator IS NULL OR isCreator = :isCreator)" +
-                "AND (:isShared IS NULL OR isShared = :isShared)"
+                "AND (:isShared IS NULL OR isShared = :isShared)" +
+                "AND (:isCreator IS NULL OR isCreator = :isCreator) ORDER BY createdAt"
     )
     fun getPagingSongsInfo(
         isFavourite: Boolean? = null,
+        isShared: Boolean? = null,
         isCreator: Boolean? = null,
-        isShared: Boolean? = null
     ): PagingSource<Int, SongEntity>
 
     @Query(
         "SELECT * FROM SongEntity WHERE " +
                 "(:isFavourite IS NULL OR isFavourite = :isFavourite)" +
-                "AND (:isCreator IS NULL OR isCreator = :isCreator)" +
-                "AND (:isShared IS NULL OR isShared = :isShared) LIMIT 1"
+                "AND (:isShared IS NULL OR isShared = :isShared)" +
+                "AND (:isCreator IS NULL OR isCreator = :isCreator)"
     )
     fun getSongInfoIfExist(
         isFavourite: Boolean? = null,
+        isShared: Boolean? = null,
         isCreator: Boolean? = null,
-        isShared: Boolean? = null
     ): Flow<SongEntity?>
 
     suspend fun clearAllSongs(tab: TabQuery) {
-        val query = tab.toQuery()
-        return clearAllSongs(query.first, query.second, query.third)
+        val query = tab.getQuery()
+        return clearAllSongs(
+            isFavourite = query.isFavourite,
+            isShared = query.isShared,
+            isCreator = query.isCreator
+        )
     }
 
     @Query(
         "DELETE FROM SongEntity WHERE " +
-                "(:isFavourite = '' OR isFavourite = :isFavourite)" +
-                "AND (:isCreator = '' OR isCreator = :isCreator)" +
-                "AND (:isShared = '' OR isShared = :isShared)"
+                "(:isFavourite = NULL OR isFavourite = :isFavourite)" +
+                "AND (:isShared = NULL OR isShared = :isShared)" +
+                "AND (:isCreator = NULL OR isCreator = :isCreator)"
     )
     suspend fun clearAllSongs(
         isFavourite: Boolean? = null,
+        isShared: Boolean? = null,
         isCreator: Boolean? = null,
-        isShared: Boolean? = null
     )
-
-    private fun TabQuery.toQuery(): Triple<Boolean?, Boolean?, Boolean?> = when (this) {
-        TabQuery.EXPLORE -> Triple(null, false, false)
-        TabQuery.FAVOURITE -> Triple(true, null, null)
-        TabQuery.PERSONAL -> Triple(null, true, false)
-        TabQuery.SHARED -> Triple(null, false, true)
-        TabQuery.UNKNOWN -> Triple(null, null, null)
-    }
 }

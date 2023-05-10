@@ -9,6 +9,7 @@ import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.api.models.SearchFilter
 import com.breaktime.mustune.musicmanager.impl.data.entities.ShareType
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongEntity
+import com.breaktime.mustune.musicmanager.impl.data.entities.SongIdBody
 import com.breaktime.mustune.musicmanager.impl.data.entities.SongInfoBody
 import com.breaktime.mustune.musicmanager.impl.data.entities.TabQuery
 import com.breaktime.mustune.musicmanager.impl.data.source.songs.local.SongsDatabase
@@ -121,5 +122,21 @@ class SongsRepositoryImpl @Inject constructor(
     override suspend fun deleteSong(songId: String): Unit = withContext(Dispatchers.IO) {
         songsApiService.deleteSong(songId).handleResponse()
         songsDatabase.songDao.deleteSong(songId)
+    }
+
+    override suspend fun addSongToFavourite(
+        songId: String
+    ): Unit = withContext(Dispatchers.IO) {
+        val body = SongIdBody(songId)
+        val songEntity = songsApiService.addSongToFavourite(body).retrieveBody()
+        songsDatabase.songDao.updateSong(songEntity)
+    }
+
+    override suspend fun removeSongFromFavourite(
+        songId: String
+    ): Unit = withContext(Dispatchers.IO) {
+        val body = SongIdBody(songId)
+        val songEntity = songsApiService.removeSongFromFavourite(body).retrieveBody()
+        songsDatabase.songDao.updateSong(songEntity)
     }
 }
