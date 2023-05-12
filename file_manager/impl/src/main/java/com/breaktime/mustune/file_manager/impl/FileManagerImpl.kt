@@ -10,6 +10,12 @@ import java.io.OutputStream
 import javax.inject.Inject
 
 class FileManagerImpl @Inject constructor(private val context: Context) : FileManager {
+    private val cacheDir by lazy {
+        context.externalCacheDir.also { cacheDir ->
+            if (cacheDir != null && !cacheDir.exists()) cacheDir.mkdirs()
+        }
+    }
+
     override fun getFileName(uri: Uri): String {
         return context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
             val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
@@ -28,12 +34,21 @@ class FileManagerImpl @Inject constructor(private val context: Context) : FileMa
     }
 
     private fun getTempFolder(): File {
-        val imageFile = File(context.externalCacheDir, "temp" + "/")
+        val imageFile = File(cacheDir, TEMP_DIR)
         imageFile.parentFile?.mkdirs()
         return imageFile
     }
 
     private fun InputStream.copyBufferedTo(os: OutputStream) = this.apply {
         os.buffered().use { copyTo(it) }
+    }
+
+    override fun getSongsDir(): File = File(cacheDir, SONGS_DIR).also { songsDir ->
+        if (!songsDir.exists()) songsDir.mkdirs()
+    }
+
+    companion object {
+        const val TEMP_DIR = "temp/"
+        const val SONGS_DIR = "songs/"
     }
 }

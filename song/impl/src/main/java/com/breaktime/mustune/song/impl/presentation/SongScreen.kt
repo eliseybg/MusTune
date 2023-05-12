@@ -1,9 +1,5 @@
 package com.breaktime.mustune.song.impl.presentation
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.pm.ActivityInfo
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,7 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -26,6 +21,7 @@ import androidx.navigation.NavHostController
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.extentions.Orientation
 import com.breaktime.mustune.common.extentions.setScreenOrientation
+import com.breaktime.mustune.ui_kit.common.PrimaryLoadingProgress
 import com.breaktime.mustune.ui_kit.common.Toolbar
 import com.breaktime.mustune.ui_kit.elements.PdfViewer
 
@@ -39,7 +35,9 @@ fun SongScreen(
     val state by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
-    Scaffold(
+    if (state.isLoading) {
+        PrimaryLoadingProgress()
+    } else Scaffold(
         topBar = {
             Toolbar(
                 content = {

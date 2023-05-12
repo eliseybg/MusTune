@@ -12,7 +12,8 @@ class SongContract {
 
     data class State(
         val songName: String = "",
-        val file: File? = null
+        val file: File? = null,
+        val isLoading: Boolean = false
     ) : UiState
 
     sealed class Effect : UiEffect

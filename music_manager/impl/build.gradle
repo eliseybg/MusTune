@@ -35,6 +35,7 @@ android {
 dependencies {
     implementation project(':common')
     implementation project(':network')
+    implementation project(':file_manager:api')
     api project(':music_manager:api')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 

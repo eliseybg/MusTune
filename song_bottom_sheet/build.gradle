@@ -43,5 +43,6 @@ dependencies {
     implementation project(':music_manager:api')
     implementation project(':create_edit_file:api')
     implementation project(':share_file:api')
+    implementation project(':session_manager:api')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }

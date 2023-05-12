@@ -41,6 +41,7 @@ class App : Application() {
         val musicManagerProvider = DaggerMusicManagerComponent.builder()
             .commonProvider(commonProvider)
             .networkProvider(networkProvider)
+            .fileManagerProvider(fileManagerProvider)
             .build()
 
         appProvider = DaggerAppComponent.builder()

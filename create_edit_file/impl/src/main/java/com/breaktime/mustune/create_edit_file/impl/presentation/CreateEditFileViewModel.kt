@@ -119,7 +119,7 @@ class CreateEditFileViewModel @Inject constructor(
             uiState.value.artist,
             uiState.value.isDownloadable,
             uiState.value.shareSettings,
-            fileManager.getTempFile(selectedFileUri.value!!)!!
+            selectedFileUri.value ?: return@launch
         )
 
         when (saveResult) {

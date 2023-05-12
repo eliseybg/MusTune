@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
@@ -23,6 +22,7 @@ import com.breaktime.mustune.musicmanager.api.LocalMusicManagerProvider
 import com.breaktime.mustune.musicmanager.api.models.ShareSettings
 import com.breaktime.mustune.musicmanager.api.models.Song
 import com.breaktime.mustune.resources.R
+import com.breaktime.mustune.session_manager.api.LocalSessionManagerProvider
 import com.breaktime.mustune.share_file.api.ShareFileEntry
 import com.breaktime.mustune.ui_kit.common.ContentBottomSheet
 import com.breaktime.mustune.ui_kit.common.ContentBottomSheetState
@@ -44,18 +44,17 @@ fun SongBottomSheet(
 ) {
     val musicManagerProvider = LocalMusicManagerProvider.current
     val commonProvider = LocalCommonProvider.current
+    val tokenProvider = LocalSessionManagerProvider.current.tokenProvider
     val viewModel = injectedViewModel {
         DaggerSongBottomSheetComponent.builder()
             .commonProvider(commonProvider)
             .musicManagerProvider(musicManagerProvider)
+            .tokenProvider(tokenProvider)
             .build()
             .viewModel
     }
 
     val context = LocalContext.current
-    val requestPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) {}
 
     val scope = rememberCoroutineScope()
     LaunchedEffect(key1 = true) {
@@ -65,6 +64,13 @@ fun SongBottomSheet(
     ContentBottomSheet(
         state = state,
         sheetContent = { song ->
+            val requestPermissionLauncher = rememberLauncherForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) {
+                if (it.all { it.value }) viewModel.setEvent(
+                    SongBottomSheetContract.Event.OnDownloadFileClicked(song)
+                )
+            }
             val bottomSheetContent = SongBottomSheetContent.build {
                 if (song.isCreator)
                     addRow(
@@ -86,22 +92,16 @@ fun SongBottomSheet(
                         iconId = R.drawable.ic_download,
                         textId = R.string.download_file
                     ) {
-                        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-                                    || context.isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE))
-                            && (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
-                                    || context.isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE))
-                        ) {
-                            viewModel.setEvent(
-                                SongBottomSheetContract.Event.OnDownloadFileClicked(song)
-                            )
-                        } else {
-                            requestPermissionLauncher.launch(
-                                arrayOf(
-                                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                                    Manifest.permission.POST_NOTIFICATIONS
-                                )
-                            )
+                        PermissionChecker(context).checkPermissions {
+                            Manifest.permission.READ_EXTERNAL_STORAGE before Build.VERSION_CODES.R
+                            Manifest.permission.POST_NOTIFICATIONS from Build.VERSION_CODES.TIRAMISU
                         }
+                            .onDenied { requestPermissionLauncher.launch(it) }
+                            .onAllGranted {
+                                viewModel.setEvent(
+                                    SongBottomSheetContract.Event.OnDownloadFileClicked(song)
+                                )
+                            }
                     }
 
 
@@ -186,6 +186,53 @@ fun BottomSheetPreview() {
 //    }
 }
 
-fun Context.isPermissionGranted(permission: String): Boolean {
-    return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+class PermissionChecker(private val context: Context) {
+    fun checkPermissions(permissions: PermissionsCheck.() -> Unit): PermissionsCheck {
+        return PermissionsCheck().apply { permissions() }
+    }
+
+    inner class PermissionsCheck internal constructor() {
+        private val permissionsResult = mutableMapOf<String, Boolean>()
+
+        fun onAllGranted(block: () -> Unit): PermissionsCheck {
+            if (permissionsResult.all { it.value }) block()
+            return this
+        }
+
+        fun onDenied(block: (Array<String>) -> Unit): PermissionsCheck {
+            val denied = permissionsResult.filter { !it.value }
+            if (denied.isNotEmpty()) block(denied.keys.toTypedArray())
+            return this
+        }
+
+        fun onResult(block: (Map<String, Boolean>) -> Unit): PermissionsCheck {
+            block(permissionsResult.toMap())
+            return this
+        }
+
+        infix fun String.before(api: Int) {
+            val isGranted = Build.VERSION.SDK_INT > api || context.isPermissionGranted(this)
+            permissionsResult[this] = isGranted
+        }
+
+        infix fun String.beforeIncluded(api: Int) {
+            val isGranted = Build.VERSION.SDK_INT >= api || context.isPermissionGranted(this)
+            permissionsResult[this] = isGranted
+        }
+
+        infix fun String.from(api: Int) {
+            val isGranted = Build.VERSION.SDK_INT < api || context.isPermissionGranted(this)
+            permissionsResult[this] = isGranted
+        }
+
+        infix fun String.fromIncluded(api: Int) {
+            val isGranted = Build.VERSION.SDK_INT <= api || context.isPermissionGranted(this)
+            permissionsResult[this] = isGranted
+        }
+    }
+
+    fun Context.isPermissionGranted(permission: String): Boolean {
+        val isGranted = ContextCompat.checkSelfPermission(this, permission)
+        return isGranted == PackageManager.PERMISSION_GRANTED
+    }
 }

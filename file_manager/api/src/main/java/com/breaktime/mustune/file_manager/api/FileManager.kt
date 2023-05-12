@@ -7,4 +7,6 @@ interface FileManager {
     fun getFileName(uri: Uri): String
 
     fun getTempFile(uri: Uri): File?
+
+    fun getSongsDir(): File?
 }

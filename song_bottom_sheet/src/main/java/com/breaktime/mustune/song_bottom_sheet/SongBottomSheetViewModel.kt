@@ -39,7 +39,7 @@ class SongBottomSheetViewModel @Inject constructor(
     }.invokeOnCompletion { setEffect { SongBottomSheetContract.Effect.CloseBottomSheet } }
 
     private fun downloadFile(song: Song) = viewModelScope.launch {
-        downloadUtil.downloadSong(song.id)
+        downloadUtil.downloadSong(song.id, song.title, song.artist)
     }.invokeOnCompletion { setEffect { SongBottomSheetContract.Effect.CloseBottomSheet } }
 
     private fun openShareSettings(song: Song) = viewModelScope.launch {
