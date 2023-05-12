@@ -5,13 +5,14 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -23,24 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.breaktime.mustune.common.Destinations
-import com.breaktime.mustune.common.find
-import com.breaktime.mustune.search_songs.api.SearchSongsEntry
+import com.breaktime.mustune.common.extentions.Orientation
+import com.breaktime.mustune.common.extentions.setScreenOrientation
 import com.breaktime.mustune.ui_kit.common.Toolbar
-
-@Composable
-fun SetScreenOrientation(orientation: Int) {
-    val context = LocalContext.current
-    LaunchedEffect(orientation) {
-        val activity = context.findActivity() ?: return@LaunchedEffect
-        activity.requestedOrientation = orientation
-    }
-}
-
-fun Context.findActivity(): Activity? = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
-}
+import com.breaktime.mustune.ui_kit.elements.PdfViewer
 
 @Composable
 fun SongScreen(
@@ -48,7 +35,7 @@ fun SongScreen(
     navController: NavHostController,
     destinations: Destinations
 ) {
-    SetScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+    setScreenOrientation(Orientation.LANDSCAPE)
     val state by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
@@ -57,21 +44,9 @@ fun SongScreen(
             Toolbar(
                 content = {
                     Text(
-                        text = "Instrument",
+                        text = state.songName,
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp
-                    )
-                },
-                actions = {
-                    Icon(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clickable {
-                                val route = destinations.find<SearchSongsEntry>().featureRoute
-                                navController.navigate(route)
-                            },
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "search icon",
                     )
                 },
                 navigation = {
@@ -79,9 +54,7 @@ fun SongScreen(
                         modifier = Modifier
                             .size(24.dp)
                             .clickable {
-                                val activity = context.findActivity() ?: return@clickable
-                                activity.requestedOrientation =
-                                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                                context.setScreenOrientation(Orientation.PORTRAIT)
                                 navController.popBackStack()
                             },
                         imageVector = Icons.Default.ArrowBack,
@@ -91,6 +64,14 @@ fun SongScreen(
             )
         }
     ) {
-
+        state.file?.let { file ->
+            PdfViewer(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize()
+                    .padding(16.dp),
+                file = file
+            )
+        }
     }
 }

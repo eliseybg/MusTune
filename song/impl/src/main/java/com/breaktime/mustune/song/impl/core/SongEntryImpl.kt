@@ -18,9 +18,14 @@ class SongEntryImpl @Inject constructor() : SongEntry() {
         destinations: Destinations,
         backStackEntry: NavBackStackEntry
     ) {
+        val songId = backStackEntry.arguments?.getString(ARG_SONG_ID) ?: run {
+            navController.popBackStack()
+            return
+        }
         val musicManagerProvider = LocalMusicManagerProvider.current
         val viewModel = injectedViewModel {
             DaggerSongComponent.builder()
+                .songId(songId)
                 .musicManagerProvider(musicManagerProvider)
                 .build()
                 .viewModel

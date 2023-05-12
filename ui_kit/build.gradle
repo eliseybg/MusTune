@@ -39,4 +39,5 @@ android {
 dependencies {
     implementation project(':common')
     api project(':resources')
+    implementation "com.dmitryborodin:pdfview-android:$pdf_viewer_version"
 }
