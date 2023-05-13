@@ -41,7 +41,8 @@ fun SearchTextField(
     ) {
         Icon(
             imageVector = Icons.Default.Search,
-            contentDescription = "search icon"
+            contentDescription = "search icon",
+            tint = MusTuneTheme.colors.content
         )
         PrimaryTextField(
             value = searchText,

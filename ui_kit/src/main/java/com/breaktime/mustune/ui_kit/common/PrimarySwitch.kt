@@ -49,7 +49,8 @@ fun PrimarySwitch(
                 .weight(1f)
                 .padding(end = 8.dp),
             text = text,
-            fontSize = sizes.fontSize
+            fontSize = sizes.fontSize,
+            color = MusTuneTheme.colors.content
         )
         Canvas(modifier = Modifier.size(width = sizes.switchWidth, height = sizes.switchHeight)) {
             drawRoundRect(

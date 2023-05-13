@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.*
 
 abstract class BaseFlowOutcomeUseCase<out Type, in Params> {
     operator fun invoke(params: Params): Flow<Outcome<Type>> = execute(params)
-        .catch { e -> emit(Outcome.Failure(e)) }
+        .catch { e -> emit(e.toFailure()) }
         .flowOn(Dispatchers.IO)
 
     protected abstract fun execute(params: Params): Flow<Outcome<Type>>

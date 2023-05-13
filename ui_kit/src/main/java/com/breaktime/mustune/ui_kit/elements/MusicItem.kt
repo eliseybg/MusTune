@@ -65,7 +65,8 @@ fun MusicItem(
         Icon(
             modifier = Modifier.clickable { onMoreClick() },
             imageVector = Icons.Default.MoreVert,
-            contentDescription = "more icon"
+            contentDescription = "more icon",
+            tint = MusTuneTheme.colors.content
         )
     }
 }

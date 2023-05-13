@@ -9,11 +9,14 @@ import com.breaktime.mustune.resources.theme.colors.DefaultColors
 import com.breaktime.mustune.resources.theme.colors.LocalColors
 import com.breaktime.mustune.resources.theme.colors.MusTuneColors
 import androidx.compose.material.Typography
+import androidx.compose.ui.graphics.Color
+import com.breaktime.mustune.resources.theme.colors.darkColors
+import com.breaktime.mustune.resources.theme.colors.lightColors
 
 @Composable
 fun MusTuneTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     CompositionLocalProvider(
-        LocalColors provides DefaultColors(),
+        LocalColors provides if (darkTheme) darkColors else lightColors,
     ) {
         MaterialTheme(
             typography = Typography,

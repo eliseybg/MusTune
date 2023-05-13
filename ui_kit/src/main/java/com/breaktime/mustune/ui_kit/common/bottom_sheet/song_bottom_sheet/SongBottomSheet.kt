@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.breaktime.mustune.resources.R
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 import com.breaktime.mustune.ui_kit.common.bottom_sheet.BottomSheetContent
 
 @Composable
@@ -47,11 +48,16 @@ private fun SongBottomSheetItem(
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
-        Icon(painter = painterResource(id = iconId), contentDescription = "edit")
+        Icon(
+            painter = painterResource(id = iconId),
+            contentDescription = "edit",
+            tint = MusTuneTheme.colors.content
+        )
         Text(
             modifier = Modifier.padding(start = 8.dp),
             text = stringResource(id = textId),
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            color = MusTuneTheme.colors.content
         )
     }
 }

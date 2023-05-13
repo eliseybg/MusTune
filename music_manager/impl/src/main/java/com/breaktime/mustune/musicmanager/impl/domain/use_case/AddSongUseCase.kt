@@ -7,7 +7,6 @@ import com.breaktime.mustune.file_manager.api.FileManager
 import com.breaktime.mustune.musicmanager.api.models.ShareSettings
 import com.breaktime.mustune.musicmanager.impl.domain.mapper.toShareType
 import com.breaktime.mustune.musicmanager.impl.domain.repository.SongsRepository
-import java.io.File
 import javax.inject.Inject
 
 class AddSongUseCase @Inject constructor(
@@ -16,7 +15,7 @@ class AddSongUseCase @Inject constructor(
 ) : BaseOutcomeUseCase<Unit, AddSongUseCase.Params>() {
     override suspend fun execute(params: Params): Outcome<Unit> {
         val tempFile = fileManager.getTempFile(params.file)
-        tempFile ?: return Outcome.Failure(Exception("Error create temp file"))
+        tempFile ?: throw Exception("Error create temp file")
         songsRepository.addSong(
             params.title,
             params.artist,

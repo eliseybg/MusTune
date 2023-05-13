@@ -15,9 +15,8 @@ class GetSongFileInfoUseCase @Inject constructor(
 ) : BaseOutcomeUseCase<SongFileInfo, GetSongFileInfoUseCase.Params>() {
     override suspend fun execute(params: Params): Outcome<SongFileInfo> {
         val songFile = songsRepository.getSongFile(params.songId)
-        val song = songsRepository.getSong(params.songId)
+        val song = songsRepository.getSong(params.songId) ?: throw Exception("No file")
         val pdfsDir = fileManager.getPdfDir() ?: throw Exception("No dir")
-        song ?: return Outcome.Failure(Exception("No file"))
         val pdfFile = File("$pdfsDir/${songFile.nameWithoutExtension}.pdf")
         GpPdfConverter.convertFileToPdf(songFile, pdfFile)
 

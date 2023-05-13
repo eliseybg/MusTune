@@ -20,7 +20,7 @@ fun BottomSheetContent(content: @Composable () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp))
-            .background(MusTuneTheme.colors.sheetColor)
+            .background(MusTuneTheme.colors.sheetBackground)
             .padding(vertical = 14.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

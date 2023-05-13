@@ -24,6 +24,7 @@ import androidx.navigation.NavHostController
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.extentions.Orientation
 import com.breaktime.mustune.common.extentions.setScreenOrientation
+import com.breaktime.mustune.resources.theme.MusTuneTheme
 import com.breaktime.mustune.ui_kit.common.PrimaryLoadingProgress
 import com.breaktime.mustune.ui_kit.common.Toolbar
 import com.breaktime.mustune.ui_kit.elements.PdfViewer
@@ -54,7 +55,8 @@ fun SongScreen(
                     Text(
                         text = state.songName,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
+                        fontSize = 24.sp,
+                        color = MusTuneTheme.colors.content
                     )
                 },
                 navigation = {
@@ -67,10 +69,12 @@ fun SongScreen(
                             },
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "back icon",
+                        tint = MusTuneTheme.colors.content
                     )
                 }
             )
-        }
+        },
+        backgroundColor = MusTuneTheme.colors.background
     ) {
         state.file?.let { file ->
             PdfViewer(

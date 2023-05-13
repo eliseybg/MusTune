@@ -52,6 +52,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.breaktime.mustune.common.Constants
@@ -107,13 +108,15 @@ fun CreateEditFileScreen(
                             .clickable { navController.popBackStack() },
                         imageVector = Icons.Default.Close,
                         contentDescription = "back icon",
+                        tint = MusTuneTheme.colors.content
                     )
                 },
                 content = {
                     Text(
                         text = stringResource(if (state.isEdit) R.string.edit_file else R.string.load_file),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
+                        fontSize = 24.sp,
+                        color = MusTuneTheme.colors.content
                     )
                 },
                 actions = {
@@ -183,7 +186,8 @@ fun CreateEditFileScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = stringResource(R.string.who_have_access),
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    color = MusTuneTheme.colors.content
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 ShareTypesDropDown(
@@ -266,7 +270,8 @@ fun ShareTypesDropDown(
             Text(
                 modifier = Modifier.weight(1f),
                 text = selected.name,
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                color = MusTuneTheme.colors.content
             )
             Image(
                 painter = painterResource(id = R.drawable.ic_drop_down),
@@ -277,7 +282,9 @@ fun ShareTypesDropDown(
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier.width(width.pxToDp())
+            modifier = Modifier
+                .width(width.pxToDp())
+                .background(MusTuneTheme.colors.dropDownBackground)
         ) {
             items.forEach { item ->
                 DropdownMenuItem(
@@ -299,7 +306,10 @@ fun ShareTypesDropDown(
                             .size(24.dp)
                             .padding(horizontal = 4.dp)
                     )
-                    Text(text = item.name)
+                    Text(
+                        text = item.name,
+                        color = MusTuneTheme.colors.content
+                    )
                 }
             }
         }

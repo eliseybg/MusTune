@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.breaktime.mustune.common.di.LocalCommonProvider
 import com.breaktime.mustune.di.LocalAppProvider
 import com.breaktime.mustune.file_manager.api.LocalFileManagerProvider
@@ -18,17 +20,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MusTuneTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    CompositionLocalProvider(
-                        LocalAppProvider provides application.appProvider,
-                        LocalCommonProvider provides application.appProvider,
-                        LocalFileManagerProvider provides application.appProvider,
-                        LocalSessionManagerProvider provides application.appProvider,
-                        LocalMusicManagerProvider provides application.appProvider,
-                        LocalSettingsManagerProvider provides application.appProvider,
-                    ) {
-                        Navigation()
+            val isDarkMode by application.appProvider.settingsManager.isDarkModeEnabled()
+                .collectAsState(null)
+            isDarkMode?.let {
+                MusTuneTheme(it) {
+                    Surface(color = MaterialTheme.colors.background) {
+                        CompositionLocalProvider(
+                            LocalAppProvider provides application.appProvider,
+                            LocalCommonProvider provides application.appProvider,
+                            LocalFileManagerProvider provides application.appProvider,
+                            LocalSessionManagerProvider provides application.appProvider,
+                            LocalMusicManagerProvider provides application.appProvider,
+                            LocalSettingsManagerProvider provides application.appProvider,
+                        ) {
+                            Navigation()
+                        }
                     }
                 }
             }

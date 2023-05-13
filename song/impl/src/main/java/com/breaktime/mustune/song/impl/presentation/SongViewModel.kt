@@ -1,6 +1,7 @@
 package com.breaktime.mustune.song.impl.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.breaktime.mustune.common.domain.ErrorCode
 import com.breaktime.mustune.common.domain.Outcome
 import com.breaktime.mustune.common.presentation.BaseViewModel
 import com.breaktime.mustune.musicmanager.api.MusicManager
@@ -15,13 +16,29 @@ class SongViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            when (val song = musicManager.getSongFile(songId)) {
+            when (val outcome = musicManager.getSongFile(songId)) {
                 is Outcome.Success -> setState {
-                    copy(songName = song.value.title, file = song.value.file, isLoading = false)
+                    copy(
+                        songName = outcome.value.title,
+                        file = outcome.value.file,
+                        isLoading = false
+                    )
                 }
 
-                is Outcome.Failure<*> -> {
-                    println(song.e)
+                is Outcome.Failure -> {
+                    when (outcome) {
+                        Outcome.Failure.Connection -> TODO()
+                        is Outcome.Failure.Unknown -> TODO()
+                        is Outcome.Failure.ServiceError -> {
+                            when (outcome.code) {
+                                ErrorCode.BAD_REQUEST -> TODO()
+                                ErrorCode.UNAUTHORIZED -> TODO()
+                                ErrorCode.NOT_FOUND -> TODO()
+                                ErrorCode.INTERNAL_SERVER_ERROR -> TODO()
+                                ErrorCode.Unknown -> TODO()
+                            }
+                        }
+                    }
                 }
             }
         }

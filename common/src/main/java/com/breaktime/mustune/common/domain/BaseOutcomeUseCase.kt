@@ -5,7 +5,7 @@ abstract class BaseOutcomeUseCase<out Type, in Params> {
         return try {
             execute(params)
         } catch (throwable: Throwable) {
-            Outcome.Failure(throwable)
+            throwable.toFailure()
         }
     }
 

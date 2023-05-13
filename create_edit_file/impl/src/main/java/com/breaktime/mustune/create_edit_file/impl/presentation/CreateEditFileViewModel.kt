@@ -3,6 +3,7 @@ package com.breaktime.mustune.create_edit_file.impl.presentation
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.breaktime.mustune.common.Constants
+import com.breaktime.mustune.common.domain.ErrorCode
 import com.breaktime.mustune.common.domain.Outcome
 import com.breaktime.mustune.common.presentation.BaseViewModel
 import com.breaktime.mustune.file_manager.api.FileManager
@@ -46,9 +47,9 @@ class CreateEditFileViewModel @Inject constructor(
 
     private fun loadSongInfo() = viewModelScope.launch {
         songId ?: return@launch
-        when (val songOutcome = musicManager.getSong(songId)) {
+        when (val outcome = musicManager.getSong(songId)) {
             is Outcome.Success -> {
-                val song = songOutcome.value
+                val song = outcome.value
                 title.value = song.title
                 artist.value = song.artist
                 setState {
@@ -56,7 +57,21 @@ class CreateEditFileViewModel @Inject constructor(
                 }
             }
 
-            is Outcome.Failure<*> -> {}
+            is Outcome.Failure -> {
+                when (outcome) {
+                    Outcome.Failure.Connection -> TODO()
+                    is Outcome.Failure.Unknown -> TODO()
+                    is Outcome.Failure.ServiceError -> {
+                        when (outcome.code) {
+                            ErrorCode.BAD_REQUEST -> TODO()
+                            ErrorCode.UNAUTHORIZED -> TODO()
+                            ErrorCode.NOT_FOUND -> TODO()
+                            ErrorCode.INTERNAL_SERVER_ERROR -> TODO()
+                            ErrorCode.Unknown -> TODO()
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -97,9 +112,23 @@ class CreateEditFileViewModel @Inject constructor(
 
     private fun deleteFile() = viewModelScope.launch {
         if (uiState.value.isEdit) {
-            when (val deleteOutcome = musicManager.deleteSong(songId!!)) {
+            when (val outcome = musicManager.deleteSong(songId!!)) {
                 is Outcome.Success -> setEffect { CreateEditFileContract.Effect.CloseScreen }
-                is Outcome.Failure<*> -> {}
+                is Outcome.Failure -> {
+                    when (outcome) {
+                        Outcome.Failure.Connection -> TODO()
+                        is Outcome.Failure.Unknown -> TODO()
+                        is Outcome.Failure.ServiceError -> {
+                            when (outcome.code) {
+                                ErrorCode.BAD_REQUEST -> TODO()
+                                ErrorCode.UNAUTHORIZED -> TODO()
+                                ErrorCode.NOT_FOUND -> TODO()
+                                ErrorCode.INTERNAL_SERVER_ERROR -> TODO()
+                                ErrorCode.Unknown -> TODO()
+                            }
+                        }
+                    }
+                }
             }
         } else {
             selectedFileUri.value = null
@@ -107,7 +136,7 @@ class CreateEditFileViewModel @Inject constructor(
     }
 
     private fun onSave() = viewModelScope.launch {
-        val saveResult = if (uiState.value.isEdit) musicManager.editSong(
+        val outcome = if (uiState.value.isEdit) musicManager.editSong(
             songId!!,
             uiState.value.title,
             uiState.value.artist,
@@ -122,9 +151,23 @@ class CreateEditFileViewModel @Inject constructor(
             selectedFileUri.value ?: return@launch
         )
 
-        when (saveResult) {
+        when (outcome) {
             is Outcome.Success -> setEffect { CreateEditFileContract.Effect.CloseScreen }
-            is Outcome.Failure<*> -> {}
+            is Outcome.Failure -> {
+                when (outcome) {
+                    Outcome.Failure.Connection -> TODO()
+                    is Outcome.Failure.Unknown -> TODO()
+                    is Outcome.Failure.ServiceError -> {
+                        when (outcome.code) {
+                            ErrorCode.BAD_REQUEST -> TODO()
+                            ErrorCode.UNAUTHORIZED -> TODO()
+                            ErrorCode.NOT_FOUND -> TODO()
+                            ErrorCode.INTERNAL_SERVER_ERROR -> TODO()
+                            ErrorCode.Unknown -> TODO()
+                        }
+                    }
+                }
+            }
         }
     }
 }

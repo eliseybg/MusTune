@@ -153,10 +153,12 @@ fun SearchSongsScreen(
                                     },
                                 imageVector = Icons.Default.ArrowBack,
                                 contentDescription = "back icon",
+                                tint = MusTuneTheme.colors.content
                             )
                         }
                     )
-                }
+                },
+                backgroundColor = MusTuneTheme.colors.background
             ) {
                 val items = state.songs.collectAsLazyPagingItems()
                 LazyColumn(

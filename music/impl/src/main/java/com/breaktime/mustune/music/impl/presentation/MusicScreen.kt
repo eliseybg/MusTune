@@ -94,7 +94,8 @@ fun MusicScreen(
                         Text(
                             text = stringResource(R.string.music),
                             fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp
+                            fontSize = 24.sp,
+                            color = MusTuneTheme.colors.content
                         )
                     },
                     actions = {
@@ -111,6 +112,7 @@ fun MusicScreen(
                                     },
                                 painter = painterResource(id = R.drawable.ic_add_music),
                                 contentDescription = "Add music",
+                                tint = MusTuneTheme.colors.content
                             )
                             Icon(
                                 modifier = Modifier
@@ -122,6 +124,7 @@ fun MusicScreen(
                                     },
                                 imageVector = Icons.Default.Search,
                                 contentDescription = "search icon",
+                                tint = MusTuneTheme.colors.content
                             )
                         }
                     },

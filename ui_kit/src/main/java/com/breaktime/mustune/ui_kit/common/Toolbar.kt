@@ -87,19 +87,22 @@ fun ToolbarPreview() {
             Text(
                 text = "Title",
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
+                fontSize = 24.sp,
+                color = MusTuneTheme.colors.content
             )
         },
         navigation = {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = null,
+                tint = MusTuneTheme.colors.content
             )
         },
         actions = {
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = null,
+                tint = MusTuneTheme.colors.content
             )
         }
     )
@@ -113,7 +116,8 @@ fun ToolbarTitlePreview() {
             Text(
                 text = "Title",
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
+                fontSize = 24.sp,
+                color = MusTuneTheme.colors.content
             )
         }
     )
@@ -127,13 +131,15 @@ fun ToolbarNavigationPreview() {
             Text(
                 text = "Title",
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
+                fontSize = 24.sp,
+                color = MusTuneTheme.colors.content
             )
         },
         navigation = {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = null,
+                tint = MusTuneTheme.colors.content
             )
         }
     )
@@ -147,13 +153,15 @@ fun ToolbarActionPreview() {
             Text(
                 text = "Title",
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
+                fontSize = 24.sp,
+                color = MusTuneTheme.colors.content
             )
         },
         actions = {
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = null,
+                tint = MusTuneTheme.colors.content
             )
         }
     )

@@ -2,7 +2,7 @@ package com.breaktime.mustune.resources.theme.colors
 
 import androidx.compose.ui.graphics.Color
 
-class DefaultColors constructor(
+class DefaultColors(
     override val primary: Color = Color(0xFF0F235E),
     override val onPrimary: Color = Color(0xFFFFFFFF),
     override val secondary: Color = Color(0xFFEAEAEA),
@@ -16,7 +16,8 @@ class DefaultColors constructor(
     override val bottomBar: Color = Color(0xFFFFFFFF),
     override val unselectedBottomBarItem: Color = Color(0xFF666666),
     override val shadowBackground: Color = Color(0x66636363),
-    override val sheetColor: Color = Color(0xFFFFFFFF),
+    override val dropDownBackground: Color = Color(0x66636363),
+    override val sheetBackground: Color = Color(0xFFFFFFFF),
     override val switchThumb: Color = Color(0xFFFFFFFF),
     override val textHint: Color = Color(0xFF7C7C7C)
 ) : MusTuneColors

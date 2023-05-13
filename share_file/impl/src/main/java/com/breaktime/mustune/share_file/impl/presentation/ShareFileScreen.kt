@@ -45,13 +45,15 @@ fun ShareFileScreen(viewModel: ShareFileViewModel, navController: NavHostControl
                             .clickable { navController.popBackStack() },
                         imageVector = Icons.Default.Close,
                         contentDescription = "back icon",
+                        tint = MusTuneTheme.colors.content
                     )
                 },
                 content = {
                     Text(
                         text = stringResource(id = R.string.share_settings),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
+                        fontSize = 24.sp,
+                        color = MusTuneTheme.colors.content
                     )
                 },
                 actions = {
@@ -59,7 +61,8 @@ fun ShareFileScreen(viewModel: ShareFileViewModel, navController: NavHostControl
                         modifier = Modifier.clickable { viewModel.setEvent(ShareFileContract.Event.OnSaveClick) },
                         text = stringResource(id = R.string.save),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
+                        fontSize = 16.sp,
+                        color = MusTuneTheme.colors.content
                     )
                 }
             )

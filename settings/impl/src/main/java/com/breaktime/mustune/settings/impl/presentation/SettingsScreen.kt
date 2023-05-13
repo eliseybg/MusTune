@@ -48,7 +48,8 @@ fun SettingsScreen(
                     Text(
                         text = stringResource(R.string.settings),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
+                        fontSize = 24.sp,
+                        color = MusTuneTheme.colors.content
                     )
                 },
                 actions = {
@@ -65,6 +66,7 @@ fun SettingsScreen(
                             },
                         painter = painterResource(id = R.drawable.ic_log_out),
                         contentDescription = "Logout icon",
+                        tint = MusTuneTheme.colors.content
                     )
                 }
             )
@@ -81,7 +83,8 @@ fun SettingsScreen(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 text = stringResource(R.string.common),
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                color = MusTuneTheme.colors.content
             )
             SettingsSwitchItem(
                 modifier = Modifier
@@ -109,7 +112,8 @@ fun SettingsScreen(
                 modifier = Modifier.padding(top = 40.dp, start = 16.dp, end = 16.dp),
                 text = stringResource(R.string.account),
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                color = MusTuneTheme.colors.content
             )
             SettingsLanguageItem(
                 modifier = Modifier
@@ -131,7 +135,8 @@ fun SettingsScreen(
                     modifier = Modifier.padding(top = 40.dp, start = 16.dp, end = 16.dp),
                     text = stringResource(R.string.social),
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    color = MusTuneTheme.colors.content
                 )
                 SettingsSwitchItem(
                     modifier = Modifier
@@ -206,7 +211,8 @@ fun SettingsLanguageItem(modifier: Modifier = Modifier, @DrawableRes iconId: Int
             Icon(
                 modifier = Modifier.padding(start = 6.dp),
                 painter = painterResource(id = R.drawable.ic_arrow_right_20),
-                contentDescription = null
+                contentDescription = null,
+                tint = MusTuneTheme.colors.content
             )
         })
 }
@@ -220,7 +226,8 @@ fun SettingsMoreItem(modifier: Modifier = Modifier, @DrawableRes iconId: Int, te
         option = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_right_20),
-                contentDescription = null
+                contentDescription = null,
+                tint = MusTuneTheme.colors.content
             )
         })
 }
@@ -233,13 +240,18 @@ fun SettingsItem(
     option: @Composable () -> Unit
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        Icon(painter = painterResource(id = iconId), contentDescription = null)
+        Icon(
+            painter = painterResource(id = iconId),
+            contentDescription = null,
+            tint = MusTuneTheme.colors.content
+        )
         Text(
             modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .weight(1f),
             text = text,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            color = MusTuneTheme.colors.content
         )
         option()
     }

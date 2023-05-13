@@ -17,7 +17,8 @@ interface MusTuneColors {
     val bottomBar: Color
     val unselectedBottomBarItem: Color
     val shadowBackground: Color
-    val sheetColor: Color
+    val sheetBackground: Color
+    val dropDownBackground: Color
     val switchThumb: Color
     val textHint: Color
 }
