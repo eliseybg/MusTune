@@ -31,7 +31,7 @@ class CreateEditFileViewModel @Inject constructor(
     init {
         loadSongInfo()
         combine(title, artist, selectedFileUri) { title, artist, selectedFileUri ->
-            val isFieldsNotEmpty = title.isNotEmpty() && artist.isNotEmpty()
+            val isFieldsNotEmpty = title.isNotEmpty()
             val isFileSelected = selectedFileUri != null
             setState {
                 copy(

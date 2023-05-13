@@ -37,6 +37,7 @@ dependencies {
     implementation project(':network')
     implementation project(':file_manager:api')
     api project(':music_manager:api')
+    implementation project(':gp_core')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
     implementation "androidx.room:room-runtime:$room_version"

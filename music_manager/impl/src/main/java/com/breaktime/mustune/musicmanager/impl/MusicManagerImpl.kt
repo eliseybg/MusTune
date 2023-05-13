@@ -12,6 +12,7 @@ import com.breaktime.mustune.musicmanager.api.models.SongFileInfo
 import com.breaktime.mustune.musicmanager.api.models.TabSetup
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.AddSongToFavouriteUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.AddSongUseCase
+import com.breaktime.mustune.musicmanager.impl.domain.use_case.ClearStorageUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.DeleteSongUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.EditSongUseCase
 import com.breaktime.mustune.musicmanager.impl.domain.use_case.GetSongFileInfoUseCase
@@ -34,7 +35,8 @@ class MusicManagerImpl @Inject constructor(
     private val editSongUseCase: EditSongUseCase,
     private val deleteSongUseCase: DeleteSongUseCase,
     private val addSongToFavouriteUseCase: AddSongToFavouriteUseCase,
-    private val removeSongFromFavouriteUseCase: RemoveSongFromFavouriteUseCase
+    private val removeSongFromFavouriteUseCase: RemoveSongFromFavouriteUseCase,
+    private val clearStorageUseCase: ClearStorageUseCase
 ) : MusicManager {
     override suspend fun getSong(songId: String, isForce: Boolean): Outcome<Song> {
         return getSongUseCase.invoke(GetSongUseCase.Params(songId, isForce))
@@ -102,5 +104,10 @@ class MusicManagerImpl @Inject constructor(
     override suspend fun removeFromFavourite(songId: String): Outcome<Unit> {
         val params = RemoveSongFromFavouriteUseCase.Params(songId)
         return removeSongFromFavouriteUseCase.invoke(params)
+    }
+
+    override suspend fun clearStorage(): Outcome<Unit> {
+        val params = ClearStorageUseCase.Params
+        return clearStorageUseCase.invoke(params)
     }
 }

@@ -2,6 +2,8 @@ package com.breaktime.mustune.settings.impl.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.breaktime.mustune.common.presentation.BaseViewModel
+import com.breaktime.mustune.musicmanager.api.MusicManager
+import com.breaktime.mustune.session_manager.api.SessionManager
 import com.breaktime.mustune.settings_manager.api.SettingsManager
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
@@ -9,7 +11,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
-    private val settingsManager: SettingsManager
+    private val settingsManager: SettingsManager,
+    private val sessionManager: SessionManager,
+    private val musicManager: MusicManager
 ) : BaseViewModel<SettingsContract.Event, SettingsContract.State, SettingsContract.Effect>() {
     override fun createInitialState() = SettingsContract.State()
 
@@ -27,8 +31,10 @@ class SettingsViewModel @Inject constructor(
 
     override fun handleEvent(event: SettingsContract.Event) {
         when (event) {
-            is SettingsContract.Event.OnChangeNotificationEnabled -> changeNotificationEnabled()
-            is SettingsContract.Event.OnChangeDarkModeEnabled -> changeDarkModeEnabled()
+            is SettingsContract.Event.OnChangeNotificationClicked -> changeNotificationEnabled()
+            is SettingsContract.Event.OnChangeDarkModeClicked -> changeDarkModeEnabled()
+            is SettingsContract.Event.OnLogOutClicked -> onLogOut()
+            is SettingsContract.Event.OnDeleteAccountClicked -> onDeleteAccount()
         }
     }
 
@@ -38,5 +44,15 @@ class SettingsViewModel @Inject constructor(
 
     private fun changeDarkModeEnabled() = viewModelScope.launch {
         settingsManager.setDarkModeEnabled(!uiState.value.isDarkModeEnabled)
+    }
+
+    private fun onLogOut() = viewModelScope.launch {
+        sessionManager.logout()
+        musicManager.clearStorage()
+    }
+
+    private fun onDeleteAccount() = viewModelScope.launch {
+        sessionManager.logout()
+        musicManager.clearStorage()
     }
 }

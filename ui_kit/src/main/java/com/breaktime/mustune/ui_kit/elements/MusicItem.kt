@@ -14,12 +14,15 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.breaktime.mustune.resources.theme.MusTuneTheme
+import com.breaktime.mustune.resources.R
 
 @Composable
 fun MusicItem(
@@ -51,11 +54,12 @@ fun MusicItem(
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = artist,
-                fontSize = 12.sp,
+                text = artist.ifEmpty { stringResource(id = R.string.no_artist) },
+                fontSize = 14.sp,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
-                color = MusTuneTheme.colors.content.copy(alpha = 0.7f)
+                fontStyle = if (artist.isEmpty()) FontStyle.Italic else null,
+                color = MusTuneTheme.colors.content.copy(alpha = if (artist.isNotEmpty()) 0.8f else 0.5f)
             )
         }
         Icon(

@@ -3,10 +3,9 @@ package com.breaktime.mustune.file_manager.impl
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
+import com.breaktime.mustune.common.extentions.copyBufferedTo
 import com.breaktime.mustune.file_manager.api.FileManager
 import java.io.File
-import java.io.InputStream
-import java.io.OutputStream
 import javax.inject.Inject
 
 class FileManagerImpl @Inject constructor(private val context: Context) : FileManager {
@@ -39,16 +38,17 @@ class FileManagerImpl @Inject constructor(private val context: Context) : FileMa
         return imageFile
     }
 
-    private fun InputStream.copyBufferedTo(os: OutputStream) = this.apply {
-        os.buffered().use { copyTo(it) }
+    override fun getSongsDir(): File = File(cacheDir, SONGS_DIR).also { songsDir ->
+        if (!songsDir.exists()) songsDir.mkdirs()
     }
 
-    override fun getSongsDir(): File = File(cacheDir, SONGS_DIR).also { songsDir ->
+    override fun getPdfDir(): File = File(cacheDir, PDFS_DIR).also { songsDir ->
         if (!songsDir.exists()) songsDir.mkdirs()
     }
 
     companion object {
         const val TEMP_DIR = "temp/"
         const val SONGS_DIR = "songs/"
+        const val PDFS_DIR = "pdfs/"
     }
 }

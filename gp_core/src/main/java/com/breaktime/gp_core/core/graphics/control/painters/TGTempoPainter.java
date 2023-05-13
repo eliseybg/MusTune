@@ -1,0 +1,21 @@
+package com.breaktime.gp_core.core.graphics.control.painters;
+
+import com.breaktime.gp_core.core.ui.resource.UIPainter;
+
+public class TGTempoPainter {
+	
+	public static void paintTempo(UIPainter painter, float x, float y, float scale) {
+		int width = Math.round(scale * 1.33f);
+		int height = Math.round(scale * (1.0f + 2.5f));
+		
+		painter.initPath(UIPainter.PATH_FILL);
+		TGNotePainter.paintNote(painter,x + (width - (scale * 1.33f)),y + ( height - (1.0f * scale) ), scale );
+		painter.closePath();
+		
+		painter.initPath();
+		painter.setAntialias(false);
+		painter.moveTo(x + width,y);
+		painter.lineTo(x + width,y + (height - (0.66f * scale)) );
+		painter.closePath();
+	}
+}

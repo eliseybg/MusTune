@@ -7,6 +7,8 @@ import com.breaktime.mustune.musicmanager.impl.data.entities.SongInfoBody
 import com.breaktime.mustune.musicmanager.impl.data.entities.TabQuery
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -19,6 +21,9 @@ import retrofit2.http.Query
 interface SongsApiService {
     @GET("song")
     suspend fun getSong(@Query("songId") songId: String): Response<SongEntity>
+
+    @GET("downloadSong")
+    fun downloadSong(@Query("songId") songId: String): Call<ResponseBody>
 
     @GET("songsCategories")
     suspend fun getSongsCategories(): Response<List<TabQuery>>

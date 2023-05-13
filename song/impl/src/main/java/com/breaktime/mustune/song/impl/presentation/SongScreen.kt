@@ -1,5 +1,7 @@
 package com.breaktime.mustune.song.impl.presentation
 
+import androidx.activity.addCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -34,6 +37,13 @@ fun SongScreen(
     setScreenOrientation(Orientation.LANDSCAPE)
     val state by viewModel.uiState.collectAsState()
     val context = LocalContext.current
+    val backPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    LaunchedEffect(key1 = true) {
+        backPressedDispatcher?.addCallback {
+            context.setScreenOrientation(Orientation.PORTRAIT)
+            navController.popBackStack()
+        }
+    }
 
     if (state.isLoading) {
         PrimaryLoadingProgress()

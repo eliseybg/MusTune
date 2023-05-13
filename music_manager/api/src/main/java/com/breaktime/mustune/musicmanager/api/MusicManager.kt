@@ -44,4 +44,6 @@ interface MusicManager {
     suspend fun addToFavourite(songId: String): Outcome<Unit>
 
     suspend fun removeFromFavourite(songId: String): Outcome<Unit>
+
+    suspend fun clearStorage(): Outcome<Unit>
 }

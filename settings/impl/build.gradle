@@ -43,5 +43,7 @@ dependencies {
     api project(':settings:api')
     implementation project(':login:api')
     implementation project(':settings_manager:api')
+    implementation project(':session_manager:api')
+    implementation project(':music_manager:api')
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }

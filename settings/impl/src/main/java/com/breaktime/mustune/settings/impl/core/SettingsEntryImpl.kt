@@ -6,6 +6,8 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.breaktime.mustune.common.Destinations
 import com.breaktime.mustune.common.di.injectedViewModel
+import com.breaktime.mustune.musicmanager.api.LocalMusicManagerProvider
+import com.breaktime.mustune.session_manager.api.LocalSessionManagerProvider
 import com.breaktime.mustune.settings.api.SettingsEntry
 import com.breaktime.mustune.settings.impl.di.DaggerSettingsComponent
 import com.breaktime.mustune.settings.impl.presentation.SettingsScreen
@@ -20,10 +22,14 @@ class SettingsEntryImpl @Inject constructor() : SettingsEntry() {
         backStackEntry: NavBackStackEntry
     ) {
         val settingsManagerProvider = LocalSettingsManagerProvider.current
+        val musicManagerProvider = LocalMusicManagerProvider.current
+        val sessionManagerProvider = LocalSessionManagerProvider.current
         val viewModelStore = remember { navController.currentBackStackEntry ?: backStackEntry }
         val viewModel = injectedViewModel(viewModelStoreOwner = viewModelStore) {
             DaggerSettingsComponent.builder()
                 .settingsManagerProvider(settingsManagerProvider)
+                .musicManagerProvider(musicManagerProvider)
+                .sessionManagerProvider(sessionManagerProvider)
                 .build()
                 .viewModel
         }

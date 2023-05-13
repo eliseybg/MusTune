@@ -9,4 +9,6 @@ interface FileManager {
     fun getTempFile(uri: Uri): File?
 
     fun getSongsDir(): File?
+
+    fun getPdfDir(): File?
 }

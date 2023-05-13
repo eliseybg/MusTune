@@ -193,7 +193,7 @@ fun SignIn(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 onValueChange = { viewModel.setEvent(LoginContract.Event.UpdateEmailText(it)) },
                 onClearedClick = { viewModel.setEvent(LoginContract.Event.UpdateEmailText("")) },
-                hint = stringResource(R.string.email)
+                hint = stringResource(R.string.username_or_email)
             )
 
             Spacer(modifier = Modifier.height(32.dp))

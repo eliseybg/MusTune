@@ -6,8 +6,10 @@ import com.breaktime.mustune.common.presentation.UiState
 
 class SettingsContract {
     sealed class Event : UiEvent {
-        object OnChangeNotificationEnabled : Event()
-        object OnChangeDarkModeEnabled : Event()
+        object OnChangeNotificationClicked : Event()
+        object OnChangeDarkModeClicked : Event()
+        object OnLogOutClicked: Event()
+        object OnDeleteAccountClicked: Event()
     }
 
     data class State(

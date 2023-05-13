@@ -142,7 +142,7 @@ fun CreateEditFileScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.title,
                 onValueChange = {
-                    viewModel.setEvent(CreateEditFileContract.Event.UpdateTitleText(it))
+                    viewModel.setEvent(CreateEditFileContract.Event.UpdateTitleText(it.trim()))
                 },
                 onClearedClick = {
                     viewModel.setEvent(CreateEditFileContract.Event.UpdateTitleText(""))
@@ -154,7 +154,7 @@ fun CreateEditFileScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.artist,
                 onValueChange = {
-                    viewModel.setEvent(CreateEditFileContract.Event.UpdateArtistText(it))
+                    viewModel.setEvent(CreateEditFileContract.Event.UpdateArtistText(it.trim()))
                 },
                 onClearedClick = {
                     viewModel.setEvent(CreateEditFileContract.Event.UpdateArtistText(""))

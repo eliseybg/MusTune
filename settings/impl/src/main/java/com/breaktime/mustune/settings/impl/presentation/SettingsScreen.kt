@@ -56,6 +56,7 @@ fun SettingsScreen(
                         modifier = Modifier
                             .size(24.dp)
                             .clickable {
+                                viewModel.setEvent(SettingsContract.Event.OnLogOutClicked)
                                 val route = destinations
                                     .find<LoginEntry>()
                                     .destination(LoginEntry.LoginScreen.ONBOARDING)
@@ -63,7 +64,7 @@ fun SettingsScreen(
                                 navController.navigate(route)
                             },
                         painter = painterResource(id = R.drawable.ic_log_out),
-                        contentDescription = "search icon",
+                        contentDescription = "Logout icon",
                     )
                 }
             )
@@ -90,7 +91,7 @@ fun SettingsScreen(
                 text = stringResource(R.string.notifications),
                 checked = state.isNotificationsEnabled,
                 onCheckedChange = {
-                    viewModel.setEvent(SettingsContract.Event.OnChangeNotificationEnabled)
+                    viewModel.setEvent(SettingsContract.Event.OnChangeNotificationClicked)
                 }
             )
             SettingsSwitchItem(
@@ -101,7 +102,7 @@ fun SettingsScreen(
                 text = stringResource(R.string.dark_mode),
                 checked = state.isDarkModeEnabled,
                 onCheckedChange = {
-                    viewModel.setEvent(SettingsContract.Event.OnChangeDarkModeEnabled)
+                    viewModel.setEvent(SettingsContract.Event.OnChangeDarkModeClicked)
                 }
             )
             Text(
@@ -125,43 +126,46 @@ fun SettingsScreen(
                 text = stringResource(R.string.change_password)
             )
 
-            Text(
-                modifier = Modifier.padding(top = 40.dp, start = 16.dp, end = 16.dp),
-                text = stringResource(R.string.social),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
-            )
-            SettingsSwitchItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                iconId = R.drawable.ic_bell_20,
-                text = stringResource(R.string.icloud),
-                checked = true,
-                onCheckedChange = {}
-            )
-            SettingsSwitchItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                iconId = R.drawable.ic_facebook_logo_20,
-                text = stringResource(R.string.facebook),
-                checked = false,
-                onCheckedChange = {}
-            )
-            SettingsSwitchItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                iconId = R.drawable.ic_google_logo_20,
-                text = stringResource(R.string.google),
-                checked = false,
-                onCheckedChange = {}
-            )
+            if (false) {
+                Text(
+                    modifier = Modifier.padding(top = 40.dp, start = 16.dp, end = 16.dp),
+                    text = stringResource(R.string.social),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                SettingsSwitchItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    iconId = R.drawable.ic_bell_20,
+                    text = stringResource(R.string.icloud),
+                    checked = true,
+                    onCheckedChange = {}
+                )
+                SettingsSwitchItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    iconId = R.drawable.ic_facebook_logo_20,
+                    text = stringResource(R.string.facebook),
+                    checked = false,
+                    onCheckedChange = {}
+                )
+                SettingsSwitchItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    iconId = R.drawable.ic_google_logo_20,
+                    text = stringResource(R.string.google),
+                    checked = false,
+                    onCheckedChange = {}
+                )
+            }
             Spacer(modifier = Modifier.weight(1f))
             PrimaryTextButton(
                 text = stringResource(R.string.remove_account),
                 onClick = {
+                    viewModel.setEvent(SettingsContract.Event.OnDeleteAccountClicked)
                     val route = destinations.find<LoginEntry>().featureRoute
                     navController.popBackStack()
                     navController.navigate(route)

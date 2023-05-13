@@ -12,6 +12,8 @@ import java.io.File
 interface SongsRepository {
     suspend fun getSong(songId: String, isForce: Boolean = false): SongEntity?
 
+    suspend fun getSongFile(songId: String): File
+
     fun getUserMusicTabs(isForce: Boolean): Flow<List<TabQuery>>
 
     fun getSongs(tab: MusicTab): Flow<PagingData<SongEntity>>
@@ -39,4 +41,6 @@ interface SongsRepository {
     suspend fun addSongToFavourite(songId: String)
 
     suspend fun removeSongFromFavourite(songId: String)
+
+    suspend fun clearData()
 }

@@ -5,6 +5,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.breaktime.mustune.common.Constants
+import com.breaktime.mustune.common.extentions.copyBufferedTo
+import com.breaktime.mustune.file_manager.api.FileManager
 import com.breaktime.mustune.musicmanager.api.models.MusicTab
 import com.breaktime.mustune.musicmanager.api.models.SearchFilter
 import com.breaktime.mustune.musicmanager.impl.data.entities.ShareType
@@ -29,11 +31,13 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.io.FileOutputStream
 import javax.inject.Inject
 
 class SongsRepositoryImpl @Inject constructor(
     private val songsDatabase: SongsDatabase,
-    private val songsApiService: SongsApiService
+    private val songsApiService: SongsApiService,
+    private val fileManager: FileManager
 ) : SongsRepository {
     override suspend fun getSong(
         songId: String,
@@ -52,6 +56,20 @@ class SongsRepositoryImpl @Inject constructor(
                 songsDatabase.songDao.insertSongAndRead(this)
             }
         }
+    }
+
+    override suspend fun getSongFile(songId: String): File = withContext(Dispatchers.IO) {
+        val songsDir = fileManager.getSongsDir() ?: throw Exception("No dir")
+        val request = songsApiService.downloadSong(songId)
+        val response = request.execute()
+        val body = response.retrieveBody()
+        val header = response.headers()["Content-Disposition"]
+        header ?: throw Exception("No content disposition header")
+        val filename = header.replace("attachment; filename=", "").replace("\"", "")
+        val path = "$songsDir/$filename"
+        val output = FileOutputStream(path)
+        body.byteStream().copyBufferedTo(output).close()
+        return@withContext File(path)
     }
 
     override fun getUserMusicTabs(isForce: Boolean): Flow<List<TabQuery>> =
@@ -138,5 +156,9 @@ class SongsRepositoryImpl @Inject constructor(
         val body = SongIdBody(songId)
         val songEntity = songsApiService.removeSongFromFavourite(body).retrieveBody()
         songsDatabase.songDao.updateSong(songEntity)
+    }
+
+    override suspend fun clearData(): Unit = withContext(Dispatchers.IO) {
+        songsDatabase.clearAllTables()
     }
 }
