@@ -8,7 +8,7 @@ import javax.inject.Inject
 class ClipboardUtil @Inject constructor(private val context: Context) {
     fun copyToClipboard(text: String) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("label", text)
+        val clip = ClipData.newPlainText("label", "https://mustune.com/song/$text")
         clipboard.setPrimaryClip(clip)
     }
 }

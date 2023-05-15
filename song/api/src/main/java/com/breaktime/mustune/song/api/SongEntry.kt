@@ -16,7 +16,7 @@ abstract class SongEntry : ComposableFeatureEntry {
 
     final override val deepLinks = listOf(
         navDeepLink {
-            uriPattern = "http://mustune.com/song/{$ARG_SONG_ID}"
+            uriPattern = "https://mustune.com/song/{$ARG_SONG_ID}"
         }
     )
 

@@ -1,8 +1,8 @@
 package com.breaktime.mustune.common
 
 object Constants {
-    const val BASE_URL = "http://10.0.2.2:8080"
-
+    const val BASE_URL = "http://172.20.10.2:8080"
+//const val BASE_URL = "http://10.0.2.2:8080"
     const val BACK_PRESS_DEBOUNCE_MILLS = 1200L
     const val SEARCH_DEBOUNCE_MILLS = 200L
 

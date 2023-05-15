@@ -150,7 +150,8 @@ fun MusicScreen(
                         }
                     }
                 )
-            }
+            },
+            backgroundColor = MusTuneTheme.colors.background
         ) {
             val tabsItems = state.tabsSetup.map { it.songs.collectAsLazyPagingItems() }
             if (tabsItems.isNotEmpty()) HorizontalPager(

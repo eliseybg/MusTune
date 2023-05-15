@@ -52,7 +52,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun onDeleteAccount() = viewModelScope.launch {
-        sessionManager.logoutAndDelete()
+        runCatching { sessionManager.logoutAndDelete() }
         musicManager.clearStorage()
     }
 }

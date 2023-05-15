@@ -189,14 +189,14 @@ class CreateEditFileViewModel @Inject constructor(
     private fun onSave() = viewModelScope.launch {
         val outcome = if (uiState.value.isEdit) musicManager.editSong(
             songId!!,
-            uiState.value.title,
-            uiState.value.artist,
+            uiState.value.title.trim(),
+            uiState.value.artist.trim(),
             uiState.value.isDownloadable,
             uiState.value.shareSettings,
         )
         else musicManager.addSong(
-            uiState.value.title,
-            uiState.value.artist,
+            uiState.value.title.trim(),
+            uiState.value.artist.trim(),
             uiState.value.isDownloadable,
             uiState.value.shareSettings,
             selectedFileUri.value ?: return@launch
