@@ -22,10 +22,10 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file("../debugkeystore")
-            storePassword "debugkey"
-            keyAlias "debug"
-            keyPassword "debugkey"
+//            storeFile file("../debugkeystore")
+//            storePassword "debugkey"
+//            keyAlias "debug"
+//            keyPassword "debugkey"
         }
     }
     buildTypes {

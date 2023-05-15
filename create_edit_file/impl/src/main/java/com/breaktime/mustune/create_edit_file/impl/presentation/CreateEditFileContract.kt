@@ -33,5 +33,6 @@ class CreateEditFileContract {
     sealed class Effect : UiEffect {
         object CloseScreen : Effect()
         object WrongFileFormat : Effect()
+        data class ErrorMessage(val message: String) : Effect()
     }
 }

@@ -1,5 +1,7 @@
 package com.breaktime.mustune.music.impl.presentation
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,6 +34,7 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -72,6 +76,9 @@ import com.breaktime.mustune.ui_kit.elements.MusicItem
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
@@ -85,7 +92,12 @@ fun MusicScreen(
 
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     val songBottomSheetState = rememberContentBottomSheetState<Song>()
+
+    LaunchedEffect(key1 = true) {
+        viewModelObserver(viewModel, context, scope)
+    }
     SongBottomSheet(songBottomSheetState, navController, destinations) {
         Scaffold(
             topBar = {
@@ -291,4 +303,19 @@ fun ExploreMusicTabPreview() {
         currentTab = currentTab,
         onChangeTab = { currentTab = it }
     )
+}
+
+
+private fun viewModelObserver(
+    viewModel: MusicViewModel,
+    context: Context,
+    scope: CoroutineScope
+) {
+    viewModel.effect.onEach {
+        when (it) {
+            is MusicContract.Effect.ErrorMessage -> Toast.makeText(
+                context, it.message, Toast.LENGTH_SHORT
+            ).show()
+        }
+    }.launchIn(scope)
 }

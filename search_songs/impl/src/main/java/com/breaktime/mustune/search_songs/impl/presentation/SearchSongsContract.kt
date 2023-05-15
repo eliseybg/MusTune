@@ -21,5 +21,7 @@ class SearchSongsContract {
         val songs: Flow<PagingData<Song>> = emptyFlow()
     ) : UiState
 
-    sealed class Effect : UiEffect
+    sealed class Effect : UiEffect {
+        data class ErrorMessage(val message: String) : Effect()
+    }
 }

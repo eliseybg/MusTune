@@ -1,5 +1,7 @@
 package com.breaktime.mustune.search_songs.impl.presentation
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -68,6 +71,9 @@ import com.breaktime.mustune.ui_kit.common.bottom_sheet.BottomSheetContent
 import com.breaktime.mustune.ui_kit.common.rememberContentBottomSheetState
 import com.breaktime.mustune.ui_kit.elements.MusicItem
 import com.breaktime.mustune.ui_kit.elements.SearchTextField
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -81,6 +87,11 @@ fun SearchSongsScreen(
     val focusRequester = remember { FocusRequester() }
     val scope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true) {
+        viewModelObserver(viewModel, context, scope)
+    }
 
     LaunchedEffect(key1 = true) { focusRequester.requestFocus() }
 
@@ -324,4 +335,18 @@ fun SearchBottomSheet(
             )
         }
     }
+}
+
+private fun viewModelObserver(
+    viewModel: SearchSongsViewModel,
+    context: Context,
+    scope: CoroutineScope
+) {
+    viewModel.effect.onEach {
+        when (it) {
+            is SearchSongsContract.Effect.ErrorMessage -> Toast.makeText(
+                context, it.message, Toast.LENGTH_SHORT
+            ).show()
+        }
+    }.launchIn(scope)
 }

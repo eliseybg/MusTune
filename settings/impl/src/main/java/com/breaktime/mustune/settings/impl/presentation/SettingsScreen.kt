@@ -1,5 +1,7 @@
 package com.breaktime.mustune.settings.impl.presentation
 
+import android.content.Context
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,10 +16,13 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +38,9 @@ import com.breaktime.mustune.ui_kit.common.PrimarySwitch
 import com.breaktime.mustune.ui_kit.common.PrimaryTextButton
 import com.breaktime.mustune.ui_kit.common.PrimaryTextButtonDefaults
 import com.breaktime.mustune.ui_kit.common.Toolbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun SettingsScreen(
@@ -40,7 +48,13 @@ fun SettingsScreen(
     navController: NavHostController,
     destinations: Destinations
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val state by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(key1 = true) {
+        viewModelObserver(viewModel, context, scope)
+    }
     Scaffold(
         topBar = {
             Toolbar(
@@ -255,4 +269,18 @@ fun SettingsItem(
         )
         option()
     }
+}
+
+private fun viewModelObserver(
+    viewModel: SettingsViewModel,
+    context: Context,
+    scope: CoroutineScope
+) {
+    viewModel.effect.onEach {
+        when (it) {
+            is SettingsContract.Effect.ErrorMessage -> Toast.makeText(
+                context, it.message, Toast.LENGTH_SHORT
+            ).show()
+        }
+    }.launchIn(scope)
 }

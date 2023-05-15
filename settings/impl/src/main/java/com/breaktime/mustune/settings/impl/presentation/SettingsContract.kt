@@ -18,5 +18,7 @@ class SettingsContract {
         val currentLanguage: String = "English"
     ) : UiState
 
-    sealed class Effect : UiEffect
+    sealed class Effect : UiEffect {
+        data class ErrorMessage(val message: String) : Effect()
+    }
 }

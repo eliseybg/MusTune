@@ -383,6 +383,10 @@ private fun viewModelObserver(
             CreateEditFileContract.Effect.WrongFileFormat -> Toast.makeText(
                 context, context.getText(R.string.wrong_file_format), Toast.LENGTH_SHORT
             ).show()
+
+            is CreateEditFileContract.Effect.ErrorMessage -> Toast.makeText(
+                context, it.message, Toast.LENGTH_SHORT
+            ).show()
         }
     }.launchIn(scope)
 }

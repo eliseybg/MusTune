@@ -45,7 +45,8 @@ fun PrimaryCheckbox(
                 .weight(1f)
                 .padding(start = 8.dp),
             text = text,
-            fontSize = sizes.fontSize
+            fontSize = sizes.fontSize,
+            color = colors.textColor
         )
     }
 }
@@ -66,7 +67,8 @@ object PrimaryCheckboxDefaults {
     fun primaryCheckboxColors(
         checkedColor: Color = MusTuneTheme.colors.primary,
         uncheckedColor: Color = MusTuneTheme.colors.secondary,
-    ) = PrimaryCheckboxColors(checkedColor, uncheckedColor)
+        textColor: Color = MusTuneTheme.colors.content,
+    ) = PrimaryCheckboxColors(checkedColor, uncheckedColor, textColor)
 
     @Composable
     fun primaryCheckboxSizes(
@@ -76,7 +78,11 @@ object PrimaryCheckboxDefaults {
     ) = PrimaryCheckboxSizes(checkboxWidth, checkboxHeight, fontSize)
 }
 
-data class PrimaryCheckboxColors(val checkedColor: Color, val uncheckedColor: Color)
+data class PrimaryCheckboxColors(
+    val checkedColor: Color,
+    val uncheckedColor: Color,
+    val textColor: Color
+)
 
 data class PrimaryCheckboxSizes(
     val checkboxWidth: Dp = 24.dp,

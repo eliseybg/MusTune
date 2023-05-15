@@ -17,5 +17,7 @@ class MusicContract {
         val tabsSetup: List<TabSetup> = emptyList()
     ) : UiState
 
-    sealed class Effect : UiEffect
+    sealed class Effect : UiEffect {
+        data class ErrorMessage(val message: String) : Effect()
+    }
 }
