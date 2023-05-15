@@ -8,6 +8,7 @@ import com.breaktime.mustune.session_manager.impl.domain.use_case.GetUserDataUse
 import com.breaktime.mustune.session_manager.impl.domain.use_case.GetUserTokenUseCase
 import com.breaktime.mustune.session_manager.impl.domain.use_case.IsAuthorizedUseCase
 import com.breaktime.mustune.session_manager.impl.domain.use_case.LoginUseCase
+import com.breaktime.mustune.session_manager.impl.domain.use_case.LogoutAndDeleteUseCase
 import com.breaktime.mustune.session_manager.impl.domain.use_case.LogoutUseCase
 import com.breaktime.mustune.session_manager.impl.domain.use_case.RegisterUseCase
 import kotlinx.coroutines.runBlocking
@@ -17,6 +18,7 @@ class SessionManagerImpl @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase,
     private val logoutUseCase: LogoutUseCase,
+    private val logoutAndDeleteUseCase: LogoutAndDeleteUseCase,
     private val isAuthorizedUseCase: IsAuthorizedUseCase,
     private val getUserDataUseCase: GetUserDataUseCase,
     private val getUserTokenUseCase: GetUserTokenUseCase
@@ -37,7 +39,11 @@ class SessionManagerImpl @Inject constructor(
         logoutUseCase(LogoutUseCase.Params)
     }
 
-    override suspend fun isAuthorized(): Outcome<Boolean> {
+    override suspend fun logoutAndDelete() {
+        logoutAndDeleteUseCase(LogoutAndDeleteUseCase.Params)
+    }
+
+    override suspend fun isAuthorized(): Boolean {
         return isAuthorizedUseCase(IsAuthorizedUseCase.Params)
     }
 

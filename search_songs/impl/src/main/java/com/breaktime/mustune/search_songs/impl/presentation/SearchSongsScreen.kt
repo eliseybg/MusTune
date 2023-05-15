@@ -239,8 +239,8 @@ fun SearchBottomSheet(
     filter: SearchFilter,
     onApplyClick: (SearchFilter) -> Unit
 ) {
-    val searchInTabs = remember { filter.searchInTabs.toMutableStateList() }
-    var searchInText by remember { mutableStateOf(filter.searchInText) }
+    val searchInTabs = remember(filter) { filter.searchInTabs.toMutableStateList() }
+    var searchInText by remember(filter) { mutableStateOf(filter.searchInText) }
     BottomSheetContent {
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
@@ -345,7 +345,7 @@ private fun viewModelObserver(
     viewModel.effect.onEach {
         when (it) {
             is SearchSongsContract.Effect.ErrorMessage -> Toast.makeText(
-                context, it.message, Toast.LENGTH_SHORT
+                context, it.message.asString(context), Toast.LENGTH_SHORT
             ).show()
         }
     }.launchIn(scope)

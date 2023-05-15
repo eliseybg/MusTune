@@ -3,12 +3,14 @@ package com.breaktime.mustune.create_edit_file.impl.presentation
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.breaktime.mustune.common.Constants
+import com.breaktime.mustune.common.UiText
 import com.breaktime.mustune.common.domain.ErrorCode
 import com.breaktime.mustune.common.domain.Outcome
 import com.breaktime.mustune.common.presentation.BaseViewModel
 import com.breaktime.mustune.file_manager.api.FileManager
 import com.breaktime.mustune.musicmanager.api.MusicManager
 import com.breaktime.mustune.musicmanager.api.models.ShareSettings
+import com.breaktime.mustune.resources.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
@@ -57,18 +59,42 @@ class CreateEditFileViewModel @Inject constructor(
                 }
             }
 
-            is Outcome.Failure -> {
-                when (outcome) {
-                    Outcome.Failure.Connection -> TODO()
-                    is Outcome.Failure.Unknown -> TODO()
-                    is Outcome.Failure.ServiceError -> {
-                        when (outcome.code) {
-                            ErrorCode.BAD_REQUEST -> TODO()
-                            ErrorCode.UNAUTHORIZED -> TODO()
-                            ErrorCode.NOT_FOUND -> TODO()
-                            ErrorCode.INTERNAL_SERVER_ERROR -> TODO()
-                            ErrorCode.Unknown -> TODO()
-                        }
+            is Outcome.Failure -> when (outcome) {
+                Outcome.Failure.Connection -> setEffect {
+                    CreateEditFileContract.Effect.ErrorMessage(
+                        UiText.StringResource(R.string.no_internet)
+                    )
+                }
+
+                is Outcome.Failure.Unknown -> setEffect {
+                    CreateEditFileContract.Effect.ErrorMessage(
+                        UiText.StringResource(R.string.unknown_exception)
+                    )
+                }
+
+                is Outcome.Failure.ServiceError -> when (outcome.code) {
+                    ErrorCode.BAD_REQUEST -> setEffect {
+                        CreateEditFileContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.bad_request)
+                        )
+                    }
+
+                    ErrorCode.UNAUTHORIZED -> setEffect {
+                        CreateEditFileContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.unauthorized)
+                        )
+                    }
+
+                    ErrorCode.NOT_FOUND -> setEffect {
+                        CreateEditFileContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.no_song)
+                        )
+                    }
+
+                    ErrorCode.INTERNAL_SERVER_ERROR, ErrorCode.Unknown -> setEffect {
+                        CreateEditFileContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.unknown_exception)
+                        )
                     }
                 }
             }
@@ -111,27 +137,52 @@ class CreateEditFileViewModel @Inject constructor(
     }
 
     private fun deleteFile() = viewModelScope.launch {
-        if (uiState.value.isEdit) {
-            when (val outcome = musicManager.deleteSong(songId!!)) {
-                is Outcome.Success -> setEffect { CreateEditFileContract.Effect.CloseScreen }
-                is Outcome.Failure -> {
-                    when (outcome) {
-                        Outcome.Failure.Connection -> TODO()
-                        is Outcome.Failure.Unknown -> TODO()
-                        is Outcome.Failure.ServiceError -> {
-                            when (outcome.code) {
-                                ErrorCode.BAD_REQUEST -> TODO()
-                                ErrorCode.UNAUTHORIZED -> TODO()
-                                ErrorCode.NOT_FOUND -> TODO()
-                                ErrorCode.INTERNAL_SERVER_ERROR -> TODO()
-                                ErrorCode.Unknown -> TODO()
-                            }
-                        }
+        if (uiState.value.isEdit) deleteSong()
+        else selectedFileUri.value = null
+    }
+
+    private suspend fun deleteSong() {
+        when (val outcome = musicManager.deleteSong(songId!!)) {
+            is Outcome.Success -> setEffect { CreateEditFileContract.Effect.CloseScreen }
+            is Outcome.Failure -> when (outcome) {
+                Outcome.Failure.Connection -> setEffect {
+                    CreateEditFileContract.Effect.ErrorMessage(
+                        UiText.StringResource(R.string.no_internet)
+                    )
+                }
+
+                is Outcome.Failure.Unknown -> setEffect {
+                    CreateEditFileContract.Effect.ErrorMessage(
+                        UiText.StringResource(R.string.unknown_exception)
+                    )
+                }
+
+                is Outcome.Failure.ServiceError -> when (outcome.code) {
+                    ErrorCode.BAD_REQUEST -> setEffect {
+                        CreateEditFileContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.bad_request)
+                        )
+                    }
+
+                    ErrorCode.UNAUTHORIZED -> setEffect {
+                        CreateEditFileContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.unauthorized)
+                        )
+                    }
+
+                    ErrorCode.NOT_FOUND -> setEffect {
+                        CreateEditFileContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.no_song)
+                        )
+                    }
+
+                    ErrorCode.INTERNAL_SERVER_ERROR, ErrorCode.Unknown -> setEffect {
+                        CreateEditFileContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.unknown_exception)
+                        )
                     }
                 }
             }
-        } else {
-            selectedFileUri.value = null
         }
     }
 
@@ -153,18 +204,42 @@ class CreateEditFileViewModel @Inject constructor(
 
         when (outcome) {
             is Outcome.Success -> setEffect { CreateEditFileContract.Effect.CloseScreen }
-            is Outcome.Failure -> {
-                when (outcome) {
-                    Outcome.Failure.Connection -> TODO()
-                    is Outcome.Failure.Unknown -> TODO()
-                    is Outcome.Failure.ServiceError -> {
-                        when (outcome.code) {
-                            ErrorCode.BAD_REQUEST -> TODO()
-                            ErrorCode.UNAUTHORIZED -> TODO()
-                            ErrorCode.NOT_FOUND -> TODO()
-                            ErrorCode.INTERNAL_SERVER_ERROR -> TODO()
-                            ErrorCode.Unknown -> TODO()
-                        }
+            is Outcome.Failure -> when (outcome) {
+                Outcome.Failure.Connection -> setEffect {
+                    CreateEditFileContract.Effect.ErrorMessage(
+                        UiText.StringResource(R.string.no_internet)
+                    )
+                }
+
+                is Outcome.Failure.Unknown -> setEffect {
+                    CreateEditFileContract.Effect.ErrorMessage(
+                        UiText.StringResource(R.string.unknown_exception)
+                    )
+                }
+
+                is Outcome.Failure.ServiceError -> when (outcome.code) {
+                    ErrorCode.BAD_REQUEST -> setEffect {
+                        CreateEditFileContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.bad_request)
+                        )
+                    }
+
+                    ErrorCode.UNAUTHORIZED -> setEffect {
+                        CreateEditFileContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.unauthorized)
+                        )
+                    }
+
+                    ErrorCode.NOT_FOUND -> setEffect {
+                        CreateEditFileContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.no_song)
+                        )
+                    }
+
+                    ErrorCode.INTERNAL_SERVER_ERROR, ErrorCode.Unknown -> setEffect {
+                        CreateEditFileContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.unknown_exception)
+                        )
                     }
                 }
             }

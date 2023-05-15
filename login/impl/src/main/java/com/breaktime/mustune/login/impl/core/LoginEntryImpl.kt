@@ -115,9 +115,11 @@ private fun viewModelObserver(
                 loginNavController.navigate(LoginEntry.LoginScreen.ONBOARDING.name)
             }
 
-            is LoginContract.Effect.ErrorMessage -> {
-                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-            }
+            is LoginContract.Effect.ErrorMessage -> Toast.makeText(
+                context,
+                it.message.asString(context),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }.launchIn(scope)
 }

@@ -1,5 +1,6 @@
 package com.breaktime.mustune.login.impl.presentation
 
+import com.breaktime.mustune.common.UiText
 import com.breaktime.mustune.common.presentation.UiEffect
 import com.breaktime.mustune.common.presentation.UiEvent
 import com.breaktime.mustune.common.presentation.UiState
@@ -24,6 +25,6 @@ class LoginContract {
     sealed class Effect : UiEffect {
         object Authorized : Effect()
         object UnAuthorized : Effect()
-        data class ErrorMessage(val message: String) : Effect()
+        data class ErrorMessage(val message: UiText) : Effect()
     }
 }

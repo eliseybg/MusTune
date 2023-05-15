@@ -47,10 +47,12 @@ fun <T> rememberContentBottomSheetState(
     confirmStateChange: (ContentBottomSheetValue<T>) -> Boolean = { true }
 ): ContentBottomSheetState<T> {
     var closeCallback: (() -> Unit)? = null
-    val sheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden) {
-        closeCallback?.invoke()
-        true
-    }
+    val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmValueChange = {
+            closeCallback?.invoke()
+            true
+        })
     return remember {
         ContentBottomSheetState(sheetState, confirmStateChange).also {
             closeCallback = { it.hide() }

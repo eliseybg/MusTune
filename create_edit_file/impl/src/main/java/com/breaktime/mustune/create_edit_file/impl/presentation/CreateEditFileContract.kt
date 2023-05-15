@@ -1,6 +1,7 @@
 package com.breaktime.mustune.create_edit_file.impl.presentation
 
 import android.net.Uri
+import com.breaktime.mustune.common.UiText
 import com.breaktime.mustune.common.presentation.UiEffect
 import com.breaktime.mustune.common.presentation.UiEvent
 import com.breaktime.mustune.common.presentation.UiState
@@ -33,6 +34,6 @@ class CreateEditFileContract {
     sealed class Effect : UiEffect {
         object CloseScreen : Effect()
         object WrongFileFormat : Effect()
-        data class ErrorMessage(val message: String) : Effect()
+        data class ErrorMessage(val message: UiText) : Effect()
     }
 }

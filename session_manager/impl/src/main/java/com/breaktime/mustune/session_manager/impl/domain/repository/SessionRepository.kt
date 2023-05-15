@@ -6,6 +6,7 @@ interface SessionRepository {
     suspend fun login(email: String, password: String): UserInfoEntity
     suspend fun register(username: String, email: String, password: String): UserInfoEntity
     suspend fun logout()
+    suspend fun logoutAndDelete()
     suspend fun deleteAccount()
     suspend fun getUserInfo(): UserInfoEntity?
 }

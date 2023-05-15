@@ -1,5 +1,6 @@
 package com.breaktime.mustune.session_manager.impl.data.source
 
+import com.breaktime.mustune.network.api.extentions.handleResponse
 import com.breaktime.mustune.network.api.extentions.retrieveBody
 import com.breaktime.mustune.session_manager.impl.data.entities.LoginBody
 import com.breaktime.mustune.session_manager.impl.data.entities.SignupBody
@@ -33,6 +34,13 @@ class SessionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logout() = withContext(Dispatchers.IO) {
+        dataSource.removeUserInfo()
+    }
+
+    override suspend fun logoutAndDelete() = withContext(Dispatchers.IO) {
+        val token = getUserInfo()?.registerToken.orEmpty()
+        val response = sessionApiService.deleteAccount("Bearer $token")
+        response.handleResponse()
         dataSource.removeUserInfo()
     }
 

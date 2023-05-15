@@ -4,12 +4,11 @@ import com.breaktime.mustune.common.domain.BaseUseCase
 import com.breaktime.mustune.session_manager.impl.domain.repository.SessionRepository
 import javax.inject.Inject
 
-class IsAuthorizedUseCase @Inject constructor(
+class LogoutAndDeleteUseCase @Inject constructor(
     private val sessionRepository: SessionRepository
-) : BaseUseCase<Boolean, IsAuthorizedUseCase.Params>() {
-    override suspend fun execute(params: Params): Boolean {
-        val token = sessionRepository.getUserInfo()?.registerToken.orEmpty()
-        return token.isNotBlank()
+) : BaseUseCase<Unit, LogoutAndDeleteUseCase.Params>() {
+    override suspend fun execute(params: Params) {
+        sessionRepository.logoutAndDelete()
     }
 
     object Params

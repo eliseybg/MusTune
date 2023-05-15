@@ -1,10 +1,12 @@
 package com.breaktime.mustune.song.impl.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.breaktime.mustune.common.UiText
 import com.breaktime.mustune.common.domain.ErrorCode
 import com.breaktime.mustune.common.domain.Outcome
 import com.breaktime.mustune.common.presentation.BaseViewModel
 import com.breaktime.mustune.musicmanager.api.MusicManager
+import com.breaktime.mustune.resources.R
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,18 +27,42 @@ class SongViewModel @Inject constructor(
                     )
                 }
 
-                is Outcome.Failure -> {
-                    when (outcome) {
-                        Outcome.Failure.Connection -> TODO()
-                        is Outcome.Failure.Unknown -> TODO()
-                        is Outcome.Failure.ServiceError -> {
-                            when (outcome.code) {
-                                ErrorCode.BAD_REQUEST -> TODO()
-                                ErrorCode.UNAUTHORIZED -> TODO()
-                                ErrorCode.NOT_FOUND -> TODO()
-                                ErrorCode.INTERNAL_SERVER_ERROR -> TODO()
-                                ErrorCode.Unknown -> TODO()
-                            }
+                is Outcome.Failure -> when (outcome) {
+                    Outcome.Failure.Connection -> setEffect {
+                        SongContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.no_internet)
+                        )
+                    }
+
+                    is Outcome.Failure.Unknown -> setEffect {
+                        SongContract.Effect.ErrorMessage(
+                            UiText.StringResource(R.string.unknown_exception)
+                        )
+                    }
+
+                    is Outcome.Failure.ServiceError -> when (outcome.code) {
+                        ErrorCode.BAD_REQUEST -> setEffect {
+                            SongContract.Effect.ErrorMessage(
+                                UiText.StringResource(R.string.bad_request)
+                            )
+                        }
+
+                        ErrorCode.UNAUTHORIZED -> setEffect {
+                            SongContract.Effect.ErrorMessage(
+                                UiText.StringResource(R.string.unauthorized)
+                            )
+                        }
+
+                        ErrorCode.NOT_FOUND -> setEffect {
+                            SongContract.Effect.ErrorMessage(
+                                UiText.StringResource(R.string.no_song)
+                            )
+                        }
+
+                        ErrorCode.INTERNAL_SERVER_ERROR, ErrorCode.Unknown -> setEffect {
+                            SongContract.Effect.ErrorMessage(
+                                UiText.StringResource(R.string.unknown_exception)
+                            )
                         }
                     }
                 }

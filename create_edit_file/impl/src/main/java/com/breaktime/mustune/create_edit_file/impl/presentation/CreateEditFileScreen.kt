@@ -385,7 +385,7 @@ private fun viewModelObserver(
             ).show()
 
             is CreateEditFileContract.Effect.ErrorMessage -> Toast.makeText(
-                context, it.message, Toast.LENGTH_SHORT
+                context, it.message.asString(context), Toast.LENGTH_SHORT
             ).show()
         }
     }.launchIn(scope)

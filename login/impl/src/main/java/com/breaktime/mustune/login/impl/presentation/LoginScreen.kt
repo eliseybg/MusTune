@@ -28,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -211,7 +212,7 @@ fun SignIn(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                modifier = Modifier.align(Alignment.End),
+                modifier = Modifier.align(Alignment.End).alpha(0f),
                 text = stringResource(R.string.forget_password),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,

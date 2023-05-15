@@ -62,4 +62,15 @@
     <string name="username">username</string>
     <string name="person_s_username_or_email">Person’s username or email</string>
     <string name="no_artist">No artist</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="unknown_exception">Something went wrong</string>
+    <string name="no_song">No such song</string>
+    <string name="no_user">No such user</string>
+    <string name="unauthorized">You are unauthorized</string>
+    <string name="bad_request">Something wrong with request</string>
+    <string name="username_taken">Username is taken</string>
+    <string name="wrong_email_format">Wrong email format</string>
+    <string name="wrong_username_format">Wrong username format</string>
+    <string name="wrong_username_or_email">Wrong username or email</string>
+    <string name="host_name">mustune.com</string>
 </resources>

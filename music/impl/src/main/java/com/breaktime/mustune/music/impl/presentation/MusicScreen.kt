@@ -314,7 +314,7 @@ private fun viewModelObserver(
     viewModel.effect.onEach {
         when (it) {
             is MusicContract.Effect.ErrorMessage -> Toast.makeText(
-                context, it.message, Toast.LENGTH_SHORT
+                context, it.message.asString(context), Toast.LENGTH_SHORT
             ).show()
         }
     }.launchIn(scope)

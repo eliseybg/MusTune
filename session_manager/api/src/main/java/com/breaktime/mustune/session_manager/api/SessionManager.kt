@@ -7,6 +7,7 @@ interface SessionManager {
     suspend fun login(email: String, password: String): Outcome<UserInfo>
     suspend fun register(username: String, email: String, password: String): Outcome<UserInfo>
     suspend fun logout()
-    suspend fun isAuthorized(): Outcome<Boolean>
+    suspend fun logoutAndDelete()
+    suspend fun isAuthorized(): Boolean
     suspend fun getUserData(): Outcome<UserInfo>
 }
